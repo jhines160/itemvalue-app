@@ -1,7 +1,7 @@
 // Netlify Function: analyze.js
 // Analyzes items using SerpAPI for eBay data + Claude AI for recommendations
 
-const ANTHROPIC_API_KEY = "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";
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const SERPAPI_KEY = "48756c829653abff5e2a9637ea5acb2fdaa67da3f2aecd2f09141396b702d4e6";
 
 exports.handler = async (event, context) => {
