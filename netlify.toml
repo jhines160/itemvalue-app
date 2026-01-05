@@ -1,7 +1,6 @@
--e [build]
+[build]
   functions = "netlify/functions"
+  publish = "."
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+[functions]
+  node_bundler = "esbuild"
