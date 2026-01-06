@@ -29,9 +29,60 @@ exports.handler = async (event, context) => {
     };
   }
 
-    try {
+   try {
     console.log('Received body:', event.body);
-      const {
+    const {
+      paymentMethodId,
+      customerEmail: email,
+      firstName,
+      lastName,
+      orderBump,
+      amount,
+      product,
+      bundleType: sentBundleType,
+      scans,
+      days
+    } = JSON.parse(event.body);
+
+    // Actually charge the card with Stripe
+    const stripeResponse = await fetch('https://api.stripe.com/v1/payment_intents', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${STRIPE_SECRET_KEY}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        amount: amount.toString(),
+        currency: 'usd',
+        payment_method: paymentMethodId,
+        confirm: 'true',
+        description: `ItemValue - ${sentBundleType || 'Bundle'}`,
+        receipt_email: email
+      }).toString()
+    });
+
+    const paymentResult = await stripeResponse.json();
+    
+    if (paymentResult.error) {
+      console.error('Stripe error:', paymentResult.error);
+      return {
+        statusCode: 400,
+        headers: { 'Access-Control-Allow-Origin': '*' },
+        body: JSON.stringify({ success: false, error: paymentResult.error.message })
+      };
+    }
+
+    if (paymentResult.status !== 'succeeded') {
+      console.error('Payment not succeeded:', paymentResult.status);
+      return {
+        statusCode: 400,
+        headers: { 'Access-Control-Allow-Origin': '*' },
+        body: JSON.stringify({ success: false, error: 'Payment was not successful' })
+      };
+    }
+
+    const paymentIntentId = paymentResult.id;
+    console.log(`Processing successful payment: ${paymentIntentId} for ${email}`);
       paymentMethodId: paymentIntentId,
       customerEmail: email,
       firstName,
