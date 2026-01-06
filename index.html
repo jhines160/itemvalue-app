@@ -919,6 +919,7 @@
             
             saveScanData(scanData);
             alert(`✅ ${bundle} activated! You have ${scans} scans for ${days} days.`);
+            window.history.replaceState({}, document.title, window.location.pathname);
             window.location.reload();
             return true;
         }
