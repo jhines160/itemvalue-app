@@ -138,7 +138,8 @@ function generateAccessCode(bundleType, hasYearExtension) {
     estate: 'ESTATE'
   };
   
-  const prefix = prefixes[bundleType] || 'WEEKEND';
+  const bundleKey = bundleType.toLowerCase().split(' ')[0];
+const prefix = prefixes[bundleKey] || 'WEEKEND';
   const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
   const year = new Date().getFullYear();
   const suffix = hasYearExtension ? '-YEAR' : '';
