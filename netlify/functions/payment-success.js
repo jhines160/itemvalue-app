@@ -31,7 +31,7 @@ exports.handler = async (event, context) => {
 
     try {
     const {
-      paymentIntentId,
+      paymentMethodId: paymentIntentId,
       customerEmail: email,
       firstName,
       lastName,
