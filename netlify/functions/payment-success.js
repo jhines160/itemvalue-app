@@ -32,7 +32,7 @@ exports.handler = async (event, context) => {
     try {
     const {
       paymentIntentId,
-      email,
+      customerEmail: email,
       firstName,
       lastName,
       orderBump,
