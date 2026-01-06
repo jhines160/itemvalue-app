@@ -3,7 +3,7 @@
 // Triggers abandoned scan email sequence via Resend
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY; // Set this in Netlify when you have it
-const FROM_EMAIL = 'ItemValue <onboarding@resend.dev>'; // Using Resend default until domain verifies
+const FROM_EMAIL = 'ItemValue <hello@itemvalue.app>';
 const ADMIN_EMAIL = 'jhines160@me.com';
 
 exports.handler = async (event, context) => {
