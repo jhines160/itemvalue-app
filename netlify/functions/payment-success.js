@@ -3,7 +3,7 @@
 // Updated with Resend email integration
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY; // Set this in Netlify when domain verifies
-const FROM_EMAIL = 'ItemValue <onboarding@resend.dev>'; // Using Resend default until domain verifies
+const FROM_EMAIL = 'ItemValue <hello@itemvalue.app>';
 const ADMIN_EMAIL = 'jhines160@me.com';
 const STRIPE_SECRET_KEY = 'sk_test_51Rfi8gFHvpgYQe5JbaTc3vM3SeKusCJEFFEVi9OxjnJ2PXjHzaIJqYxlTNkqamEZG148EgYyisn3ssTTdhosVT8J00yhBqlXJm';
 
