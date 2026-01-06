@@ -59,7 +59,9 @@ exports.handler = async (event, context) => {
         payment_method: paymentMethodId,
         confirm: 'true',
         description: `ItemValue - ${sentBundleType || 'Bundle'}`,
-        receipt_email: email
+        receipt_email: email,
+        'automatic_payment_methods[enabled]': 'true',
+        'automatic_payment_methods[allow_redirects]': 'never'
       }).toString()
     });
 
