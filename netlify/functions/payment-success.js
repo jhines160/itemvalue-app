@@ -29,7 +29,6 @@ exports.handler = async (event, context) => {
     };
   }
 
-  try {
     try {
     const {
       paymentIntentId,
@@ -55,8 +54,6 @@ exports.handler = async (event, context) => {
       else if (product.includes('estate')) bundleType = 'estate';
     }
 
-    // Generate access code
-    const accessCode = generateAccessCode(bundleType, orderBump);
     // Generate access code
     const accessCode = generateAccessCode(bundleType, orderBump);
     
