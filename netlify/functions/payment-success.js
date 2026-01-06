@@ -30,7 +30,8 @@ exports.handler = async (event, context) => {
   }
 
     try {
-    const {
+    console.log('Received body:', event.body);
+      const {
       paymentMethodId: paymentIntentId,
       customerEmail: email,
       firstName,
