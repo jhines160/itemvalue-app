@@ -30,30 +30,33 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const { 
-      paymentIntentId, 
-      email, 
-      firstName, 
-      lastName, 
-      orderBump, 
+    try {
+    const {
+      paymentIntentId,
+      email,
+      firstName,
+      lastName,
+      orderBump,
       amount,
-      product  // 'weekend-warrior', 'moving-master', or 'estate-pro'
+      product,
+      bundleType: sentBundleType
     } = JSON.parse(event.body);
 
     console.log(`Processing successful payment: ${paymentIntentId} for ${email}`);
 
-    // Determine bundle type from product or amount
+    // Determine bundle type from bundleType, product, or amount
     let bundleType = 'weekend';
-    if (product) {
+    if (sentBundleType) {
+      if (sentBundleType.toLowerCase().includes('moving')) bundleType = 'moving';
+      else if (sentBundleType.toLowerCase().includes('estate')) bundleType = 'estate';
+      else bundleType = 'weekend';
+    } else if (product) {
       if (product.includes('moving')) bundleType = 'moving';
       else if (product.includes('estate')) bundleType = 'estate';
-    } else if (amount) {
-      // Fallback to amount-based detection
-      const amountNum = typeof amount === 'number' ? amount : parseInt(amount);
-      if (amountNum >= 9700 || amountNum >= 97) bundleType = 'estate';
-      else if (amountNum >= 3700 || amountNum >= 37) bundleType = 'moving';
     }
 
+    // Generate access code
+    const accessCode = generateAccessCode(bundleType, orderBump);
     // Generate access code
     const accessCode = generateAccessCode(bundleType, orderBump);
     
