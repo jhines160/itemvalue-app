@@ -4,7 +4,7 @@
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = 'ItemValue <hello@itemvalue.app>';
 const ADMIN_EMAIL = 'jhines160@me.com';
-const STRIPE_SECRET_KEY = 'sk_test_51Rfi8gFHvpgYQe5JbaTc3vM3SeKusCJEFFEVi9OxjnJ2PXjHzaIJqYx1TNkqamEZG148EgYyisn3ssTTdhosVT8J00yhBqlXJm';
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 
 exports.handler = async (event, context) => {
   // Handle CORS preflight
