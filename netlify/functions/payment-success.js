@@ -129,7 +129,58 @@ exports.handler = async (event, context) => {
     };
   }
 };
-
+// Send customer confirmation email
+async function sendCustomerConfirmation({ customerEmail, firstName, bundleType, bundleDetails, amount, orderBump, accessCode }) {
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${RESEND_API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      from: FROM_EMAIL,
+      to: customerEmail,
+      subject: '🎉 Your ItemValue Access Code',
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: linear-gradient(135deg, #0ea5e9, #0284c7); padding: 30px; text-align: center;">
+            <h1 style="color: white; margin: 0;">Welcome to ItemValue!</h1>
+          </div>
+          <div style="padding: 30px; background: #f8fafc;">
+            <p style="font-size: 18px; color: #1e293b;">Hi ${firstName}! 👋</p>
+            <p style="color: #64748b;">Thank you for your purchase! Your <strong>${bundleType}</strong> bundle is ready to use.</p>
+            
+            <div style="background: white; border: 2px solid #10b981; border-radius: 12px; padding: 20px; margin: 20px 0; text-align: center;">
+              <p style="margin: 0 0 10px 0; color: #065f46; font-size: 14px;">Your Access Code</p>
+              <p style="margin: 0; font-size: 28px; font-weight: bold; color: #10b981; font-family: monospace;">${accessCode}</p>
+            </div>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="https://itemvalue.app/?code=${accessCode}" style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block;">Activate & Start Scanning →</a>
+            </div>
+            
+            <div style="background: white; border-radius: 8px; padding: 15px; margin-top: 20px;">
+              <p style="margin: 0 0 10px 0; font-weight: 600; color: #1e293b;">Your Bundle Details:</p>
+              <p style="margin: 5px 0; color: #64748b;">📦 ${bundleDetails.scans} item scans</p>
+              <p style="margin: 5px 0; color: #64748b;">📅 ${bundleDetails.days} days access</p>
+              ${orderBump ? '<p style="margin: 5px 0; color: #64748b;">⭐ Year extension included</p>' : ''}
+            </div>
+            
+            <p style="color: #64748b; margin-top: 30px; font-size: 14px;">Questions? Just reply to this email!</p>
+          </div>
+        </div>
+      `
+    })
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    console.error('Customer email error:', error);
+    throw new Error('Failed to send customer email');
+  }
+  
+  return response.json();
+}
 // Generate access code based on bundle type
 function generateAccessCode(bundleType, hasYearExtension) {
   const prefixes = {
