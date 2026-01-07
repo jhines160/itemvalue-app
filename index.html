@@ -1603,7 +1603,13 @@ src="https://www.facebook.com/tr?id=1383551356849358&ev=PageView&noscript=1"
                                         </div>
                                     </div>
 
-                                    <div className="mode-button" onClick={() => setMode('bulk')}>
+                                    <div className="mode-button" onClick={() => {
+    if (!canScan()) {
+        setShowUpgrade(true);
+    } else {
+        setMode('bulk');
+    }
+}}>
                                         <div className="mode-button-icon">📋</div>
                                         <div className="mode-button-title">Bulk Scan</div>
                                         <div className="mode-button-desc">
