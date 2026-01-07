@@ -169,17 +169,22 @@ RULES:
     console.log('Analysis complete');
     
 // Log scan to Google Sheet
-    try {
-      await fetch(SCAN_LOG_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        item: itemDescription,
-        category: category || 'Not specified',
-        condition: condition || 'Not specified',
-        userType: 'unknown'
-      })
-    });
+   try {
+      const logResponse = await fetch(SCAN_LOG_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          item: itemDescription,
+          category: category || 'Not specified',
+          condition: condition || 'Not specified',
+          userType: 'unknown'
+        }),
+        redirect: 'follow'
+      });
+      console.log('Scan logged, status:', logResponse.status);
+    } catch (err) {
+      console.log('Logging error:', err);
+    }
     } catch (err) {
       console.log('Logging error:', err);
     }
