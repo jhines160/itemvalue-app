@@ -168,8 +168,9 @@ RULES:
     const anthropicData = await anthropicResponse.json();
     console.log('Analysis complete');
     
-// Log scan to Google Sheet (don't wait for response)
-    fetch(SCAN_LOG_URL, {
+// Log scan to Google Sheet
+    try {
+      await fetch(SCAN_LOG_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
