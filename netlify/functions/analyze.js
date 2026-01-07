@@ -179,7 +179,10 @@ RULES:
         condition: condition || 'Not specified',
         userType: 'unknown'
       })
-    }).catch(err => console.log('Logging error:', err));
+    });
+    } catch (err) {
+      console.log('Logging error:', err);
+    }
     return {
       statusCode: 200,
       headers: {
