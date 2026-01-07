@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - ItemValue</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #1e293b;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 20px 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 18px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .faq-question::before {
+            content: "💡";
+            margin-right: 12px;
+        }
+
+        .faq-answer {
+            color: #64748b;
+            font-size: 16px;
+            line-height: 1.6;
+            padding-left: 36px;
+        }
+
+        .faq-answer a {
+            color: #0ea5e9;
+            text-decoration: none;
+        }
+
+        .faq-answer a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-box {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .contact-box h3 {
+            color: #0c4a6e;
+            margin-bottom: 10px;
+        }
+
+        .contact-box p {
+            color: #0369a1;
+            margin-bottom: 15px;
+        }
+
+        .contact-box a {
+            color: #0ea5e9;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .contact-box a:hover {
+            text-decoration: underline;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 14px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="https://itemvalue.app" class="back-link">← Back to App</a>
+        
+        <div class="card">
+            <h1>Frequently Asked Questions</h1>
+            <p class="subtitle">Everything you need to know about ItemValue</p>
+
+            <div class="faq-item">
+                <div class="faq-question">What is ItemValue?</div>
+                <div class="faq-answer">
+                    ItemValue is an AI-powered tool that helps you decide whether to sell items on eBay or donate them. We analyze real marketplace data to give you accurate price estimates, calculate fees and shipping costs, and tell you your potential profit.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How accurate are the price estimates?</div>
+                <div class="faq-answer">
+                    Our estimates are based on actual completed sales on eBay. We search for items similar to yours and analyze what they actually sold for, not just listing prices. This gives you realistic expectations for what your item could sell for.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What do I get with my purchase?</div>
+                <div class="faq-answer">
+                    You get a set number of item scans depending on your bundle:<br><br>
+                    • <strong>Weekend Warrior ($17)</strong> - 50 scans, 30 days<br>
+                    • <strong>Moving Master ($37)</strong> - 200 scans, 60 days<br>
+                    • <strong>Estate Pro ($97)</strong> - 1,000 scans, 90 days<br><br>
+                    Each scan analyzes one item and gives you a sell/donate recommendation with pricing details.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I activate my access code?</div>
+                <div class="faq-answer">
+                    After purchase, you'll receive an email with your access code and an activation link. Simply click the link or go to <a href="https://itemvalue.app">itemvalue.app</a> and add <strong>?code=YOUR-CODE</strong> to the URL. Your scans will be activated immediately.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">I lost my access code. How do I recover it?</div>
+                <div class="faq-answer">
+                    Check your email for the confirmation message from ItemValue. If you can't find it, contact us at the email below and we'll resend your code.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Do unused scans roll over?</div>
+                <div class="faq-answer">
+                    Scans must be used within your access period (30, 60, or 90 days depending on your bundle). Unused scans do not roll over after expiration. You can add the year extension at checkout to get 365 days instead.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What's the "Effort Score"?</div>
+                <div class="faq-answer">
+                    The effort score tells you how easy or hard an item is to sell:<br><br>
+                    • 🟢 <strong>Easy</strong> - Ships easily, high demand, quick sale likely<br>
+                    • 🟡 <strong>Medium</strong> - May need good photos, some shipping complexity<br>
+                    • 🔴 <strong>Hard</strong> - Large/fragile items, niche market, more effort required<br><br>
+                    This helps you decide if the profit is worth your time.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I use this on my phone?</div>
+                <div class="faq-answer">
+                    Yes! ItemValue works great on mobile browsers. You can even add it to your home screen for quick access - it works like an app without needing to download anything.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What's your refund policy?</div>
+                <div class="faq-answer">
+                    If you're not satisfied with ItemValue, contact us within 7 days of purchase for a full refund. We want you to be happy with your purchase.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Is my data secure?</div>
+                <div class="faq-answer">
+                    Yes. We use secure payment processing through Stripe (we never see your card details), and we don't sell or share your personal information. See our <a href="/privacy.html">Privacy Policy</a> for details.
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <h3>Still have questions?</h3>
+                <p>We're here to help!</p>
+                <a href="mailto:hello@itemvalue.app">hello@itemvalue.app</a>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="https://itemvalue.app" class="cta-button">Start Scanning Items →</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
