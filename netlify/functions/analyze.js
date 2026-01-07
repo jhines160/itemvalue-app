@@ -3,7 +3,9 @@
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const SERPAPI_KEY = process.env.SERPAPI_KEY;
-const SCAN_LOG_URL = 'https://script.google.com/macros/s/AKfycbz4h94F0683Ks3FqBDBSfnEvhygozMJzlpI-edzJpI6Wmx7oGd-8IImtvH4l3kX5jF0Ug/exec';exports.handler = async (event, context) => {
+const SCAN_LOG_URL = 'https://script.google.com/macros/s/AKfycbz4h94F0683Ks3FqBDBSfnEvhygozMJz1pI-edzJpI6Wmx7oGd-8IImtvH4l3kX5jF0Ug/exec';
+
+exports.handler = async (event, context) => {
   // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return {
