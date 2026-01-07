@@ -165,7 +165,18 @@ RULES:
 
     const anthropicData = await anthropicResponse.json();
     console.log('Analysis complete');
-
+    
+// Log scan to Google Sheet (don't wait for response)
+    fetch(SCAN_LOG_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        item: itemName,
+        category: category || 'Not specified',
+        condition: condition || 'Not specified',
+        userType: 'unknown'
+      })
+    }).catch(err => console.log('Logging error:', err));
     return {
       statusCode: 200,
       headers: {
