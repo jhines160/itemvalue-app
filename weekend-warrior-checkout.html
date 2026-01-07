@@ -474,7 +474,29 @@ src="https://www.facebook.com/tr?id=1383551356849358&ev=PageView&noscript=1"
                 var result = await response.json();
 
                 if (result.success) {
-                    // Show success
+                    // Track purchase with Meta Pixel
+                    fbq('track', 'Purchase', {
+                        value: amount,
+                        currency: 'USD',
+                        content_name: 'Weekend Warrior' // Change for each page
+                    });
+                    
+                    // Send to Conversion API (server-side)
+                    fetch('/.netlify/functions/meta-conversion', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            eventName: 'Purchase',
+                            email: email,
+                            value: amount,
+                            currency: 'USD',
+                            contentName: 'Weekend Warrior', // Change for each page
+                            eventSourceUrl: window.location.href,
+                            clientUserAgent: navigator.userAgent,
+                            fbc: document.cookie.match(/_fbc=([^;]+)/)?.[1],
+                            fbp: document.cookie.match(/_fbp=([^;]+)/)?.[1]
+                        })
+                    }).catch(err => console.log('CAPI error:', err));// Show success
                     document.getElementById('checkout-form-container').style.display = 'none';
                     document.getElementById('success-container').style.display = 'block';
                     document.getElementById('access-code').textContent = result.accessCode;
