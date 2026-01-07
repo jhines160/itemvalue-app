@@ -1595,7 +1595,13 @@ src="https://www.facebook.com/tr?id=1383551356849358&ev=PageView&noscript=1"
                                 <p className="subtitle">Choose how you want to analyze your items</p>
 
                                 <div className="mode-selector">
-                                    <div className="mode-button" onClick={() => setMode('single')}>
+                                    <div className="mode-button" onClick={() => {
+    if (!canScan()) {
+        setShowUpgrade(true);
+    } else {
+        setMode('single');
+    }
+}}>
                                         <div className="mode-button-icon">🔍</div>
                                         <div className="mode-button-title">Single Item</div>
                                         <div className="mode-button-desc">
