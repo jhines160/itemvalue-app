@@ -178,16 +178,11 @@ RULES:
         condition: condition || 'Not specified',
         userType: 'unknown'
       })
-    }).then(res => console.log('Logged:', res.status)).catch(err => console.log('Log error:', err));
-      console.log('Logging error:', err);
-    }
-    } catch (err) {
-      console.log('Logging error:', err);
-    }
+    }).catch(err => console.log('Log error:', err));
+
     return {
       statusCode: 200,
       headers: {
-        'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       },
       body: JSON.stringify(anthropicData)
