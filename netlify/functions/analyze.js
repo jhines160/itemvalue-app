@@ -171,7 +171,7 @@ RULES:
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        item: itemName,
+        item: itemDescription,
         category: category || 'Not specified',
         condition: condition || 'Not specified',
         userType: 'unknown'
