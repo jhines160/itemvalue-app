@@ -1415,9 +1415,10 @@ let isAnalyzing = false;
                     userMessage += '🔍 Technical details in browser console (F12)';
                     
                     alert(userMessage);
-                } finally {
-                    setLoading(false);
-                }
+               } finally {
+            setLoading(false);
+            isAnalyzing = false;
+        }
             };
 
             const analyzeBulk = async () => {
