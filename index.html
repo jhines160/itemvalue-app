@@ -1258,14 +1258,16 @@ src="https://www.facebook.com/tr?id=1383551356849358&ev=PageView&noscript=1"
             
 let isAnalyzing = false;
            const analyzeWithAI = async () => {
-    // Prevent double-calls
-    if (loading) {
+    // Prevent double-calls with synchronous flag
+    if (isAnalyzing) {
         console.log('Already analyzing, skipping duplicate call');
         return;
     }
+    isAnalyzing = true;
 
     // Check scans first
     if (!checkScansBeforeAnalysis()) {
+        isAnalyzing = false;
         return;
     }
 
