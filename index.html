@@ -1256,13 +1256,19 @@ src="https://www.facebook.com/tr?id=1383551356849358&ev=PageView&noscript=1"
                 }
             };
 
-            const analyzeWithAI = async () => {
-                // Check scans first
-                if (!checkScansBeforeAnalysis()) {
-                    return;
-                }
+           const analyzeWithAI = async () => {
+    // Prevent double-calls
+    if (loading) {
+        console.log('Already analyzing, skipping duplicate call');
+        return;
+    }
 
-                setLoading(true);
+    // Check scans first
+    if (!checkScansBeforeAnalysis()) {
+        return;
+    }
+
+    setLoading(true);
 
                 const categoryLabel = CATEGORIES.find(c => c.id === category)?.label.split(' ').slice(1).join(' ');
                 const conditionLabel = CONDITIONS.find(c => c.id === condition)?.label.split(' ').slice(1).join(' ');
