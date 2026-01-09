@@ -169,6 +169,23 @@ RULES:
     console.log('Analysis complete');
     
 // Log scan to Google Sheet
+    try {
+      console.log('Attempting to log scan...');
+      const logResponse = await fetch(SCAN_LOG_URL, {
+        method: 'POST',
+        redirect: 'follow',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          item: itemDescription,
+          category: category || 'Not specified',
+          condition: condition || 'Not specified',
+          userType: 'unknown'
+        })
+      });
+      console.log('Scan logged, status:', logResponse.status);
+    } catch (err) {
+      console.log('Logging error:', err.message);
+    }// Log scan to Google Sheet
     fetch(SCAN_LOG_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
