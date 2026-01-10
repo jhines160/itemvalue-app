@@ -1,0 +1,2587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2PXG6EEVC0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-2PXG6EEVC0');
+</script> 
+    <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1383551356849358');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1383551356849358&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Is This Worth Selling? - AI-Powered Decision Helper</title>
+    
+    <!-- PWA Configuration -->
+    <meta name="theme-color" content="#1e293b">
+    <meta name="description" content="AI-powered app that searches real marketplace sold data to help you decide whether to sell items or donate them">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/svg+xml" href="/icon.svg">
+    
+    <!-- iOS specific -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Worth Selling?">
+    <link rel="apple-touch-icon" href="/icon.svg">
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #0ea5e9;
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .ai-badge {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 25px;
+        }
+
+        .question-label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .option-button {
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .option-button:hover {
+            border-color: #0ea5e9;
+            background: #f0f9ff;
+        }
+
+        .option-button.selected {
+            border-color: #0ea5e9;
+            background: #0ea5e9;
+            color: white;
+        }
+
+        input[type="number"], input[type="text"], textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 500;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #0ea5e9;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .action-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 20px;
+        }
+
+        .action-button:hover {
+            background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(14, 165, 233, 0.3);
+        }
+
+        .action-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .result-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .result-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .result-title.sell {
+            color: #10b981;
+        }
+
+        .result-title.donate {
+            color: #f59e0b;
+        }
+
+        .result-reason {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .result-details {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .detail-value.highlight {
+            color: #10b981;
+            font-size: 20px;
+        }
+
+        .market-data {
+            background: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .market-data-title {
+            font-weight: 600;
+            color: #075985;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .market-data-content {
+            color: #0c4a6e;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .reset-button {
+            background: #6b7280;
+            width: 100%;
+            padding: 16px;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .reset-button:hover {
+            background: #4b5563;
+        }
+
+        .back-button {
+            background: transparent;
+            border: 2px solid #cbd5e1;
+            color: #64748b;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: all 0.2s;
+        }
+
+        .back-button:hover {
+            border-color: #94a3b8;
+            color: #475569;
+            background: #f8fafc;
+        }
+
+        .mode-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .mode-button {
+            padding: 30px 20px;
+            border: 3px solid #e0e0e0;
+            border-radius: 16px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .mode-button:hover {
+            border-color: #0ea5e9;
+            background: #f0f9ff;
+            transform: translateY(-2px);
+        }
+
+        .mode-button-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .mode-button-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .mode-button-desc {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        .bulk-results {
+            margin-top: 20px;
+        }
+
+        .bulk-result-item {
+            background: #f8fafc;
+            border-left: 4px solid #e0e0e0;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .bulk-result-item.sell {
+            border-left-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .bulk-result-item.donate {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        .bulk-item-name {
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .bulk-item-recommendation {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .bulk-item-recommendation.sell {
+            color: #10b981;
+        }
+
+        .bulk-item-recommendation.donate {
+            color: #f59e0b;
+        }
+
+        .bulk-item-details {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        .bulk-item-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .bulk-item-row {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .bulk-item-row:hover {
+            border-color: #0ea5e9;
+            box-shadow: 0 2px 8px rgba(14, 165, 233, 0.1);
+        }
+
+        .bulk-item-name-display {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .bulk-condition-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .bulk-condition-button {
+            padding: 10px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .bulk-condition-button:hover {
+            border-color: #0ea5e9;
+            background: #f0f9ff;
+        }
+
+        .bulk-condition-button.selected {
+            border-color: #0ea5e9;
+            background: #0ea5e9;
+            color: white;
+            font-weight: 600;
+        }
+
+        .effort-score {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .effort-score.easy {
+            background: #d1fae5;
+            color: #065f46;
+            border: 2px solid #10b981;
+        }
+
+        .effort-score.medium {
+            background: #fef3c7;
+            color: #92400e;
+            border: 2px solid #f59e0b;
+        }
+
+        .effort-score.hard {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 2px solid #ef4444;
+        }
+
+        .effort-reason {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .bulk-effort-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .bulk-effort-badge.easy {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .bulk-effort-badge.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .bulk-effort-badge.hard {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .history-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s;
+            z-index: 1000;
+        }
+
+        .history-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .history-badge {
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        .history-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .history-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .history-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .history-item {
+            background: #f8fafc;
+            border-left: 4px solid #cbd5e1;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+        }
+
+        .history-item.sell {
+            border-left-color: #10b981;
+        }
+
+        .history-item.donate {
+            border-left-color: #f59e0b;
+        }
+
+        .history-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .history-item-name {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 16px;
+        }
+
+        .history-item-rec {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .history-item-rec.sell {
+            color: #10b981;
+        }
+
+        .history-item-rec.donate {
+            color: #f59e0b;
+        }
+
+        .history-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f0f9ff;
+            border-radius: 12px;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        .icon-button {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .icon-button:hover {
+            border-color: #0ea5e9;
+            background: #f0f9ff;
+        }
+
+        .close-button {
+            background: #ef4444;
+            color: white;
+            border: none;
+        }
+
+        .close-button:hover {
+            background: #dc2626;
+        }
+
+        /* Scan Counter Styles */
+        .scan-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transition: all 0.2s;
+        }
+
+        .scan-counter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .scan-counter.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .scan-counter.empty {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        @media print {
+            .history-actions, .close-button, .history-button, .footer-disclaimer, .scan-counter {
+                display: none !important;
+            }
+            .history-content {
+                max-height: none;
+                padding: 20px;
+            }
+        }
+
+        .footer-disclaimer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 12px 20px;
+            font-size: 11px;
+            text-align: center;
+            z-index: 998;
+            border-top: 1px solid #1e293b;
+            line-height: 1.4;
+        }
+
+        .footer-disclaimer a {
+            color: #0ea5e9;
+            text-decoration: none;
+        }
+
+        .footer-disclaimer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Add padding to container to account for footer */
+        body {
+            padding-bottom: 50px;
+        }
+
+        .progress {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+        }
+
+        .progress-dot.active {
+            background: #0ea5e9;
+        }
+
+        .progress-dot.completed {
+            background: #10b981;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #0ea5e9;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes emailSpinner {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #0ea5e9;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .loading-subtext {
+            color: #666;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .small-label {
+            display: block;
+            fontSize: 14px;
+            color: #666;
+            marginBottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // ============================================
+        // SCAN LIMIT CONFIGURATION
+        // ============================================
+        const SCAN_CONFIG = {
+            FREE_SCANS: 3,
+            SALES_PAGE_URL: '/pricing.html'
+        };
+
+        // ============================================
+        // GA4 TRACKING HELPER FUNCTION
+        // ============================================
+        function trackEvent(eventName, eventParams = {}) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, eventParams);
+                console.log('GA4 Event:', eventName, eventParams);
+            }
+        }
+
+        // ============================================
+        // SCAN TRACKING FUNCTIONS
+        // ============================================
+        function getScanData() {
+            try {
+                const data = localStorage.getItem('itemvalue_scans');
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    // Check if bundle has expired
+                    if (parsed.expiryDate && new Date(parsed.expiryDate) < new Date()) {
+                        // Bundle expired, reset to free tier
+                        const freshData = {
+                            tier: 'free',
+                            scansRemaining: 0,
+                            totalScans: SCAN_CONFIG.FREE_SCANS,
+                            used: SCAN_CONFIG.FREE_SCANS,
+                            expiryDate: null,
+                            bundle: null
+                        };
+                        localStorage.setItem('itemvalue_scans', JSON.stringify(freshData));
+                        return freshData;
+                    }
+                    return parsed;
+                }
+            } catch (e) {
+                console.error('Error reading scan data:', e);
+            }
+            
+            // Default free tier
+            const defaultData = {
+                tier: 'free',
+                scansRemaining: SCAN_CONFIG.FREE_SCANS,
+                totalScans: SCAN_CONFIG.FREE_SCANS,
+                used: 0,
+                expiryDate: null,
+                bundle: null
+            };
+            localStorage.setItem('itemvalue_scans', JSON.stringify(defaultData));
+            return defaultData;
+        }
+
+        function saveScanData(data) {
+            localStorage.setItem('itemvalue_scans', JSON.stringify(data));
+        }
+
+        function decrementScan() {
+            const data = getScanData();
+            if (data.scansRemaining > 0) {
+                data.scansRemaining--;
+                data.used = (data.used || 0) + 1;
+                saveScanData(data);
+            }
+            return data;
+        }
+
+        function canScan() {
+            const data = getScanData();
+            return data.scansRemaining > 0;
+        }
+
+        // Check for access code in URL on page load
+        function checkAccessCode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            
+            if (code) {
+                activateAccessCode(code);
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        function activateAccessCode(code) {
+            const upperCode = code.toUpperCase();
+            let bundle = null;
+            let scans = 0;
+            let days = 0;
+            
+            if (upperCode.includes('WEEKEND')) {
+                bundle = 'Weekend Warrior';
+                scans = 50;
+                days = upperCode.includes('YEAR') ? 365 : 30;
+            } else if (upperCode.includes('MOVING')) {
+                bundle = 'Moving Master';
+                scans = 200;
+                days = upperCode.includes('YEAR') ? 365 : 60;
+            } else if (upperCode.includes('ESTATE')) {
+                bundle = 'Estate Pro';
+                scans = 1000;
+                days = upperCode.includes('YEAR') ? 365 : 90;
+            } else {
+                alert('Invalid access code. Please check and try again.');
+                return false;
+            }
+            
+            const expiryDate = new Date();
+            expiryDate.setDate(expiryDate.getDate() + days);
+            
+            const scanData = {
+                tier: 'paid',
+                bundle: bundle,
+                scansRemaining: scans,
+                totalScans: scans,
+                used: 0,
+                expiryDate: expiryDate.toISOString(),
+                activatedDate: new Date().toISOString(),
+                accessCode: code
+            };
+            
+            saveScanData(scanData);
+            
+            // Track bundle activation
+            trackEvent('bundle_activated', {
+                bundle_name: bundle,
+                scans_granted: scans,
+                validity_days: days
+            });
+            
+            alert(`✅ ${bundle} activated! You have ${scans} scans for ${days} days.`);
+            window.history.replaceState({}, document.title, window.location.pathname);
+            window.location.reload();
+            return true;
+        }
+
+        // Run access code check on load
+        checkAccessCode();
+
+        const CATEGORIES = [
+            { id: 'electronics', label: '📱 Electronics' },
+            { id: 'clothing', label: '👕 Clothing & Accessories' },
+            { id: 'home', label: '🏠 Home & Garden' },
+            { id: 'toys', label: '🎮 Toys & Games' },
+            { id: 'books', label: '📚 Books & Media' },
+            { id: 'collectibles', label: '⭐ Collectibles & Art' },
+            { id: 'furniture', label: '🪑 Furniture' },
+            { id: 'sports', label: '⚽ Sports & Outdoors' },
+        ];
+
+        const CONDITIONS = [
+            { id: 'new', label: '📦 New in Box' },
+            { id: 'likenew', label: '✨ Like New' },
+            { id: 'good', label: '👍 Good Used' },
+            { id: 'fair', label: '👌 Fair/Worn' },
+        ];
+
+        const URGENCY = [
+            { id: 'week', label: '🏃 This Week' },
+            { id: 'month', label: '📅 This Month' },
+            { id: 'whenever', label: '⏰ Whenever it Sells' },
+        ];
+
+        // Scan Counter Component
+        function ScanCounter({ onClick }) {
+            const data = getScanData();
+            const remaining = data.scansRemaining;
+            const isPaid = data.tier === 'paid';
+            
+            let className = 'scan-counter';
+            if (remaining <= 0) className += ' empty';
+            else if (remaining <= 1 && !isPaid) className += ' warning';
+            
+            return (
+                <div className={className} onClick={onClick}>
+                    {isPaid ? '✨' : '🆓'} {remaining} {isPaid ? 'scans' : 'free scans'} left
+                </div>
+            );
+        }
+
+        // Upgrade Modal Component
+        function UpgradeModal({ onClose, onShowEmailCapture }) {
+            // Track when upgrade modal is shown
+            React.useEffect(() => {
+                trackEvent('upgrade_prompt_shown', {
+                    scans_used: getScanData().used || 0
+                });
+            }, []);
+
+            return (
+                <div className="history-modal" onClick={onClose}>
+                    <div className="history-content" onClick={(e) => e.stopPropagation()} style={{maxWidth: '450px', textAlign: 'center'}}>
+                        <div style={{fontSize: '64px', marginBottom: '20px'}}>🔍</div>
+                        <h2 style={{color: '#1e293b', marginBottom: '15px', fontSize: '24px'}}>You've Used Your Free Scans!</h2>
+                        <p style={{color: '#64748b', marginBottom: '25px', fontSize: '16px', lineHeight: '1.5'}}>
+                            Upgrade to keep discovering hidden value in your items. Most users find $500+ worth of sellable items!
+                        </p>
+                        
+                        <button 
+                            onClick={() => {
+                                trackEvent('upgrade_cta_clicked');
+                                onClose();
+                                onShowEmailCapture();
+                            }}
+                            style={{
+                                width: '100%',
+                                padding: '16px',
+                                background: 'linear-gradient(135deg, #10b981, #059669)',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '12px',
+                                fontSize: '18px',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                marginBottom: '12px'
+                            }}
+                        >
+                            View Pricing Options →
+                        </button>
+                        
+                        <button 
+                            onClick={() => {
+                                trackEvent('upgrade_dismissed');
+                                onClose();
+                            }}
+                            style={{
+                                width: '100%',
+                                padding: '14px',
+                                background: 'transparent',
+                                color: '#64748b',
+                                border: '2px solid #e2e8f0',
+                                borderRadius: '12px',
+                                fontSize: '16px',
+                                fontWeight: '500',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            Maybe Later
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // Account Details Modal
+        function AccountModal({ onClose }) {
+            const data = getScanData();
+            const isPaid = data.tier === 'paid';
+            
+            let expiryText = 'N/A';
+            if (data.expiryDate) {
+                const expiry = new Date(data.expiryDate);
+                const now = new Date();
+                const daysLeft = Math.ceil((expiry - now) / (1000 * 60 * 60 * 24));
+                expiryText = `${daysLeft} days (${expiry.toLocaleDateString()})`;
+            }
+            
+            return (
+                <div className="history-modal" onClick={onClose}>
+                    <div className="history-content" onClick={(e) => e.stopPropagation()} style={{maxWidth: '400px'}}>
+                        <h2 style={{marginBottom: '20px', color: '#1e293b'}}>📊 Your Account</h2>
+                        
+                        <div style={{background: '#f8fafc', padding: '20px', borderRadius: '12px', marginBottom: '20px'}}>
+                            <div style={{marginBottom: '15px'}}>
+                                <div style={{color: '#64748b', fontSize: '14px'}}>Current Plan</div>
+                                <div style={{color: '#1e293b', fontSize: '20px', fontWeight: '700'}}>
+                                    {isPaid ? data.bundle : 'Free Tier'}
+                                </div>
+                            </div>
+                            
+                            <div style={{marginBottom: '15px'}}>
+                                <div style={{color: '#64748b', fontSize: '14px'}}>Scans Remaining</div>
+                                <div style={{color: '#10b981', fontSize: '28px', fontWeight: '700'}}>
+                                    {data.scansRemaining} / {data.totalScans}
+                                </div>
+                            </div>
+                            
+                            {isPaid && (
+                                <div>
+                                    <div style={{color: '#64748b', fontSize: '14px'}}>Expires In</div>
+                                    <div style={{color: '#1e293b', fontSize: '16px', fontWeight: '600'}}>
+                                        {expiryText}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        
+                        {!isPaid && (
+                            <a 
+                                href={SCAN_CONFIG.SALES_PAGE_URL}
+                                style={{
+                                    display: 'block',
+                                    width: '100%',
+                                    padding: '14px',
+                                    background: 'linear-gradient(135deg, #0ea5e9, #0284c7)',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '12px',
+                                    fontSize: '16px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    textAlign: 'center',
+                                    textDecoration: 'none',
+                                    marginBottom: '12px'
+                                }}
+                            >
+                                Upgrade for More Scans
+                            </a>
+                        )}
+                        
+                        <button 
+                            onClick={onClose}
+                            className="reset-button"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        function HistoryModal({ history, onClose, onClear }) {
+            const sellItems = history.filter(item => item.recommendation === 'sell');
+            const donateItems = history.filter(item => item.recommendation === 'donate');
+            const totalProfit = sellItems.reduce((sum, item) => sum + parseFloat(item.netProfit || 0), 0);
+
+            const handlePrint = () => {
+                window.print();
+            };
+
+            return (
+                <div className="history-modal" onClick={onClose}>
+                    <div className="history-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="history-header">
+                            <h2 className="history-title">📋 Your Analysis History</h2>
+                            <div className="history-actions">
+                                <button className="icon-button" onClick={handlePrint}>
+                                    🖨️ Print
+                                </button>
+                                <button className="icon-button" onClick={onClear}>
+                                    🗑️ Clear All
+                                </button>
+                                <button className="icon-button close-button" onClick={onClose}>
+                                    ✕ Close
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="history-stats">
+                            <div className="stat-box">
+                                <div className="stat-number">{history.length}</div>
+                                <div className="stat-label">Total Items</div>
+                            </div>
+                            <div className="stat-box">
+                                <div className="stat-number" style={{color: '#10b981'}}>{sellItems.length}</div>
+                                <div className="stat-label">To Sell</div>
+                            </div>
+                            <div className="stat-box">
+                                <div className="stat-number" style={{color: '#f59e0b'}}>{donateItems.length}</div>
+                                <div className="stat-label">To Donate</div>
+                            </div>
+                        </div>
+
+                        {sellItems.length > 0 && (
+                            <div style={{marginBottom: '20px', padding: '15px', background: '#f0fdf4', borderRadius: '12px'}}>
+                                <div style={{fontSize: '14px', color: '#065f46', fontWeight: '600'}}>
+                                    💰 Potential Total Profit from Selling
+                                </div>
+                                <div style={{fontSize: '32px', fontWeight: '700', color: '#10b981', marginTop: '5px'}}>
+                                    ${totalProfit.toFixed(2)}
+                                </div>
+                            </div>
+                        )}
+
+                        <div style={{maxHeight: '400px', overflowY: 'auto'}}>
+                            {history.map((item) => (
+                                <div key={item.id} className={`history-item ${item.recommendation}`}>
+                                    <div className="history-item-header">
+                                        <div className="history-item-name">
+                                            {item.itemName}
+                                            {item.effortScore && (
+                                                <span className={`bulk-effort-badge ${item.effortScore}`} style={{marginLeft: '10px'}}>
+                                                    {item.effortScore === 'easy' && '🟢 Easy'}
+                                                    {item.effortScore === 'medium' && '🟡 Medium'}
+                                                    {item.effortScore === 'hard' && '🔴 Hard'}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <div className={`history-item-rec ${item.recommendation}`}>
+                                            {item.recommendation === 'sell' ? '💰 SELL' : '❤️ DONATE'}
+                                        </div>
+                                    </div>
+                                    <div style={{fontSize: '13px', color: '#64748b', marginBottom: '5px'}}>
+                                        {new Date(item.timestamp).toLocaleDateString()} at {new Date(item.timestamp).toLocaleTimeString()}
+                                    </div>
+                                    {item.recommendation === 'sell' && (
+                                        <div style={{fontSize: '14px', color: '#10b981', fontWeight: '600', marginTop: '5px'}}>
+                                            Net Profit: ${item.netProfit}
+                                        </div>
+                                    )}
+                                    <div style={{fontSize: '14px', color: '#64748b', marginTop: '5px'}}>
+                                        {item.reason}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function App() {
+            const [mode, setMode] = useState(null); // 'single' or 'bulk'
+            const [bulkItems, setBulkItems] = useState('');
+            const [bulkItemsData, setBulkItemsData] = useState([]); // Array of {name, condition}
+            const [bulkResults, setBulkResults] = useState([]);
+            const [history, setHistory] = useState(() => {
+                // Load history from localStorage on initial render
+                const saved = localStorage.getItem('sellDonateHistory');
+                return saved ? JSON.parse(saved) : [];
+            });
+            const [showHistory, setShowHistory] = useState(false);
+            const [showUpgrade, setShowUpgrade] = useState(false);
+            const [showAccount, setShowAccount] = useState(false);
+            const [showEmailCapture, setShowEmailCapture] = useState(false);
+            const [scanData, setScanData] = useState(getScanData());
+            const [step, setStep] = useState(0);
+            const [category, setCategory] = useState(null);
+            const [itemDescription, setItemDescription] = useState('');
+            const [condition, setCondition] = useState(null);
+            const [originalPrice, setOriginalPrice] = useState('');
+            const [urgency, setUrgency] = useState(null);
+            const [brand, setBrand] = useState('');
+            const [defects, setDefects] = useState('');
+            const [additionalInfo, setAdditionalInfo] = useState('');
+            const [loading, setLoading] = useState(false);
+            const [result, setResult] = useState(null);
+
+            // Refresh scan data
+            const refreshScanData = () => {
+                setScanData(getScanData());
+            };
+
+            // Check scans before analysis
+            const checkScansBeforeAnalysis = () => {
+                if (!canScan()) {
+                    setShowUpgrade(true);
+                    return false;
+                }
+                return true;
+            };
+
+            // Handle showing email capture
+            const handleShowEmailCapture = () => {
+                const existingEmail = localStorage.getItem('itemvalue_user_email');
+                if (existingEmail) {
+                    // Already have email, go to pricing
+                    window.location.href = SCAN_CONFIG.SALES_PAGE_URL;
+                } else {
+                    setShowEmailCapture(true);
+                }
+            };
+            
+let isAnalyzing = false;
+           const analyzeWithAI = async () => {
+    // Prevent double-calls with synchronous flag
+    if (isAnalyzing) {
+        console.log('Already analyzing, skipping duplicate call');
+        return;
+    }
+    isAnalyzing = true;
+
+    // Check scans first
+    if (!checkScansBeforeAnalysis()) {
+        isAnalyzing = false;
+        return;
+    }
+
+    setLoading(true);
+    
+    // Track analysis started
+    trackEvent('analysis_started', {
+        mode: 'single',
+        category: category,
+        condition: condition,
+        has_brand: !!brand,
+        has_defects: !!defects
+    });
+
+                const categoryLabel = CATEGORIES.find(c => c.id === category)?.label.split(' ').slice(1).join(' ');
+                const conditionLabel = CONDITIONS.find(c => c.id === condition)?.label.split(' ').slice(1).join(' ');
+                const urgencyLabel = URGENCY.find(u => u.id === urgency)?.label.split(' ').slice(1).join(' ');
+
+                try {
+                    // Call Netlify serverless function with item details
+                    const response = await fetch('/.netlify/functions/analyze', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            itemDescription: itemDescription,
+                            category: categoryLabel,
+                            condition: conditionLabel,
+                            originalPrice: originalPrice,
+                            urgency: urgencyLabel,
+                            brand: brand,
+                            defects: defects,
+                            additionalInfo: additionalInfo
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error('API Error Response:', errorData);
+                        
+                        if (errorData.error) {
+                            throw new Error(`API Error: ${errorData.error.message || JSON.stringify(errorData.error)}`);
+                        }
+                        throw new Error(`HTTP ${response.status}: ${errorData.error || 'Unknown error'}`);
+                    }
+
+                    const data = await response.json();
+                    console.log('Full API Response:', data);
+                    
+                    let responseText = '';
+                    if (data.content) {
+                        for (const block of data.content) {
+                            if (block.type === 'text') {
+                                responseText += block.text;
+                            }
+                        }
+                    } else if (data.error) {
+                        console.error('API returned error:', data.error);
+                        throw new Error(`API Error: ${data.error.message || JSON.stringify(data.error)}`);
+                    }
+
+                    console.log('Extracted text:', responseText);
+
+                    if (!responseText.trim()) {
+                        throw new Error('No response text from AI');
+                    }
+
+                    let cleanedResponse = responseText.trim();
+                    cleanedResponse = cleanedResponse.replace(/```json\n?/g, '').replace(/```\n?/g, '');
+                    
+                    const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                        cleanedResponse = jsonMatch[0];
+                    }
+                    
+                    console.log('Cleaned response:', cleanedResponse);
+
+                    let aiResult;
+                    try {
+                        aiResult = JSON.parse(cleanedResponse);
+                    } catch (parseError) {
+                        console.error('JSON Parse Error:', parseError);
+                        console.error('Attempted to parse:', cleanedResponse);
+                        throw new Error('AI returned invalid JSON format. Please try again.');
+                    }
+
+                    const resultData = {
+                        recommendation: aiResult.recommendation.toLowerCase(),
+                        reason: aiResult.reason,
+                        effortScore: aiResult.effortScore || 'medium',
+                        effortReason: aiResult.effortReason || '',
+                        marketData: aiResult.marketData,
+                        estimatedPrice: parseFloat(aiResult.estimatedSalePrice).toFixed(2),
+                        ebayFees: parseFloat(aiResult.platformFees || aiResult.ebayFees).toFixed(2),
+                        shippingCost: parseFloat(aiResult.shippingCost).toFixed(2),
+                        netProfit: parseFloat(aiResult.netProfit).toFixed(2),
+                        taxDeduction: parseFloat(aiResult.taxDeduction).toFixed(2)
+                    };
+
+                    setResult(resultData);
+                    
+                    // Track analysis completed
+                    trackEvent('analysis_completed', {
+                        mode: 'single',
+                        recommendation: resultData.recommendation,
+                        net_profit: parseFloat(resultData.netProfit),
+                        effort_score: resultData.effortScore
+                    });
+
+                    // Decrement scan count after successful analysis
+                    decrementScan();
+                    refreshScanData();
+
+                    // Add to history
+                    const historyItem = {
+                        id: Date.now(),
+                        timestamp: new Date().toISOString(),
+                        itemName: itemDescription,
+                        condition: condition,
+                        ...resultData
+                    };
+                    
+                    const updatedHistory = [historyItem, ...history];
+                    setHistory(updatedHistory);
+                    localStorage.setItem('sellDonateHistory', JSON.stringify(updatedHistory));
+
+                } catch (error) {
+                    console.error('Full error:', error);
+                    
+                    // Track analysis error
+                    trackEvent('analysis_error', {
+                        mode: 'single',
+                        error_type: error.message.includes('JSON') ? 'parse_error' : 
+                                   error.message.includes('fetch') ? 'network_error' : 'other'
+                    });
+                    
+                    let userMessage = '❌ Something went wrong\n\n';
+                    
+                    if (error.message.includes('JSON') || error.message.includes('parse')) {
+                        userMessage += '⚠️ The AI returned an unexpected format.\n\n';
+                        userMessage += 'This usually happens when:\n';
+                        userMessage += '• The item description is unusual\n';
+                        userMessage += '• Limited marketplace data for this item\n\n';
+                        userMessage += '💡 Try:\n';
+                        userMessage += '1. Be more specific about the item\n';
+                        userMessage += '2. Try a different item first to test\n';
+                        userMessage += '3. Contact support with this error\n\n';
+                    } else if (error.message.includes('fetch') || error.message.includes('network') || error.message.includes('Failed to fetch')) {
+                        userMessage += '⚠️ Cannot connect to the backend server.\n\n';
+                        userMessage += 'This usually means:\n';
+                        userMessage += '• The Netlify function isn\'t deployed correctly\n';
+                        userMessage += '• There\'s a network connectivity issue\n\n';
+                        userMessage += '💡 Try:\n';
+                        userMessage += '1. Refresh the page and try again\n';
+                        userMessage += '2. Check your internet connection\n';
+                        userMessage += '3. Contact the app owner\n\n';
+                    } else if (error.message.includes('401') || error.message.includes('authentication')) {
+                        userMessage += '⚠️ API authentication error.\n\n';
+                        userMessage += 'The API key may be:\n';
+                        userMessage += '• Invalid or expired\n';
+                        userMessage += '• Out of credits\n\n';
+                        userMessage += '💡 App owner needs to check API settings\n\n';
+                    } else {
+                        userMessage += `Error details: ${error.message}\n\n`;
+                        userMessage += '💡 Please try again or contact support.\n\n';
+                    }
+                    
+                    userMessage += '🔍 Technical details in browser console (F12)';
+                    
+                    alert(userMessage);
+               } finally {
+            setLoading(false);
+            isAnalyzing = false;
+        }
+            };
+
+            const analyzeBulk = async () => {
+                if (bulkItemsData.length === 0) return;
+
+                // Check scans first
+                if (!checkScansBeforeAnalysis()) {
+                    return;
+                }
+
+                // Check if we have enough scans for all items
+                const currentScans = getScanData().scansRemaining;
+                if (currentScans < bulkItemsData.length) {
+                    alert(`You only have ${currentScans} scans remaining, but you're trying to analyze ${bulkItemsData.length} items. Please reduce the number of items or upgrade your plan.`);
+                    return;
+                }
+
+                setLoading(true);
+                
+                // Track bulk analysis started
+                trackEvent('analysis_started', {
+                    mode: 'bulk',
+                    item_count: bulkItemsData.length
+                });
+                
+                const results = [];
+
+                try {
+                    for (let i = 0; i < bulkItemsData.length; i++) {
+                        const item = bulkItemsData[i];
+                        console.log(`Analyzing item ${i + 1}/${bulkItemsData.length}: ${item.name}`);
+
+                        try {
+                            const response = await fetch('/.netlify/functions/analyze', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    itemDescription: item.name,
+                                    category: 'general',
+                                    condition: item.condition,
+                                    originalPrice: '',
+                                    urgency: urgency || 'whenever',
+                                    brand: '',
+                                    defects: '',
+                                    additionalInfo: ''
+                                })
+                            });
+
+                            if (!response.ok) {
+                                throw new Error(`HTTP ${response.status}`);
+                            }
+
+                            const data = await response.json();
+                            let responseText = '';
+                            if (data.content) {
+                                for (const block of data.content) {
+                                    if (block.type === 'text') {
+                                        responseText += block.text;
+                                    }
+                                }
+                            }
+
+                            let cleanedResponse = responseText.trim();
+                            cleanedResponse = cleanedResponse.replace(/```json\n?/g, '').replace(/```\n?/g, '');
+                            const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
+                            if (jsonMatch) {
+                                cleanedResponse = jsonMatch[0];
+                            }
+
+                            const aiResult = JSON.parse(cleanedResponse);
+
+                            results.push({
+                                itemName: item.name,
+                                condition: item.condition,
+                                recommendation: aiResult.recommendation.toLowerCase(),
+                                reason: aiResult.reason,
+                                effortScore: aiResult.effortScore || 'medium',
+                                effortReason: aiResult.effortReason || '',
+                                netProfit: parseFloat(aiResult.netProfit).toFixed(2),
+                                estimatedPrice: parseFloat(aiResult.estimatedSalePrice).toFixed(2)
+                            });
+
+                            // Decrement scan after each successful analysis
+                            decrementScan();
+
+                        } catch (error) {
+                            console.error(`Error analyzing ${item.name}:`, error);
+                            results.push({
+                                itemName: item.name,
+                                condition: item.condition,
+                                recommendation: 'error',
+                                reason: 'Could not analyze this item',
+                                netProfit: '0',
+                                estimatedPrice: '0'
+                            });
+                        }
+                    }
+
+                    setBulkResults(results);
+                    refreshScanData();
+                    
+                    // Track bulk analysis completed
+                    const sellCount = results.filter(r => r.recommendation === 'sell').length;
+                    const donateCount = results.filter(r => r.recommendation === 'donate').length;
+                    const totalProfit = results.filter(r => r.recommendation === 'sell')
+                        .reduce((sum, r) => sum + parseFloat(r.netProfit || 0), 0);
+                    
+                    trackEvent('analysis_completed', {
+                        mode: 'bulk',
+                        item_count: results.length,
+                        sell_count: sellCount,
+                        donate_count: donateCount,
+                        total_potential_profit: totalProfit
+                    });
+
+                    // Add all bulk items to history
+                    const historyItems = results.map(result => ({
+                        id: Date.now() + Math.random(),
+                        timestamp: new Date().toISOString(),
+                        ...result
+                    }));
+                    
+                    const updatedHistory = [...historyItems, ...history];
+                    setHistory(updatedHistory);
+                    localStorage.setItem('sellDonateHistory', JSON.stringify(updatedHistory));
+                } catch (error) {
+                    console.error('Bulk analysis error:', error);
+                    trackEvent('analysis_error', {
+                        mode: 'bulk',
+                        error_type: 'bulk_failure'
+                    });
+                    alert('Error analyzing items. Please try again.');
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const reset = () => {
+                setMode(null);
+                setStep(0);
+                setCategory(null);
+                setItemDescription('');
+                setCondition(null);
+                setOriginalPrice('');
+                setUrgency(null);
+                setBrand('');
+                setDefects('');
+                setAdditionalInfo('');
+                setResult(null);
+                setBulkItems('');
+                setBulkItemsData([]);
+                setBulkResults([]);
+                refreshScanData();
+            };
+
+            if (loading) {
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        
+                        <div className="container">
+                            <div className="card">
+                                <div className="loading">
+                                    <div className="loading-spinner"></div>
+                                    <div className="loading-text">
+                                        {mode === 'bulk' ? '🔍 Analyzing multiple items...' : '🔍 Searching marketplace data...'}
+                                    </div>
+                                    <div className="loading-subtext">
+                                        {mode === 'bulk' ? 'This may take a minute' : 'Finding actual completed sales for your item'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {history.length > 0 && !showHistory && (
+                            <button className="history-button" onClick={() => setShowHistory(true)}>
+                                📋 History
+                                <span className="history-badge">{history.length}</span>
+                            </button>
+                        )}
+
+                        {showHistory && (
+                            <HistoryModal 
+                                history={history}
+                                onClose={() => setShowHistory(false)}
+                                onClear={() => {
+                                    setHistory([]);
+                                    localStorage.removeItem('sellDonateHistory');
+                                    setShowHistory(false);
+                                }}
+                            />
+                        )}
+                    </>
+                );
+            }
+
+            // Mode selection screen
+            if (!mode) {
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        
+                        <div className="container">
+                            <div className="card">
+                                <div className="ai-badge">✨ Real Market Data + AI Analysis</div>
+                                <h1>Is This Worth Selling?</h1>
+                                <p className="subtitle">Choose how you want to analyze your items</p>
+
+                                <div className="mode-selector">
+                                    <div className="mode-button" onClick={() => {
+    if (!canScan()) {
+        setShowUpgrade(true);
+    } else {
+        trackEvent('mode_selected', { mode: 'single' });
+        setMode('single');
+    }
+}}>
+                                        <div className="mode-button-icon">🔍</div>
+                                        <div className="mode-button-title">Single Item</div>
+                                        <div className="mode-button-desc">
+                                            Detailed analysis with specific details for one item
+                                        </div>
+                                    </div>
+
+                                    <div className="mode-button" onClick={() => {
+    if (!canScan()) {
+        setShowUpgrade(true);
+    } else {
+        trackEvent('mode_selected', { mode: 'bulk' });
+        setMode('bulk');
+    }
+}}>
+                                        <div className="mode-button-icon">📋</div>
+                                        <div className="mode-button-title">Bulk Scan</div>
+                                        <div className="mode-button-desc">
+                                            Quickly analyze multiple items at once
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {history.length > 0 && !showHistory && (
+                            <button className="history-button" onClick={() => setShowHistory(true)}>
+                                📋 History
+                                <span className="history-badge">{history.length}</span>
+                            </button>
+                        )}
+
+                        {showHistory && (
+                            <HistoryModal 
+                                history={history}
+                                onClose={() => setShowHistory(false)}
+                                onClear={() => {
+                                    setHistory([]);
+                                    localStorage.removeItem('sellDonateHistory');
+                                    setShowHistory(false);
+                                }}
+                            />
+                        )}
+
+                        {showAccount && (
+                            <AccountModal onClose={() => setShowAccount(false)} />
+                        )}
+
+                        {showUpgrade && (
+                            <UpgradeModal 
+                                onClose={() => setShowUpgrade(false)} 
+                                onShowEmailCapture={handleShowEmailCapture}
+                            />
+                        )}
+
+                        {showEmailCapture && (
+                            <EmailCaptureModal 
+                                onClose={() => setShowEmailCapture(false)}
+                                lastItem={history.length > 0 ? history[0]?.itemName : null}
+                            />
+                        )}
+                    </>
+                );
+            }
+
+            // Bulk mode screen
+            if (mode === 'bulk') {
+                if (bulkResults.length > 0) {
+                    return (
+                        <>
+                            <ScanCounter onClick={() => setShowAccount(true)} />
+                            
+                            <div className="container">
+                                <div className="card">
+                                    <div className="ai-badge">✨ Bulk Analysis Complete</div>
+                                    <h1>Your Results</h1>
+                                    <p className="subtitle">{bulkResults.length} items analyzed</p>
+
+                                    <div className="bulk-results">
+                                        {bulkResults.map((item, index) => (
+                                            <div key={index} className={`bulk-result-item ${item.recommendation}`}>
+                                                <div className="bulk-item-name">
+                                                    {item.itemName}
+                                                    {item.effortScore && (
+                                                        <span className={`bulk-effort-badge ${item.effortScore}`}>
+                                                            {item.effortScore === 'easy' && '🟢 Easy'}
+                                                            {item.effortScore === 'medium' && '🟡 Medium'}
+                                                            {item.effortScore === 'hard' && '🔴 Hard'}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <div style={{fontSize: '13px', color: '#64748b', marginBottom: '8px'}}>
+                                                    Condition: {CONDITIONS.find(c => c.id === item.condition)?.label.split(' ').slice(1).join(' ')}
+                                                </div>
+                                                <div className={`bulk-item-recommendation ${item.recommendation}`}>
+                                                    {item.recommendation === 'sell' ? '💰 SELL' : 
+                                                     item.recommendation === 'donate' ? '❤️ DONATE' : '⚠️ ERROR'}
+                                                </div>
+                                                {item.recommendation === 'sell' && (
+                                                    <div className="bulk-item-details">
+                                                        Est. net profit: ${item.netProfit} (Sale price: ${item.estimatedPrice})
+                                                    </div>
+                                                )}
+                                                <div className="bulk-item-details" style={{marginTop: '5px'}}>
+                                                    {item.reason}
+                                                </div>
+                                                {item.effortReason && (
+                                                    <div className="bulk-item-details" style={{marginTop: '5px', fontStyle: 'italic'}}>
+                                                        💡 {item.effortReason}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <button className="reset-button" onClick={reset}>
+                                        Analyze More Items
+                                    </button>
+                                </div>
+                            </div>
+
+                            {history.length > 0 && !showHistory && (
+                                <button className="history-button" onClick={() => setShowHistory(true)}>
+                                    📋 History
+                                    <span className="history-badge">{history.length}</span>
+                                </button>
+                            )}
+
+                            {showHistory && (
+                                <HistoryModal 
+                                    history={history}
+                                    onClose={() => setShowHistory(false)}
+                                    onClear={() => {
+                                        setHistory([]);
+                                        localStorage.removeItem('sellDonateHistory');
+                                        setShowHistory(false);
+                                    }}
+                                />
+                            )}
+
+                            {showAccount && (
+                                <AccountModal onClose={() => setShowAccount(false)} />
+                            )}
+                        </>
+                    );
+                }
+
+                // Bulk mode with steps
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        
+                        <div className="container">
+                            <div className="card">
+                                <div className="ai-badge">✨ Bulk Scan Mode</div>
+                                <h1>Analyze Multiple Items</h1>
+                                <p className="subtitle">Follow the steps to analyze all your items at once</p>
+
+                                <div className="progress">
+                                    {[0, 1, 2, 3].map(i => (
+                                        <div 
+                                            key={i} 
+                                            className={`progress-dot ${i < step ? 'completed' : i === step ? 'active' : ''}`}
+                                        />
+                                    ))}
+                                </div>
+
+                                {step === 0 && (
+                                    <div className="question">
+                                        <label className="question-label">List your items (one per line)</label>
+                                        <textarea
+                                            placeholder={"iPhone 12 Pro 128GB\nNike Air Max size 10\nIKEA Billy bookshelf\nVintage camera\nDesigner handbag"}
+                                            value={bulkItems}
+                                            onChange={(e) => setBulkItems(e.target.value)}
+                                            rows="10"
+                                            style={{marginBottom: '15px'}}
+                                        />
+                                        <div style={{fontSize: '14px', color: '#666', marginBottom: '15px'}}>
+                                            💡 Enter one item per line. Be specific with model numbers, sizes, brands, etc.
+                                        </div>
+                                        
+                                        <button 
+                                            className="back-button"
+                                            onClick={() => setMode(null)}
+                                        >
+                                            ← Back to Mode Selection
+                                        </button>
+
+                                        <button 
+                                            className="action-button"
+                                            disabled={!bulkItems.trim()}
+                                            onClick={() => {
+                                                const items = bulkItems.split('\n').filter(i => i.trim());
+                                                setBulkItemsData(items.map(name => ({
+                                                    name: name.trim(),
+                                                    condition: 'good' // Default
+                                                })));
+                                                setStep(1);
+                                            }}
+                                        >
+                                            Next → ({bulkItems.split('\n').filter(i => i.trim()).length} items)
+                                        </button>
+                                    </div>
+                                )}
+
+                                {step === 1 && (
+                                    <div className="question">
+                                        <label className="question-label">Set condition for each item</label>
+                                        <div style={{fontSize: '14px', color: '#666', marginBottom: '15px'}}>
+                                            💡 Choose the condition that best describes each item
+                                        </div>
+                                        
+                                        <div className="bulk-item-list">
+                                            {bulkItemsData.map((item, index) => (
+                                                <div key={index} className="bulk-item-row">
+                                                    <div className="bulk-item-name-display">{item.name}</div>
+                                                    <div className="bulk-condition-selector">
+                                                        {CONDITIONS.map(cond => (
+                                                            <button
+                                                                key={cond.id}
+                                                                className={`bulk-condition-button ${item.condition === cond.id ? 'selected' : ''}`}
+                                                                onClick={() => {
+                                                                    const updated = [...bulkItemsData];
+                                                                    updated[index].condition = cond.id;
+                                                                    setBulkItemsData(updated);
+                                                                }}
+                                                            >
+                                                                {cond.label}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <button 
+                                            className="back-button"
+                                            onClick={() => setStep(0)}
+                                        >
+                                            ← Back
+                                        </button>
+                                        <button 
+                                            className="action-button"
+                                            onClick={() => setStep(2)}
+                                        >
+                                            Next →
+                                        </button>
+                                    </div>
+                                )}
+
+                                {step === 2 && (
+                                    <div className="question">
+                                        <label className="question-label">How fast do you need them gone?</label>
+                                        <div className="button-grid">
+                                            {URGENCY.map(urg => (
+                                                <button
+                                                    key={urg.id}
+                                                    className={`option-button ${urgency === urg.id ? 'selected' : ''}`}
+                                                    onClick={() => setUrgency(urg.id)}
+                                                >
+                                                    {urg.label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <div style={{fontSize: '14px', color: '#666', marginTop: '15px', marginBottom: '15px'}}>
+                                            💡 This helps determine if selling is worth your time
+                                        </div>
+                                        <button 
+                                            className="back-button"
+                                            onClick={() => setStep(1)}
+                                        >
+                                            ← Back
+                                        </button>
+                                        <button 
+                                            className="action-button"
+                                            disabled={!urgency}
+                                            onClick={() => setStep(3)}
+                                        >
+                                            Next →
+                                        </button>
+                                    </div>
+                                )}
+
+                                {step === 3 && (
+                                    <div className="question">
+                                        <label className="question-label">Review & Analyze</label>
+                                        <div style={{background: '#f8fafc', padding: '20px', borderRadius: '12px', marginBottom: '20px'}}>
+                                            <div style={{marginBottom: '15px'}}>
+                                                <strong style={{color: '#1e293b'}}>Items to analyze:</strong>
+                                                <div style={{color: '#64748b', fontSize: '14px', marginTop: '8px'}}>
+                                                    {bulkItemsData.map((item, idx) => (
+                                                        <div key={idx} style={{marginBottom: '5px'}}>
+                                                            • {item.name} <span style={{color: '#94a3b8'}}>({CONDITIONS.find(c => c.id === item.condition)?.label.split(' ').slice(1).join(' ')})</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <strong style={{color: '#1e293b'}}>Urgency:</strong>
+                                                <div style={{color: '#64748b', fontSize: '14px', marginTop: '5px'}}>
+                                                    {URGENCY.find(u => u.id === urgency)?.label.split(' ').slice(1).join(' ')}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style={{fontSize: '14px', color: '#666', marginBottom: '15px'}}>
+                                            ⏱️ This will take approximately {Math.ceil(bulkItemsData.length * 4)} seconds
+                                            <br/>
+                                            📊 This will use {bulkItemsData.length} of your {scanData.scansRemaining} remaining scans
+                                        </div>
+
+                                        <button 
+                                            className="back-button"
+                                            onClick={() => setStep(2)}
+                                        >
+                                            ← Back
+                                        </button>
+
+                                        <button 
+                                            className="action-button"
+                                            onClick={analyzeBulk}
+                                        >
+                                            🔍 Analyze All {bulkItemsData.length} Items
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {showAccount && (
+                            <AccountModal onClose={() => setShowAccount(false)} />
+                        )}
+
+                        {showUpgrade && (
+                            <UpgradeModal 
+                                onClose={() => setShowUpgrade(false)} 
+                                onShowEmailCapture={handleShowEmailCapture}
+                            />
+                        )}
+
+                        {showEmailCapture && (
+                            <EmailCaptureModal 
+                                onClose={() => setShowEmailCapture(false)}
+                                lastItem={null}
+                            />
+                        )}
+                    </>
+                );
+            }
+
+            if (result) {
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        
+                        <div className="container">
+                            <div className="result-card">
+                                <div className="ai-badge">✨ AI-Powered Analysis</div>
+                                <div className="result-icon">
+                                    {result.recommendation === 'sell' ? '💰' : '❤️'}
+                                </div>
+                                <h2 className={`result-title ${result.recommendation}`}>
+                                    {result.recommendation === 'sell' ? 'SELL IT ONLINE' : 'DONATE IT'}
+                                </h2>
+                                <p className="result-reason">{result.reason}</p>
+
+                                {result.effortScore && (
+                                    <div>
+                                        <div className={`effort-score ${result.effortScore}`}>
+                                            {result.effortScore === 'easy' && '🟢 Easy to Sell'}
+                                            {result.effortScore === 'medium' && '🟡 Medium Effort'}
+                                            {result.effortScore === 'hard' && '🔴 Hard to Sell'}
+                                        </div>
+                                        {result.effortReason && (
+                                            <div className="effort-reason">{result.effortReason}</div>
+                                        )}
+                                    </div>
+                                )}
+
+                                {result.marketData && (
+                                    <div className="market-data">
+                                        <div className="market-data-title">📊 Real Marketplace Data</div>
+                                        <div className="market-data-content">{result.marketData}</div>
+                                    </div>
+                                )}
+
+                                <div className="result-details">
+                                    {result.recommendation === 'sell' ? (
+                                        <>
+                                            <div className="detail-row">
+                                                <span className="detail-label">Estimated Sale Price</span>
+                                                <span className="detail-value">${result.estimatedPrice}</span>
+                                            </div>
+                                            <div className="detail-row">
+                                                <span className="detail-label">Platform Fees (13% + $0.30)</span>
+                                                <span className="detail-value">-${result.ebayFees}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Shipping (est.)</span>
+                                            <span className="detail-value">-${result.shippingCost}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Your Net Profit</span>
+                                            <span className="detail-value highlight">${result.netProfit}</span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        {originalPrice && (
+                                            <div className="detail-row">
+                                                <span className="detail-label">Original Value</span>
+                                                <span className="detail-value">${originalPrice}</span>
+                                            </div>
+                                        )}
+                                        <div className="detail-row">
+                                            <span className="detail-label">Est. Tax Deduction</span>
+                                            <span className="detail-value highlight">${result.taxDeduction}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Time Saved</span>
+                                            <span className="detail-value">15-30 minutes</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Peace of Mind</span>
+                                            <span className="detail-value">Priceless ✨</span>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+
+                            <button className="reset-button" onClick={reset}>
+                                Decide Another Item
+                            </button>
+                        </div>
+                    </div>
+
+                    {history.length > 0 && !showHistory && (
+                        <button className="history-button" onClick={() => setShowHistory(true)}>
+                            📋 History
+                            <span className="history-badge">{history.length}</span>
+                        </button>
+                    )}
+
+                    {showHistory && (
+                        <HistoryModal 
+                            history={history}
+                            onClose={() => setShowHistory(false)}
+                            onClear={() => {
+                                setHistory([]);
+                                localStorage.removeItem('sellDonateHistory');
+                                setShowHistory(false);
+                            }}
+                        />
+                    )}
+
+                    {showAccount && (
+                        <AccountModal onClose={() => setShowAccount(false)} />
+                    )}
+                </>
+                );
+            }
+
+            return (
+                <>
+                    <ScanCounter onClick={() => setShowAccount(true)} />
+                    
+                    <div className="container">
+                        <div className="card">
+                            <div className="ai-badge">✨ Real Market Data + AI Analysis</div>
+                            <h1>Is This Worth Selling?</h1>
+                            <p className="subtitle">Searches actual marketplace sales to give you data-driven recommendations.</p>
+
+                        <div className="progress">
+                            {[0, 1, 2, 3, 4, 5].map(i => (
+                                <div 
+                                    key={i} 
+                                    className={`progress-dot ${i < step ? 'completed' : i === step ? 'active' : ''}`}
+                                />
+                            ))}
+                        </div>
+
+                        {step === 0 && (
+                            <div className="question">
+                                <label className="question-label">What type of item is it?</label>
+                                <div className="button-grid">
+                                    {CATEGORIES.map(cat => (
+                                        <button
+                                            key={cat.id}
+                                            className={`option-button ${category === cat.id ? 'selected' : ''}`}
+                                            onClick={() => setCategory(cat.id)}
+                                        >
+                                            {cat.label}
+                                        </button>
+                                    ))}
+                                </div>
+                                <button 
+                                    className="back-button"
+                                    onClick={() => setMode(null)}
+                                >
+                                    ← Back to Mode Selection
+                                </button>
+                                <button 
+                                    className="action-button"
+                                    disabled={!category}
+                                    onClick={() => setStep(1)}
+                                >
+                                    Next →
+                                </button>
+                            </div>
+                        )}
+
+                        {step === 1 && (
+                            <div className="question">
+                                <label className="question-label">What is it specifically?</label>
+                                <textarea
+                                    placeholder="e.g., iPhone 12 Pro 128GB, Nike Air Max sneakers size 10, IKEA Billy bookshelf white"
+                                    value={itemDescription}
+                                    onChange={(e) => setItemDescription(e.target.value)}
+                                    rows="3"
+                                    style={{marginBottom: '10px'}}
+                                />
+                                <div style={{fontSize: '14px', color: '#666', marginBottom: '15px'}}>
+                                    💡 Be specific - include model, size, color, etc. This helps find accurate market data.
+                                </div>
+                                <button 
+                                    className="back-button"
+                                    onClick={() => setStep(0)}
+                                >
+                                    ← Back
+                                </button>
+                                <button 
+                                    className="action-button"
+                                    disabled={!itemDescription.trim()}
+                                    onClick={() => setStep(2)}
+                                >
+                                    Next →
+                                </button>
+                            </div>
+                        )}
+
+                        {step === 2 && (
+                            <div className="question">
+                                <label className="question-label">What condition is it in?</label>
+                                <div className="button-grid">
+                                    {CONDITIONS.map(cond => (
+                                        <button
+                                            key={cond.id}
+                                            className={`option-button ${condition === cond.id ? 'selected' : ''}`}
+                                            onClick={() => setCondition(cond.id)}
+                                        >
+                                            {cond.label}
+                                        </button>
+                                    ))}
+                                </div>
+                                <button 
+                                    className="back-button"
+                                    onClick={() => setStep(1)}
+                                >
+                                    ← Back
+                                </button>
+                                <button 
+                                    className="action-button"
+                                    disabled={!condition}
+                                    onClick={() => setStep(3)}
+                                >
+                                    Next →
+                                </button>
+                            </div>
+                        )}
+
+                        {step === 3 && (
+                            <div className="question">
+                                <label className="question-label">What did you originally pay for it? (optional)</label>
+                                <input
+                                    type="number"
+                                    placeholder="$0 or leave blank if you don't remember"
+                                    value={originalPrice}
+                                    onChange={(e) => setOriginalPrice(e.target.value)}
+                                    min="0"
+                                    step="1"
+                                />
+                                <div style={{fontSize: '14px', color: '#666', marginTop: '10px', marginBottom: '15px'}}>
+                                    Don't remember? No problem - AI will estimate the value based on your item description.
+                                </div>
+                                <button 
+                                    className="back-button"
+                                    onClick={() => setStep(2)}
+                                >
+                                    ← Back
+                                </button>
+                                <button 
+                                    className="action-button"
+                                    onClick={() => setStep(4)}
+                                >
+                                    Next →
+                                </button>
+                            </div>
+                        )}
+
+                        {step === 4 && (
+                            <div className="question">
+                                <label className="question-label">How fast do you need it gone?</label>
+                                <div className="button-grid">
+                                    {URGENCY.map(urg => (
+                                        <button
+                                            key={urg.id}
+                                            className={`option-button ${urgency === urg.id ? 'selected' : ''}`}
+                                            onClick={() => setUrgency(urg.id)}
+                                        >
+                                            {urg.label}
+                                        </button>
+                                    ))}
+                                </div>
+                                <button 
+                                    className="back-button"
+                                    onClick={() => setStep(3)}
+                                >
+                                    ← Back
+                                </button>
+                                <button 
+                                    className="action-button"
+                                    disabled={!urgency}
+                                    onClick={() => setStep(5)}
+                                >
+                                    Next →
+                                </button>
+                            </div>
+                        )}
+
+                        {step === 5 && (
+                            <div className="question">
+                                <label className="question-label">Want a more accurate answer? Tell us more (optional)</label>
+                                
+                                <div style={{marginBottom: '15px'}}>
+                                    <label className="small-label">
+                                        Brand or maker (if known)
+                                    </label>
+                                    <input
+                                        type="text"
+                                        placeholder="e.g., Nike, Apple, IKEA"
+                                        value={brand}
+                                        onChange={(e) => setBrand(e.target.value)}
+                                    />
+                                </div>
+
+                                <div style={{marginBottom: '15px'}}>
+                                    <label className="small-label">
+                                        Any damage or defects?
+                                    </label>
+                                    <textarea
+                                        placeholder="e.g., Small stain on sleeve, missing one piece, scratched screen"
+                                        value={defects}
+                                        onChange={(e) => setDefects(e.target.value)}
+                                        rows="2"
+                                    />
+                                </div>
+
+                                <div style={{marginBottom: '20px'}}>
+                                    <label className="small-label">
+                                        Anything else we should know?
+                                    </label>
+                                    <textarea
+                                        placeholder="e.g., Vintage item, limited edition, comes with original box"
+                                        value={additionalInfo}
+                                        onChange={(e) => setAdditionalInfo(e.target.value)}
+                                        rows="2"
+                                    />
+                                </div>
+
+                                <button 
+                                    className="back-button"
+                                    onClick={() => setStep(4)}
+                                >
+                                    ← Back
+                                </button>
+
+                                <button 
+                                    className="action-button"
+                                    onClick={analyzeWithAI}
+                                >
+                                    🔍 Analyze & Get Recommendation
+                                </button>
+
+                                <button 
+                                    className="reset-button"
+                                    onClick={analyzeWithAI}
+                                    style={{marginTop: '10px'}}
+                                >
+                                    Skip - Get Basic Answer
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {history.length > 0 && !showHistory && (
+                    <button className="history-button" onClick={() => setShowHistory(true)}>
+                        📋 History
+                        <span className="history-badge">{history.length}</span>
+                    </button>
+                )}
+
+                {showHistory && (
+                    <HistoryModal 
+                        history={history}
+                        onClose={() => setShowHistory(false)}
+                        onClear={() => {
+                            setHistory([]);
+                            localStorage.removeItem('sellDonateHistory');
+                            setShowHistory(false);
+                        }}
+                    />
+                )}
+
+                {showAccount && (
+                    <AccountModal onClose={() => setShowAccount(false)} />
+                )}
+
+                {showUpgrade && (
+                    <UpgradeModal 
+                        onClose={() => setShowUpgrade(false)} 
+                        onShowEmailCapture={handleShowEmailCapture}
+                    />
+                )}
+
+                {showEmailCapture && (
+                    <EmailCaptureModal 
+                        onClose={() => setShowEmailCapture(false)}
+                        lastItem={null}
+                    />
+                )}
+            </>
+            );
+        }
+
+        // Email Capture Modal Component
+        function EmailCaptureModal({ onClose, lastItem }) {
+            const [email, setEmail] = React.useState('');
+            const [firstName, setFirstName] = React.useState('');
+            const [isLoading, setIsLoading] = React.useState(false);
+
+            const handleSubmit = async () => {
+                if (!email || !email.includes('@') || !email.includes('.')) {
+                    alert('Please enter a valid email address');
+                    return;
+                }
+
+                setIsLoading(true);
+                
+                // Track email capture
+                trackEvent('email_captured', {
+                    has_first_name: !!firstName
+                });
+
+                try {
+                    // Get scan usage data
+                    let scansUsed = 3;
+                    try {
+                        const scanData = JSON.parse(localStorage.getItem('itemvalue_scans') || '{}');
+                        scansUsed = scanData.used || 3;
+                    } catch (e) {}
+
+                    // Send to capture function
+                    await fetch('/.netlify/functions/capture-email', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email: email,
+                            firstName: firstName || null,
+                            scansUsed: scansUsed,
+                            lastItemScanned: lastItem || null
+                        })
+                    });
+
+                    // Save email locally
+                    localStorage.setItem('itemvalue_user_email', email);
+                    if (firstName) {
+                        localStorage.setItem('itemvalue_user_firstname', firstName);
+                    }
+
+                } catch (error) {
+                    console.error('Email capture error:', error);
+                }
+
+                // Redirect to pricing
+                window.location.href = SCAN_CONFIG.SALES_PAGE_URL;
+            };
+
+            const handleSkip = () => {
+                trackEvent('email_skipped');
+                onClose();
+                window.location.href = SCAN_CONFIG.SALES_PAGE_URL;
+            };
+
+            return (
+                <div className="history-modal" onClick={onClose}>
+                    <div className="history-content" onClick={(e) => e.stopPropagation()} style={{maxWidth: '440px', position: 'relative'}}>
+                        
+                        {/* Header */}
+                        <div style={{background: 'linear-gradient(135deg, #0ea5e9, #0284c7)', padding: '25px', margin: '-30px -30px 25px -30px', borderRadius: '16px 16px 0 0', textAlign: 'center'}}>
+                            <div style={{fontSize: '48px', marginBottom: '10px'}}>🔍</div>
+                            <h2 style={{color: 'white', margin: '0', fontSize: '22px'}}>You've Used Your Free Scans!</h2>
+                            <p style={{color: 'rgba(255,255,255,0.9)', margin: '10px 0 0 0'}}>Want to keep discovering hidden value?</p>
+                        </div>
+                        
+                        {/* Stats Box */}
+                        <div style={{background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '10px', padding: '15px', marginBottom: '20px', textAlign: 'center'}}>
+                            <p style={{margin: '0', color: '#15803d', fontSize: '14px'}}>
+                                <strong>Did you know?</strong> The average user finds $500+ worth of sellable items!
+                            </p>
+                        </div>
+                        
+                        {!isLoading ? (
+                            <>
+                                <p style={{color: '#475569', margin: '0 0 15px 0', fontSize: '15px'}}>
+                                    Enter your email to save your progress and get <strong>exclusive pricing</strong>:
+                                </p>
+                                
+                                <input 
+                                    type="text" 
+                                    placeholder="First name (optional)"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    style={{width: '100%', padding: '14px 16px', border: '2px solid #e2e8f0', borderRadius: '8px', fontSize: '16px', marginBottom: '10px', boxSizing: 'border-box'}}
+                                />
+                                
+                                <input 
+                                    type="email" 
+                                    placeholder="Enter your email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    style={{width: '100%', padding: '14px 16px', border: '2px solid #e2e8f0', borderRadius: '8px', fontSize: '16px', marginBottom: '15px', boxSizing: 'border-box'}}
+                                />
+                                
+                                <button 
+                                    onClick={handleSubmit}
+                                    style={{width: '100%', background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white', padding: '16px', border: 'none', borderRadius: '8px', fontSize: '17px', fontWeight: '600', cursor: 'pointer'}}
+                                >
+                                    See My Options →
+                                </button>
+                                
+                                <p style={{textAlign: 'center', margin: '15px 0 0 0'}}>
+                                    <a onClick={handleSkip} style={{color: '#64748b', fontSize: '14px', textDecoration: 'underline', cursor: 'pointer'}}>Skip and view pricing</a>
+                                </p>
+                            </>
+                        ) : (
+                            <div style={{textAlign: 'center', padding: '20px'}}>
+                                <div style={{width: '40px', height: '40px', border: '3px solid #e2e8f0', borderTopColor: '#0ea5e9', borderRadius: '50%', animation: 'emailSpinner 1s linear infinite', margin: '0 auto 15px'}}></div>
+                                <p style={{color: '#64748b', margin: '0'}}>Saving your progress...</p>
+                            </div>
+                        )}
+                        
+                        {/* Close button */}
+                        <button 
+                            onClick={onClose}
+                            style={{position: 'absolute', top: '15px', right: '15px', background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', width: '32px', height: '32px', borderRadius: '50%', fontSize: '18px', cursor: 'pointer'}}
+                        >×</button>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+    
+    <div class="footer-disclaimer">
+        Independent third-party tool. Not affiliated with, endorsed by, or sponsored by any marketplace platform. Data provided for informational purposes only. All trademarks are property of their respective owners.
+        | <a href="/terms.html">Terms</a> | <a href="/privacy.html">Privacy</a> | <a href="/faq.html">FAQ</a>
+    </div>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('SW registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('SW registration failed:', error);
+                    });
+                    });
+        }
+    </script>
+</body>
+</html>
