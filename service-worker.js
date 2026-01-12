@@ -1,5 +1,5 @@
 // Service Worker for Is This Worth Selling? PWA
-const CACHE_NAME = 'itemvalue-v1';
+const CACHE_NAME = 'itemvalue-v2';
 const urlsToCache = [
   '/',
   '/index.html',
