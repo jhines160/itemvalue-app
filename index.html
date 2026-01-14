@@ -26,25 +26,52 @@ fbq('track', 'PageView');
 src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Is This Worth Selling? - AI-Powered Decision Helper</title>
+    <title>Item Value — Know in 30 Seconds If It's Worth Selling</title>
+    <meta name="description" content="AI-powered app that tells you if your stuff is worth selling. Get real profit estimates after fees and shipping.">
     
     <!-- PWA Configuration -->
-    <meta name="theme-color" content="#1e293b">
-    <meta name="description" content="AI-powered app that searches real marketplace sold data to help you decide whether to sell items or donate them">
+    <meta name="theme-color" content="#0D7C66">
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/svg+xml" href="/icon.svg">
     
     <!-- iOS specific -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Worth Selling?">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Item Value">
     <link rel="apple-touch-icon" href="/icon.svg">
+    
+    <!-- Fonts - matching landing page -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
+        :root {
+            --color-bg: #FDFBF7;
+            --color-bg-alt: #F5F1E8;
+            --color-text: #1a1a1a;
+            --color-text-muted: #5a5a5a;
+            --color-primary: #0D7C66;
+            --color-primary-dark: #095C4B;
+            --color-accent: #E8B931;
+            --color-accent-light: #FDF4D7;
+            --color-contrast: #1E3A34;
+            --color-success: #0D7C66;
+            --color-warning: #E8B931;
+            --color-error: #dc2626;
+            --font-display: 'Fraunces', Georgia, serif;
+            --font-body: 'DM Sans', -apple-system, sans-serif;
+            --shadow-soft: 0 4px 20px rgba(0,0,0,0.06);
+            --shadow-medium: 0 8px 30px rgba(0,0,0,0.1);
+            --radius: 12px;
+            --radius-lg: 20px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -52,10 +79,12 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            font-family: var(--font-body);
+            background: var(--color-bg);
             min-height: 100vh;
             padding: 20px;
+            padding-bottom: 60px;
+            color: var(--color-text);
         }
 
         .container {
@@ -65,46 +94,50 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
 
         .card {
             background: white;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow-medium);
             margin-bottom: 20px;
+            border: 1px solid rgba(0,0,0,0.04);
         }
 
         h1 {
-            color: #1e293b;
+            font-family: var(--font-display);
+            color: var(--color-contrast);
             font-size: 28px;
             margin-bottom: 10px;
             text-align: center;
             line-height: 1.2;
+            font-weight: 600;
         }
 
         h1 .highlight {
-            color: #0ea5e9;
+            color: var(--color-primary);
         }
 
         .subtitle {
-            color: #666;
+            color: var(--color-text-muted);
             text-align: center;
             margin-bottom: 25px;
             font-size: 16px;
         }
 
         .ai-badge {
-            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
             color: white;
-            padding: 4px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
             display: inline-block;
             margin-bottom: 15px;
+            letter-spacing: 0.3px;
         }
 
         .pro-badge {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: white;
-            padding: 4px 12px;
+            background: linear-gradient(135deg, var(--color-accent) 0%, #D4A528 100%);
+            color: var(--color-contrast);
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
@@ -115,8 +148,8 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         /* Example Result Card */
         .example-result {
             background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-            border: 2px solid #86efac;
-            border-radius: 16px;
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius);
             padding: 20px;
             margin-bottom: 25px;
             position: relative;
@@ -126,7 +159,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             position: absolute;
             top: -10px;
             left: 20px;
-            background: #22c55e;
+            background: var(--color-primary);
             color: white;
             font-size: 11px;
             font-weight: 700;
@@ -137,9 +170,10 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .example-item-name {
+            font-family: var(--font-display);
             font-size: 18px;
-            font-weight: 700;
-            color: #1e293b;
+            font-weight: 600;
+            color: var(--color-contrast);
             margin-bottom: 12px;
             margin-top: 5px;
         }
@@ -155,21 +189,21 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             align-items: center;
             gap: 8px;
             font-size: 14px;
-            color: #475569;
+            color: var(--color-text-muted);
         }
 
         .example-stat .check {
-            color: #22c55e;
+            color: var(--color-primary);
             font-weight: bold;
         }
 
         .example-verdict {
             margin-top: 12px;
             padding-top: 12px;
-            border-top: 1px dashed #86efac;
+            border-top: 1px dashed var(--color-primary);
             font-size: 16px;
             font-weight: 700;
-            color: #16a34a;
+            color: var(--color-primary);
         }
 
         /* Input Section */
@@ -179,27 +213,30 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
 
         .input-label {
             display: block;
+            font-family: var(--font-display);
             font-weight: 600;
-            color: #1e293b;
+            color: var(--color-contrast);
             margin-bottom: 12px;
             font-size: 18px;
             text-align: center;
         }
 
-        input[type="text"], input[type="number"], textarea {
+        input[type="text"], input[type="number"], input[type="email"], textarea {
             width: 100%;
             padding: 16px;
             border: 2px solid #e0e0e0;
-            border-radius: 12px;
+            border-radius: var(--radius);
             font-size: 18px;
             font-weight: 500;
-            font-family: inherit;
-            transition: border-color 0.2s;
+            font-family: var(--font-body);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: white;
         }
 
         input:focus, textarea:focus {
             outline: none;
-            border-color: #0ea5e9;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(13, 124, 102, 0.1);
         }
 
         input::placeholder, textarea::placeholder {
@@ -213,20 +250,21 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         .action-button {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: var(--radius);
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             margin-top: 15px;
+            font-family: var(--font-body);
         }
 
         .action-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(14, 165, 233, 0.4);
+            box-shadow: 0 5px 20px rgba(13, 124, 102, 0.4);
         }
 
         .action-button:disabled {
@@ -237,22 +275,23 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .action-button.pro {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, var(--color-accent) 0%, #D4A528 100%);
+            color: var(--color-contrast);
         }
 
         .action-button.pro:hover {
-            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 5px 20px rgba(232, 185, 49, 0.4);
         }
 
         .time-hint {
             text-align: center;
-            color: #64748b;
+            color: var(--color-text-muted);
             font-size: 14px;
             margin-top: 12px;
         }
 
         .time-hint span {
-            color: #0ea5e9;
+            color: var(--color-primary);
             font-weight: 600;
         }
 
@@ -266,25 +305,26 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
 
         .analysis-option {
             border: 2px solid #e2e8f0;
-            border-radius: 16px;
+            border-radius: var(--radius);
             padding: 20px;
             cursor: pointer;
             transition: all 0.2s;
             position: relative;
+            background: white;
         }
 
         .analysis-option:hover {
-            border-color: #0ea5e9;
-            background: #f8fafc;
+            border-color: var(--color-primary);
+            background: rgba(13, 124, 102, 0.02);
         }
 
         .analysis-option.pro {
-            border-color: #c4b5fd;
-            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            border-color: var(--color-accent);
+            background: linear-gradient(135deg, var(--color-accent-light) 0%, #FEF9E7 100%);
         }
 
         .analysis-option.pro:hover {
-            border-color: #8b5cf6;
+            border-color: #D4A528;
         }
 
         .analysis-option.locked {
@@ -305,17 +345,18 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .analysis-option-title {
+            font-family: var(--font-display);
             font-size: 18px;
-            font-weight: 700;
-            color: #1e293b;
+            font-weight: 600;
+            color: var(--color-contrast);
         }
 
         .analysis-option-title.pro {
-            color: #7c3aed;
+            color: #92700C;
         }
 
         .analysis-option-badge {
-            background: #0ea5e9;
+            background: var(--color-primary);
             color: white;
             font-size: 11px;
             font-weight: 600;
@@ -324,7 +365,8 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .analysis-option-badge.pro {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            background: linear-gradient(135deg, var(--color-accent), #D4A528);
+            color: var(--color-contrast);
         }
 
         .analysis-option-badge.locked {
@@ -333,7 +375,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
 
         .analysis-option-desc {
             font-size: 14px;
-            color: #64748b;
+            color: var(--color-text-muted);
             line-height: 1.4;
         }
 
@@ -345,16 +387,16 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .feature-tag {
-            background: #f1f5f9;
-            color: #475569;
+            background: var(--color-bg-alt);
+            color: var(--color-text-muted);
             font-size: 12px;
             padding: 4px 10px;
             border-radius: 20px;
         }
 
         .feature-tag.pro {
-            background: #ede9fe;
-            color: #7c3aed;
+            background: rgba(232, 185, 49, 0.2);
+            color: #92700C;
         }
 
         .lock-icon {
@@ -369,8 +411,9 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
 
         .question-label {
             display: block;
+            font-family: var(--font-display);
             font-weight: 600;
-            color: #333;
+            color: var(--color-contrast);
             margin-bottom: 12px;
             font-size: 18px;
         }
@@ -388,45 +431,47 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         .option-button {
             padding: 16px 12px;
             border: 2px solid #e0e0e0;
-            border-radius: 12px;
+            border-radius: var(--radius);
             background: white;
             font-size: 15px;
             cursor: pointer;
             transition: all 0.2s;
             text-align: center;
             font-weight: 500;
-            color: #333;
+            color: var(--color-text);
+            font-family: var(--font-body);
         }
 
         .option-button:hover {
-            border-color: #0ea5e9;
-            background: #f0f9ff;
+            border-color: var(--color-primary);
+            background: rgba(13, 124, 102, 0.05);
         }
 
         .option-button.selected {
-            border-color: #0ea5e9;
-            background: #0ea5e9;
+            border-color: var(--color-primary);
+            background: var(--color-primary);
             color: white;
         }
 
         .back-button {
             background: transparent;
             border: 2px solid #cbd5e1;
-            color: #64748b;
+            color: var(--color-text-muted);
             width: 100%;
             padding: 14px;
-            border-radius: 12px;
+            border-radius: var(--radius);
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             margin-bottom: 12px;
             transition: all 0.2s;
+            font-family: var(--font-body);
         }
 
         .back-button:hover {
             border-color: #94a3b8;
-            color: #475569;
-            background: #f8fafc;
+            color: var(--color-text);
+            background: var(--color-bg-alt);
         }
 
         /* Progress indicator */
@@ -445,24 +490,25 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .progress-dot.active {
-            background: #0ea5e9;
+            background: var(--color-primary);
         }
 
         .progress-dot.completed {
-            background: #10b981;
+            background: var(--color-primary);
         }
 
         .progress-dot.pro {
-            background: #8b5cf6;
+            background: var(--color-accent);
         }
 
         /* Results */
         .result-card {
             background: white;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow-medium);
             text-align: center;
+            border: 1px solid rgba(0,0,0,0.04);
         }
 
         .result-icon {
@@ -471,29 +517,30 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .result-title {
+            font-family: var(--font-display);
             font-size: 28px;
             font-weight: 700;
             margin-bottom: 10px;
         }
 
         .result-title.sell {
-            color: #10b981;
+            color: var(--color-primary);
         }
 
         .result-title.donate {
-            color: #f59e0b;
+            color: var(--color-accent);
         }
 
         .result-reason {
-            color: #666;
+            color: var(--color-text-muted);
             font-size: 16px;
             margin-bottom: 25px;
             line-height: 1.5;
         }
 
         .result-details {
-            background: #f8fafc;
-            border-radius: 12px;
+            background: var(--color-bg-alt);
+            border-radius: var(--radius);
             padding: 20px;
             margin-bottom: 20px;
             text-align: left;
@@ -503,7 +550,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
         }
 
         .detail-row:last-child {
@@ -511,23 +558,23 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .detail-label {
-            color: #666;
+            color: var(--color-text-muted);
             font-weight: 500;
         }
 
         .detail-value {
             font-weight: 700;
-            color: #333;
+            color: var(--color-text);
         }
 
         .detail-value.highlight {
-            color: #10b981;
+            color: var(--color-primary);
             font-size: 20px;
         }
 
         .market-data {
-            background: #f0f9ff;
-            border-left: 4px solid #0ea5e9;
+            background: rgba(13, 124, 102, 0.08);
+            border-left: 4px solid var(--color-primary);
             padding: 15px;
             margin-bottom: 20px;
             border-radius: 8px;
@@ -536,13 +583,13 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
 
         .market-data-title {
             font-weight: 600;
-            color: #075985;
+            color: var(--color-primary-dark);
             margin-bottom: 8px;
             font-size: 14px;
         }
 
         .market-data-content {
-            color: #0c4a6e;
+            color: var(--color-contrast);
             font-size: 14px;
             line-height: 1.5;
         }
@@ -558,15 +605,15 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .effort-score.easy {
-            background: #d1fae5;
-            color: #065f46;
-            border: 2px solid #10b981;
+            background: rgba(13, 124, 102, 0.15);
+            color: var(--color-primary-dark);
+            border: 2px solid var(--color-primary);
         }
 
         .effort-score.medium {
-            background: #fef3c7;
-            color: #92400e;
-            border: 2px solid #f59e0b;
+            background: var(--color-accent-light);
+            color: #92700C;
+            border: 2px solid var(--color-accent);
         }
 
         .effort-score.hard {
@@ -577,15 +624,15 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
 
         .effort-reason {
             font-size: 14px;
-            color: #64748b;
+            color: var(--color-text-muted);
             margin-top: 8px;
             font-style: italic;
         }
 
         /* Detailed analysis badge on result */
         .detailed-badge {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-            color: white;
+            background: linear-gradient(135deg, var(--color-accent), #D4A528);
+            color: var(--color-contrast);
             font-size: 12px;
             font-weight: 600;
             padding: 5px 12px;
@@ -605,30 +652,32 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         .primary-action {
             width: 100%;
             padding: 16px;
-            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: var(--radius);
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
+            font-family: var(--font-body);
         }
 
         .secondary-action {
             width: 100%;
             padding: 14px;
             background: white;
-            color: #475569;
+            color: var(--color-text-muted);
             border: 2px solid #e2e8f0;
-            border-radius: 12px;
+            border-radius: var(--radius);
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
+            font-family: var(--font-body);
         }
 
         .secondary-action:hover {
             border-color: #cbd5e1;
-            background: #f8fafc;
+            background: var(--color-bg-alt);
         }
 
         /* Loading */
@@ -638,8 +687,8 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .loading-spinner {
-            border: 4px solid #f3f4f6;
-            border-top: 4px solid #0ea5e9;
+            border: 4px solid var(--color-bg-alt);
+            border-top: 4px solid var(--color-primary);
             border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -648,7 +697,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .loading-spinner.pro {
-            border-top-color: #8b5cf6;
+            border-top-color: var(--color-accent);
         }
 
         @keyframes spin {
@@ -657,17 +706,17 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .loading-text {
-            color: #0ea5e9;
+            color: var(--color-primary);
             font-weight: 600;
             font-size: 16px;
         }
 
         .loading-text.pro {
-            color: #8b5cf6;
+            color: #92700C;
         }
 
         .loading-subtext {
-            color: #666;
+            color: var(--color-text-muted);
             font-size: 14px;
             margin-top: 8px;
         }
@@ -677,14 +726,14 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             position: fixed;
             top: 20px;
             right: 20px;
-            background: linear-gradient(135deg, #1e293b, #334155);
+            background: linear-gradient(135deg, var(--color-contrast), #2D4A42);
             color: white;
             padding: 10px 18px;
             border-radius: 25px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-medium);
             z-index: 1000;
             transition: all 0.2s;
         }
@@ -694,7 +743,8 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .scan-counter.warning {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+            background: linear-gradient(135deg, var(--color-accent), #D4A528);
+            color: var(--color-contrast);
         }
 
         .scan-counter.empty {
@@ -702,44 +752,47 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .scan-counter.paid {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            background: linear-gradient(135deg, var(--color-accent), #D4A528);
+            color: var(--color-contrast);
         }
 
         /* Bulk scan prompt */
         .bulk-prompt {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: var(--color-bg-alt);
             border: 2px dashed #cbd5e1;
-            border-radius: 12px;
+            border-radius: var(--radius);
             padding: 20px;
             margin-top: 20px;
             text-align: center;
         }
 
         .bulk-prompt-title {
+            font-family: var(--font-display);
             font-weight: 600;
-            color: #475569;
+            color: var(--color-text);
             margin-bottom: 8px;
         }
 
         .bulk-prompt-desc {
             font-size: 14px;
-            color: #64748b;
+            color: var(--color-text-muted);
             margin-bottom: 12px;
         }
 
         .bulk-prompt-button {
             background: white;
-            border: 2px solid #0ea5e9;
-            color: #0ea5e9;
+            border: 2px solid var(--color-primary);
+            color: var(--color-primary);
             padding: 10px 20px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            font-family: var(--font-body);
         }
 
         .bulk-prompt-button:hover {
-            background: #0ea5e9;
+            background: var(--color-primary);
             color: white;
         }
 
@@ -748,7 +801,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             position: fixed;
             bottom: 60px;
             right: 20px;
-            background: linear-gradient(135deg, #1e293b, #334155);
+            background: linear-gradient(135deg, var(--color-contrast), #2D4A42);
             color: white;
             border: none;
             padding: 12px 20px;
@@ -756,13 +809,14 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-medium);
             z-index: 1000;
+            font-family: var(--font-body);
         }
 
         .history-badge {
-            background: #ef4444;
-            color: white;
+            background: var(--color-accent);
+            color: var(--color-contrast);
             border-radius: 50%;
             padding: 2px 8px;
             font-size: 12px;
@@ -776,7 +830,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.6);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -786,12 +840,13 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
 
         .modal-content {
             background: white;
-            border-radius: 16px;
+            border-radius: var(--radius-lg);
             padding: 30px;
             max-width: 500px;
             max-height: 80vh;
             overflow-y: auto;
             width: 100%;
+            box-shadow: var(--shadow-medium);
         }
 
         /* Footer */
@@ -800,22 +855,18 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             bottom: 0;
             left: 0;
             right: 0;
-            background: #0f172a;
-            color: #94a3b8;
+            background: var(--color-contrast);
+            color: rgba(255,255,255,0.7);
             padding: 12px 20px;
             font-size: 11px;
             text-align: center;
             z-index: 998;
-            border-top: 1px solid #1e293b;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         .footer-disclaimer a {
-            color: #0ea5e9;
+            color: var(--color-accent);
             text-decoration: none;
-        }
-
-        body {
-            padding-bottom: 50px;
         }
 
         /* Bulk mode styles */
@@ -827,7 +878,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         .bulk-item-count {
             text-align: right;
             font-size: 14px;
-            color: #64748b;
+            color: var(--color-text-muted);
             margin-top: 8px;
         }
 
@@ -836,7 +887,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .bulk-result-item {
-            background: #f8fafc;
+            background: var(--color-bg-alt);
             border-left: 4px solid #e0e0e0;
             padding: 15px;
             margin-bottom: 12px;
@@ -844,18 +895,19 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .bulk-result-item.sell {
-            border-left-color: #10b981;
-            background: #f0fdf4;
+            border-left-color: var(--color-primary);
+            background: rgba(13, 124, 102, 0.08);
         }
 
         .bulk-result-item.donate {
-            border-left-color: #f59e0b;
-            background: #fffbeb;
+            border-left-color: var(--color-accent);
+            background: var(--color-accent-light);
         }
 
         .bulk-item-name {
-            font-weight: 700;
-            color: #1e293b;
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--color-contrast);
             margin-bottom: 5px;
         }
 
@@ -865,16 +917,16 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .bulk-item-recommendation.sell {
-            color: #10b981;
+            color: var(--color-primary);
         }
 
         .bulk-item-recommendation.donate {
-            color: #f59e0b;
+            color: #92700C;
         }
 
         .bulk-item-details {
             font-size: 14px;
-            color: #64748b;
+            color: var(--color-text-muted);
             margin-top: 5px;
         }
 
@@ -885,13 +937,14 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 2px solid var(--color-bg-alt);
         }
 
         .history-title {
+            font-family: var(--font-display);
             font-size: 20px;
             font-weight: 700;
-            color: #1e293b;
+            color: var(--color-contrast);
         }
 
         .history-stats {
@@ -900,8 +953,8 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             gap: 10px;
             margin-bottom: 20px;
             padding: 15px;
-            background: #f0f9ff;
-            border-radius: 12px;
+            background: rgba(13, 124, 102, 0.08);
+            border-radius: var(--radius);
         }
 
         .stat-box {
@@ -909,18 +962,19 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .stat-number {
+            font-family: var(--font-display);
             font-size: 24px;
             font-weight: 700;
-            color: #1e293b;
+            color: var(--color-contrast);
         }
 
         .stat-label {
             font-size: 12px;
-            color: #64748b;
+            color: var(--color-text-muted);
         }
 
         .history-item {
-            background: #f8fafc;
+            background: var(--color-bg-alt);
             border-left: 4px solid #cbd5e1;
             padding: 12px;
             margin-bottom: 10px;
@@ -928,28 +982,29 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         }
 
         .history-item.sell {
-            border-left-color: #10b981;
+            border-left-color: var(--color-primary);
         }
 
         .history-item.donate {
-            border-left-color: #f59e0b;
+            border-left-color: var(--color-accent);
         }
 
         .close-button {
-            background: #ef4444;
+            background: var(--color-primary);
             color: white;
             border: none;
             padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            font-family: var(--font-body);
         }
 
         /* Small input label */
         .small-label {
             display: block;
             font-size: 14px;
-            color: #64748b;
+            color: var(--color-text-muted);
             margin-bottom: 8px;
             font-weight: 500;
         }
@@ -1154,8 +1209,8 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                 <div className="modal-overlay" onClick={onClose}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{maxWidth: '420px', textAlign: 'center'}}>
                         <div style={{fontSize: '56px', marginBottom: '15px'}}>🔍</div>
-                        <h2 style={{color: '#1e293b', marginBottom: '12px', fontSize: '22px'}}>You've Used Your Free Scans!</h2>
-                        <p style={{color: '#64748b', marginBottom: '20px', fontSize: '15px', lineHeight: '1.5'}}>
+                        <h2 style={{fontFamily: 'var(--font-display)', color: 'var(--color-contrast)', marginBottom: '12px', fontSize: '22px'}}>You've Used Your Free Scans!</h2>
+                        <p style={{color: 'var(--color-text-muted)', marginBottom: '20px', fontSize: '15px', lineHeight: '1.5'}}>
                             Upgrade to keep discovering hidden value. Most users find $500+ worth of sellable items!
                         </p>
                         
@@ -1168,14 +1223,15 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                             style={{
                                 width: '100%',
                                 padding: '14px',
-                                background: 'linear-gradient(135deg, #10b981, #059669)',
+                                background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))',
                                 color: 'white',
                                 border: 'none',
-                                borderRadius: '12px',
+                                borderRadius: 'var(--radius)',
                                 fontSize: '16px',
                                 fontWeight: '600',
                                 cursor: 'pointer',
-                                marginBottom: '10px'
+                                marginBottom: '10px',
+                                fontFamily: 'var(--font-body)'
                             }}
                         >
                             View Pricing Options →
@@ -1187,11 +1243,12 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                                 width: '100%',
                                 padding: '12px',
                                 background: 'transparent',
-                                color: '#64748b',
+                                color: 'var(--color-text-muted)',
                                 border: '2px solid #e2e8f0',
-                                borderRadius: '12px',
+                                borderRadius: 'var(--radius)',
                                 fontSize: '15px',
-                                cursor: 'pointer'
+                                cursor: 'pointer',
+                                fontFamily: 'var(--font-body)'
                             }}
                         >
                             Maybe Later
@@ -1215,19 +1272,19 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             return (
                 <div className="modal-overlay" onClick={onClose}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{maxWidth: '380px'}}>
-                        <h2 style={{marginBottom: '20px', color: '#1e293b'}}>📊 Your Account</h2>
+                        <h2 style={{marginBottom: '20px', color: 'var(--color-contrast)', fontFamily: 'var(--font-display)'}}>📊 Your Account</h2>
                         
-                        <div style={{background: '#f8fafc', padding: '20px', borderRadius: '12px', marginBottom: '20px'}}>
+                        <div style={{background: 'var(--color-bg-alt)', padding: '20px', borderRadius: 'var(--radius)', marginBottom: '20px'}}>
                             <div style={{marginBottom: '15px'}}>
-                                <div style={{color: '#64748b', fontSize: '13px'}}>Plan</div>
-                                <div style={{color: '#1e293b', fontSize: '18px', fontWeight: '700'}}>
+                                <div style={{color: 'var(--color-text-muted)', fontSize: '13px'}}>Plan</div>
+                                <div style={{color: 'var(--color-contrast)', fontSize: '18px', fontWeight: '700', fontFamily: 'var(--font-display)'}}>
                                     {isPaid ? data.bundle : 'Free Tier'}
                                 </div>
                             </div>
                             
                             <div style={{marginBottom: isPaid ? '15px' : '0'}}>
-                                <div style={{color: '#64748b', fontSize: '13px'}}>Scans Remaining</div>
-                                <div style={{color: '#10b981', fontSize: '24px', fontWeight: '700'}}>
+                                <div style={{color: 'var(--color-text-muted)', fontSize: '13px'}}>Scans Remaining</div>
+                                <div style={{color: 'var(--color-primary)', fontSize: '24px', fontWeight: '700', fontFamily: 'var(--font-display)'}}>
                                     {data.scansRemaining} / {data.totalScans}
                                 </div>
                             </div>
@@ -1235,11 +1292,11 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                             {isPaid && (
                                 <>
                                     <div style={{marginBottom: '15px'}}>
-                                        <div style={{color: '#64748b', fontSize: '13px'}}>Expires</div>
-                                        <div style={{color: '#1e293b', fontSize: '16px', fontWeight: '600'}}>{expiryText}</div>
+                                        <div style={{color: 'var(--color-text-muted)', fontSize: '13px'}}>Expires</div>
+                                        <div style={{color: 'var(--color-contrast)', fontSize: '16px', fontWeight: '600'}}>{expiryText}</div>
                                     </div>
-                                    <div style={{background: 'linear-gradient(135deg, #ede9fe, #ddd6fe)', padding: '10px', borderRadius: '8px'}}>
-                                        <div style={{color: '#7c3aed', fontSize: '13px', fontWeight: '600'}}>✨ Detailed Analysis Unlocked</div>
+                                    <div style={{background: 'var(--color-accent-light)', padding: '10px', borderRadius: '8px'}}>
+                                        <div style={{color: '#92700C', fontSize: '13px', fontWeight: '600'}}>✨ Detailed Analysis Unlocked</div>
                                     </div>
                                 </>
                             )}
@@ -1249,9 +1306,9 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                             <a href={SCAN_CONFIG.SALES_PAGE_URL} style={{
                                 display: 'block',
                                 padding: '14px',
-                                background: 'linear-gradient(135deg, #0ea5e9, #0284c7)',
+                                background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))',
                                 color: 'white',
-                                borderRadius: '12px',
+                                borderRadius: 'var(--radius)',
                                 fontSize: '15px',
                                 fontWeight: '600',
                                 textAlign: 'center',
@@ -1265,13 +1322,14 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                         <button onClick={onClose} style={{
                             width: '100%',
                             padding: '12px',
-                            background: '#6b7280',
+                            background: 'var(--color-text-muted)',
                             color: 'white',
                             border: 'none',
-                            borderRadius: '12px',
+                            borderRadius: 'var(--radius)',
                             fontSize: '15px',
                             fontWeight: '600',
-                            cursor: 'pointer'
+                            cursor: 'pointer',
+                            fontFamily: 'var(--font-body)'
                         }}>
                             Close
                         </button>
@@ -1319,14 +1377,14 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             return (
                 <div className="modal-overlay" onClick={onClose}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{maxWidth: '420px', position: 'relative'}}>
-                        <div style={{background: 'linear-gradient(135deg, #0ea5e9, #0284c7)', padding: '25px', margin: '-30px -30px 25px -30px', borderRadius: '16px 16px 0 0', textAlign: 'center'}}>
+                        <div style={{background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))', padding: '25px', margin: '-30px -30px 25px -30px', borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0', textAlign: 'center'}}>
                             <div style={{fontSize: '48px', marginBottom: '10px'}}>🔍</div>
-                            <h2 style={{color: 'white', margin: '0', fontSize: '20px'}}>You've Used Your Free Scans!</h2>
+                            <h2 style={{color: 'white', margin: '0', fontSize: '20px', fontFamily: 'var(--font-display)'}}>You've Used Your Free Scans!</h2>
                         </div>
                         
                         {!isLoading ? (
                             <>
-                                <p style={{color: '#475569', marginBottom: '15px', fontSize: '15px'}}>
+                                <p style={{color: 'var(--color-text-muted)', marginBottom: '15px', fontSize: '15px'}}>
                                     Enter your email for <strong>exclusive pricing</strong>:
                                 </p>
                                 
@@ -1335,7 +1393,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                                     placeholder="First name (optional)"
                                     value={firstName}
                                     onChange={(e) => setFirstName(e.target.value)}
-                                    style={{width: '100%', padding: '12px 14px', border: '2px solid #e2e8f0', borderRadius: '8px', fontSize: '16px', marginBottom: '10px'}}
+                                    style={{width: '100%', padding: '12px 14px', border: '2px solid #e2e8f0', borderRadius: '8px', fontSize: '16px', marginBottom: '10px', fontFamily: 'var(--font-body)'}}
                                 />
                                 
                                 <input 
@@ -1343,19 +1401,20 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                                     placeholder="Email address"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    style={{width: '100%', padding: '12px 14px', border: '2px solid #e2e8f0', borderRadius: '8px', fontSize: '16px', marginBottom: '15px'}}
+                                    style={{width: '100%', padding: '12px 14px', border: '2px solid #e2e8f0', borderRadius: '8px', fontSize: '16px', marginBottom: '15px', fontFamily: 'var(--font-body)'}}
                                 />
                                 
                                 <button onClick={handleSubmit} style={{
                                     width: '100%',
-                                    background: 'linear-gradient(135deg, #10b981, #059669)',
+                                    background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))',
                                     color: 'white',
                                     padding: '14px',
                                     border: 'none',
                                     borderRadius: '8px',
                                     fontSize: '16px',
                                     fontWeight: '600',
-                                    cursor: 'pointer'
+                                    cursor: 'pointer',
+                                    fontFamily: 'var(--font-body)'
                                 }}>
                                     See My Options →
                                 </button>
@@ -1368,8 +1427,8 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                             </>
                         ) : (
                             <div style={{textAlign: 'center', padding: '20px'}}>
-                                <div style={{width: '40px', height: '40px', border: '3px solid #e2e8f0', borderTopColor: '#0ea5e9', borderRadius: '50%', animation: 'emailSpinner 1s linear infinite', margin: '0 auto 15px'}}></div>
-                                <p style={{color: '#64748b'}}>Saving...</p>
+                                <div style={{width: '40px', height: '40px', border: '3px solid #e2e8f0', borderTopColor: 'var(--color-primary)', borderRadius: '50%', animation: 'emailSpinner 1s linear infinite', margin: '0 auto 15px'}}></div>
+                                <p style={{color: 'var(--color-text-muted)'}}>Saving...</p>
                             </div>
                         )}
                         
@@ -1390,7 +1449,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                         <div className="history-header">
                             <h2 className="history-title">📋 History</h2>
                             <div style={{display: 'flex', gap: '8px'}}>
-                                <button onClick={onClear} style={{background: '#f1f5f9', border: 'none', padding: '8px 12px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px'}}>🗑️ Clear</button>
+                                <button onClick={onClear} style={{background: 'var(--color-bg-alt)', border: 'none', padding: '8px 12px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontFamily: 'var(--font-body)'}}>🗑️ Clear</button>
                                 <button className="close-button" onClick={onClose}>✕</button>
                             </div>
                         </div>
@@ -1401,37 +1460,37 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                                 <div className="stat-label">Items</div>
                             </div>
                             <div className="stat-box">
-                                <div className="stat-number" style={{color: '#10b981'}}>{sellItems.length}</div>
+                                <div className="stat-number" style={{color: 'var(--color-primary)'}}>{sellItems.length}</div>
                                 <div className="stat-label">Sell</div>
                             </div>
                             <div className="stat-box">
-                                <div className="stat-number" style={{color: '#f59e0b'}}>{donateItems.length}</div>
+                                <div className="stat-number" style={{color: '#92700C'}}>{donateItems.length}</div>
                                 <div className="stat-label">Donate</div>
                             </div>
                         </div>
 
                         {sellItems.length > 0 && (
-                            <div style={{marginBottom: '15px', padding: '12px', background: '#f0fdf4', borderRadius: '10px', textAlign: 'center'}}>
-                                <div style={{fontSize: '13px', color: '#065f46'}}>Potential profit</div>
-                                <div style={{fontSize: '24px', fontWeight: '700', color: '#10b981'}}>${totalProfit.toFixed(2)}</div>
+                            <div style={{marginBottom: '15px', padding: '12px', background: 'rgba(13, 124, 102, 0.08)', borderRadius: '10px', textAlign: 'center'}}>
+                                <div style={{fontSize: '13px', color: 'var(--color-primary-dark)'}}>Potential profit</div>
+                                <div style={{fontSize: '24px', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-display)'}}>${totalProfit.toFixed(2)}</div>
                             </div>
                         )}
 
                         <div style={{maxHeight: '300px', overflowY: 'auto'}}>
                             {history.map((item) => (
                                 <div key={item.id} className={`history-item ${item.recommendation}`}>
-                                    <div style={{fontWeight: '600', color: '#1e293b', marginBottom: '4px'}}>
+                                    <div style={{fontWeight: '600', color: 'var(--color-contrast)', marginBottom: '4px', fontFamily: 'var(--font-display)'}}>
                                         {item.itemName}
                                         {item.analysisType === 'detailed' && (
-                                            <span style={{marginLeft: '8px', background: '#ede9fe', color: '#7c3aed', fontSize: '10px', padding: '2px 6px', borderRadius: '10px'}}>DETAILED</span>
+                                            <span style={{marginLeft: '8px', background: 'var(--color-accent-light)', color: '#92700C', fontSize: '10px', padding: '2px 6px', borderRadius: '10px'}}>DETAILED</span>
                                         )}
                                     </div>
                                     <div style={{fontSize: '13px'}}>
-                                        <span style={{color: item.recommendation === 'sell' ? '#10b981' : '#f59e0b', fontWeight: '600'}}>
+                                        <span style={{color: item.recommendation === 'sell' ? 'var(--color-primary)' : '#92700C', fontWeight: '600'}}>
                                             {item.recommendation === 'sell' ? '💰 SELL' : '❤️ DONATE'}
                                         </span>
                                         {item.recommendation === 'sell' && (
-                                            <span style={{color: '#64748b', marginLeft: '10px'}}>Net: ${item.netProfit}</span>
+                                            <span style={{color: 'var(--color-text-muted)', marginLeft: '10px'}}>Net: ${item.netProfit}</span>
                                         )}
                                     </div>
                                 </div>
@@ -1755,39 +1814,39 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                         <div className="container">
                             <div className="card">
                                 <div style={{textAlign: 'center'}}>
-                                    <div className="ai-badge">✨ Real Market Data + AI</div>
+                                    <div className="ai-badge">✨ The 30-Second Worth-It Test™</div>
                                 </div>
                                 
                                 <h1>
-                                    Stop Guessing.<br/>
-                                    <span className="highlight">Know What It's Worth.</span>
+                                    Type Any Item.<br/>
+                                    <span className="highlight">Know If It's Worth Selling.</span>
                                 </h1>
                                 
                                 <p className="subtitle">
-                                    Find out in 30 seconds if your item is worth selling online.
+                                    Get real profit estimates after fees and shipping — in 30 seconds.
                                 </p>
 
                                 <div className="example-result">
                                     <div className="example-label">Example Result</div>
-                                    <div className="example-item-name">Nike Air Max 270 - Size 10</div>
+                                    <div className="example-item-name">iPhone 13 Pro 128GB</div>
                                     <div className="example-stats">
                                         <div className="example-stat">
                                             <span className="check">✓</span>
-                                            <span>Avg sold price: <strong>$85</strong></span>
+                                            <span>Sells for: <strong>$580</strong></span>
                                         </div>
                                         <div className="example-stat">
                                             <span className="check">✓</span>
-                                            <span>After fees & shipping: <strong>$62</strong></span>
+                                            <span>Your profit after fees: <strong>$509.70</strong></span>
                                         </div>
                                     </div>
-                                    <div className="example-verdict">💰 Verdict: WORTH SELLING</div>
+                                    <div className="example-verdict">💰 SELL IT — Worth your time!</div>
                                 </div>
 
                                 <div className="input-section">
                                     <label className="input-label">What do you want to check?</label>
                                     <input
                                         type="text"
-                                        placeholder="e.g., iPhone 12, KitchenAid mixer, Levi's jeans..."
+                                        placeholder="e.g., KitchenAid mixer, Levi's jeans, old iPad..."
                                         value={itemDescription}
                                         onChange={(e) => setItemDescription(e.target.value)}
                                         onKeyPress={(e) => e.key === 'Enter' && startAnalysis()}
@@ -1802,7 +1861,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                                     </button>
                                     
                                     <div className="time-hint">
-                                        ⏱ Takes about <span>30 seconds</span>
+                                        ⏱ Takes about <span>30 seconds</span> • No signup required
                                     </div>
                                 </div>
 
@@ -2497,9 +2556,9 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                                 <h1 style={{fontSize: '24px'}}>{bulkResults.length} Items Analyzed</h1>
                                 
                                 {sellItems.length > 0 && (
-                                    <div style={{background: '#f0fdf4', padding: '15px', borderRadius: '12px', marginBottom: '20px', textAlign: 'center'}}>
-                                        <div style={{fontSize: '14px', color: '#065f46'}}>Potential profit from selling</div>
-                                        <div style={{fontSize: '28px', fontWeight: '700', color: '#10b981'}}>${totalProfit.toFixed(2)}</div>
+                                    <div style={{background: 'rgba(13, 124, 102, 0.08)', padding: '15px', borderRadius: 'var(--radius)', marginBottom: '20px', textAlign: 'center'}}>
+                                        <div style={{fontSize: '14px', color: 'var(--color-primary-dark)'}}>Potential profit from selling</div>
+                                        <div style={{fontSize: '28px', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-display)'}}>${totalProfit.toFixed(2)}</div>
                                     </div>
                                 )}
 
