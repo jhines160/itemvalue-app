@@ -1865,23 +1865,25 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                                     </div>
                                 </div>
 
-                                <div className="bulk-prompt">
-                                    <div className="bulk-prompt-title">Have multiple items?</div>
-                                    <div className="bulk-prompt-desc">Check them all at once with bulk scan</div>
-                                    <button 
-                                        className="bulk-prompt-button"
-                                        onClick={() => {
-                                            if (!canScan()) {
-                                                setShowUpgrade(true);
-                                            } else {
-                                                trackEvent('mode_selected', { mode: 'bulk' });
-                                                setScreen('bulk');
-                                            }
-                                        }}
-                                    >
-                                        Try Bulk Scan →
-                                    </button>
-                                </div>
+                                {paid && (
+                                    <div className="bulk-prompt">
+                                        <div className="bulk-prompt-title">Have multiple items?</div>
+                                        <div className="bulk-prompt-desc">Check them all at once with bulk scan</div>
+                                        <button 
+                                            className="bulk-prompt-button"
+                                            onClick={() => {
+                                                if (!canScan()) {
+                                                    setShowUpgrade(true);
+                                                } else {
+                                                    trackEvent('mode_selected', { mode: 'bulk' });
+                                                    setScreen('bulk');
+                                                }
+                                            }}
+                                        >
+                                            Use Bulk Scan →
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -2447,15 +2449,17 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                                     <button className="primary-action" onClick={reset}>
                                         Check Another Item
                                     </button>
-                                    <button 
-                                        className="secondary-action"
-                                        onClick={() => {
-                                            trackEvent('mode_selected', { mode: 'bulk', from: 'result' });
-                                            setScreen('bulk');
-                                        }}
-                                    >
-                                        📋 Try Bulk Scan
-                                    </button>
+                                    {paid && (
+                                        <button 
+                                            className="secondary-action"
+                                            onClick={() => {
+                                                trackEvent('mode_selected', { mode: 'bulk', from: 'result' });
+                                                setScreen('bulk');
+                                            }}
+                                        >
+                                            📋 Use Bulk Scan
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>
