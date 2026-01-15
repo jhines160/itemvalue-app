@@ -2017,7 +2017,65 @@ display: block;
 </head>
 <body>
     <div id="root"></div>
+<div id="root"></div>
+    
+    <!-- Email Capture Component -->
+    <div class="email-capture-container" id="emailCapture" style="display: none;">
+        <div class="email-capture-card">
+            <!-- Progress indicator -->
+            <div class="progress-dots">
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+            
+            <!-- Main form -->
+            <div id="emailFormSection">
+                <h3 class="email-headline">Nice! That first one was worth $45</h3>
+                <p class="email-subtext">Save your results & unlock 2 more free scans</p>
+                
+                <!-- Value props -->
+                <div class="value-badges">
+                    <div class="value-badge">
+                        <span>📊</span> Track all values
+                    </div>
+                    <div class="value-badge">
+                        <span>💰</span> See total profit
+                    </div>
+                </div>
+                
+                <!-- Email form -->
+                <form class="email-form" id="emailForm" onsubmit="handleEmailSubmit(event)">
+                    <input 
+                        type="email" 
+                        class="email-input" 
+                        placeholder="Enter your email"
+                        required
+                        id="emailInput"
+                        autocomplete="email"
+                    >
+                    <button type="submit" class="email-submit" id="submitBtn">
+                        Get 2 More Scans
+                    </button>
+                </form>
+                
+                <a href="#" class="skip-link" onclick="skipEmail(event)">
+                    Maybe later - continue scanning
+                </a>
+            </div>
+            
+            <!-- Success state (hidden initially) -->
+            <div id="emailSuccessSection" style="display: none;">
+                <div class="email-success">
+                    <div class="success-icon">✨</div>
+                    <div class="success-message">Perfect! Results saved</div>
+                    <div class="success-subtext">You have 2 free scans remaining</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script type="text/babel">
     <script type="text/babel">
         const { useState, useEffect } = React;
 
