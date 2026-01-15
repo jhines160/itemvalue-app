@@ -3769,23 +3769,12 @@ const /*SCAN_CONFIG = {
         | <a href="/terms.html">Terms</a> | <a href="/privacy.html">Privacy</a> | <a href="/faq.html">FAQ</a>
     </div>
     
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js').catch(() => {});
-            });
-        }
-    </script>
-</<div class="email-capture-container" id="emailCapture" style="display: none;">
-    
-    <!-- Email Capture Component -->
-    <div class="email-capture-container" id="emailCapture" style="display: none;">
-        <div class="email-capture-card">
-            <!-- Progress indicator -->
-            <div class="progress-dots">
-                <div class="progress-dot active"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-            </div>
-<body>
+   </script>
+
+<!-- Email Capture Component -->
+<div class="email-capture-container" id="emailCapture" style="display: none !important;">
+    <!-- All your email capture HTML here -->
+</div>
+
+</body>
 </html>
