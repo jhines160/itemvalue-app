@@ -2669,7 +2669,13 @@ display: block;
                 if (!canScan()) {
                     setShowUpgrade(true);
                     return;
-                }
+                // Email capture trigger (add at END of runAnalysis function)
+    const scanData = getScanData();
+    if (scanData.count === 0) {  // First scan
+        setTimeout(() => {
+            showEmailCapture('Check your results');
+        }, 5000);  // Show after 5 seconds
+    }
 
                 setScreen('loading');
                 
