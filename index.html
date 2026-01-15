@@ -2435,7 +2435,7 @@ const SCAN_CONFIG = {
                         </div>
                         
                         {!isPaid && (
-                            <a href={SCAN_CONFIG.SALES_PAGE_URL} style={{
+                            <a href={'/pricing.html'} style={{
                                 display: 'block',
                                 padding: '14px',
                                 background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))',
@@ -2498,12 +2498,12 @@ const SCAN_CONFIG = {
                 } catch (e) {
                     console.error('Email capture error:', e);
                 }
-                window.location.href = SCAN_CONFIG.SALES_PAGE_URL;
+                window.location.href = '/pricing.html';
             };
 
             const handleSkip = () => {
                 trackEvent('email_skipped');
-                window.location.href = SCAN_CONFIG.SALES_PAGE_URL;
+                window.location.href = '/pricing.html';
             };
 
             return (
@@ -2671,7 +2671,7 @@ const SCAN_CONFIG = {
 
             const handleShowEmailCapture = () => {
                 if (localStorage.getItem('itemvalue_user_email')) {
-                    window.location.href = SCAN_CONFIG.SALES_PAGE_URL;
+                    window.location.href = '/pricing.html';
                 } else {
                     setShowEmailCapture(true);
                 }
