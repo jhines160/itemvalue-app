@@ -2704,11 +2704,7 @@ const SCAN_CONFIG = {
                     setShowUpgrade(true);
                     return;
                 // Email capture trigger (add at END of runAnalysis function)
-    const scanData = getScanData();
-    if (scanData.count === 0) {  // First scan
-        setTimeout(() => {
-            showEmailCapture('Check your results');
-        }, 5000);  // Show after 5 seconds
+      // Show after 5 seconds
     }
 
                 setScreen('loading');
@@ -3775,6 +3771,6 @@ const SCAN_CONFIG = {
 <div class="email-capture-container" id="emailCapture" style="display: none !important;">
     <!-- All your email capture HTML here -->
 </div>
-
+-->
 </body>
 </html>
