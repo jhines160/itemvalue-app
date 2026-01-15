@@ -2118,7 +2118,51 @@ display: block;
             console.log('Email already captured, skipping');
             return;
         }
+        }
+    
+    // Handle email submission
+    function handleEmailSubmit(event) {
+        event.preventDefault();
         
+        const email = document.getElementById('emailInput').value;
+        const submitBtn = document.getElementById('submitBtn');
+        
+        submitBtn.innerHTML = '<span class="spinner"></span>';
+        submitBtn.disabled = true;
+        
+        // Store email locally
+        localStorage.setItem('itemvalue_user_email', email);
+        
+        // Track event
+        trackEvent('email_captured', {
+            method: 'first_scan',
+            service: 'kit'
+        });
+        
+        // Show success
+        document.getElementById('emailFormSection').style.display = 'none';
+        document.getElementById('emailSuccessSection').style.display = 'block';
+        
+        setTimeout(() => {
+            document.getElementById('emailCapture').style.display = 'none';
+        }, 2000);
+    }
+    
+    // Skip email capture
+    function skipEmail(event) {
+        event.preventDefault();
+        trackEvent('email_capture_skipped', { trigger: 'first_scan' });
+        document.getElementById('emailCapture').style.display = 'none';
+    }
+    
+    // Make functions globally available
+    window.handleEmailSubmit = handleEmailSubmit;
+    window.skipEmail = skipEmail;
+    window.showEmailCapture = showEmailCapture;
+    
+    // ============================================
+    // SCAN MANAGEMENT
+    // ============================================
         const captureElement = document.getElementById('emailCapture');
         if (captureElement) {
             if (lastItemValue) {
