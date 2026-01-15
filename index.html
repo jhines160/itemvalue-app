@@ -2096,7 +2096,46 @@ display: block;
                 console.log('GA4 Event:', eventName, eventParams);
             }
         }
+}
+    }
 
+    // ============================================
+    // KIT EMAIL CAPTURE FUNCTIONS
+    // ============================================
+    
+    // Your Kit form ID
+    const KIT_FORM_ID = '8977253';
+    const KIT_FORM_URL = `https://app.convertkit.com/forms/${KIT_FORM_ID}/subscriptions`;
+    
+    // Check if email already captured
+    function hasEmailCaptured() {
+        return localStorage.getItem('itemvalue_user_email') !== null;
+    }
+    
+    // Show email capture after first scan
+    function showEmailCapture(lastItemValue) {
+        if (hasEmailCaptured()) {
+            console.log('Email already captured, skipping');
+            return;
+        }
+        
+        const captureElement = document.getElementById('emailCapture');
+        if (captureElement) {
+            if (lastItemValue) {
+                const headline = document.querySelector('.email-headline');
+                headline.textContent = `Nice! That one was worth ${lastItemValue}`;
+            }
+            
+            captureElement.style.display = 'block';
+            trackEvent('email_capture_shown', { trigger: 'first_scan' });
+        }
+    }
+    
+    // [Add all the other functions here - handleEmailSubmit, skipEmail, continueScanning]
+
+    // ============================================
+    // SCAN MANAGEMENT
+    // ============================================
         // ============================================
         // SCAN MANAGEMENT
         // ============================================
