@@ -200,7 +200,300 @@ padding: 6px 14px;
             background: white;
             box-shadow: 0 0 20px rgba(255,255,255,0.5);
         }
+.email-input::placeholder {
+            color: #94a3b8;
+        }
 
+        .email-submit {
+            padding: 14px 24px;
+            background: white;
+            color: #764ba2;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+.email-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .email-submit:active {
+            transform: translateY(0);
+        }
+
+        .skip-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            text-decoration: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            transition: color 0.2s ease;
+        }
+display: block;
+            text-align: center;
+            margin-top: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            text-decoration: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            transition: color 0.2s ease;
+        }
+
+        .skip-link:hover {
+            color: white;
+        }
+
+        .email-success {
+            text-align: center;
+            padding: 24px;
+            animation: successPop 0.5s ease forwards;
+        }
+
+        @keyframes successPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .success-message {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .success-subtext {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 15px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #764ba2;
+            animation: spin 1s ease infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile optimization */
+        @media (max-width: 480px) {
+            .email-capture-card {
+                padding: 24px 20px;
+            }
+            
+            .email-form {
+                flex-direction: column;
+            }
+            
+            .email-submit {
+                padding: 16px;
+            }
+            
+            .value-badges {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* END EMAIL CAPTURE STYLES */
+        .skip-link:hover {
+            color: white;
+        }
+
+        .email-success {
+            text-align: center;
+            padding: 24px;
+            animation: successPop 0.5s ease forwards;
+        }
+
+        @keyframes successPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .success-message {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .success-subtext {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 15px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #764ba2;
+            animation: spin 1s ease infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile optimization */
+        @media (max-width: 480px) {
+            .email-capture-card {
+                padding: 24px 20px;
+            }
+            
+            .email-form {
+                flex-direction: column;
+            }
+            
+            .email-submit {
+                padding: 16px;
+            }
+            
+            .value-badges {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* END EMAIL CAPTURE STYLES */
+        .email-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .email-submit:active {
+            transform: translateY(0);
+        }
+
+        .skip-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            text-decoration: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            transition: color 0.2s ease;
+        }
+
+        .skip-link:hover {
+            color: white;
+        }
+
+        .email-success {
+            text-align: center;
+            padding: 24px;
+            animation: successPop 0.5s ease forwards;
+        }
+
+        @keyframes successPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .success-message {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .success-subtext {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 15px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #764ba2;
+            animation: spin 1s ease infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile optimization */
+        @media (max-width: 480px) {
+            .email-capture-card {
+                padding: 24px 20px;
+            }
+            
+            .email-form {
+                flex-direction: column;
+            }
+            
+            .email-submit {
+                padding: 16px;
+            }
+            
+            .value-badges {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* END EMAIL CAPTURE STYLES */
         .email-input::placeholder {
             color: #94a3b8;
         }
