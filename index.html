@@ -3513,16 +3513,7 @@ display: block;
                     
                   )}
                     
-                  {/* Trigger email capture after first scan */}
-                    {(() => {
-                        setTimeout(() => {
-                            const scanData = getScanData();
-                            if (scanData && scanData.count === 1 && !hasEmailCaptured()) {
-                                showEmailCapture(result.estimatedValue || "$45");
-                            }
-                        }, 1500);
-                        return null;
-                   })()}
+                 
                                 {result.marketData && (
                                     <div className="market-data">
                                         <div className="market-data-title">📊 Real Marketplace Data</div>
