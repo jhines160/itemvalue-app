@@ -1115,7 +1115,64 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             let scans = 0;
             let days = 0;
             
-            if (upperCode.includes('WEEKEND')) {
+            ifunction activateAccessCode(code) {
+    const upperCode = code.toUpperCase();
+    let bundle = null;
+    let scans = 0;
+    let days = 0;
+    
+    // $2 Single Scan
+    if (upperCode === 'SINGLE2') {
+        bundle = 'Single Scan';
+        scans = 1;
+        days = 30;
+    }
+    // $7 Starter Pack
+    else if (upperCode === 'STARTER25') {
+        bundle = 'Starter Pack';
+        scans = 25;
+        days = 365;
+    }
+    // $27 Challenge
+    else if (upperCode === 'CHALLENGE100') {
+        bundle = 'Challenge Bundle';
+        scans = 100;
+        days = 365;
+    }
+    // Existing codes below...
+    else if (upperCode.includes('WEEKEND')) {
+        bundle = 'Weekend Warrior';
+        scans = 50;
+        days = upperCode.includes('YEAR') ? 365 : 30;
+    } else if (upperCode.includes('MOVING')) {
+        bundle = 'Moving Master';
+        scans = 200;
+        days = upperCode.includes('YEAR') ? 365 : 60;
+    } else if (upperCode.includes('ESTATE')) {
+        bundle = 'Estate Pro';
+        scans = 1000;
+        days = upperCode.includes('YEAR') ? 365 : 90;
+    } else {
+        alert('Invalid access code. Please check and try again.');
+        return;
+    }
+    
+    // Rest of your existing activation logic...
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + days);
+    
+    const newData = {
+        tier: 'paid',
+        scansRemaining: scans,
+        totalScans: scans,
+        used: 0,
+        expiryDate: expiryDate.toISOString(),
+        bundle: bundle
+    };
+    
+    localStorage.setItem('itemvalue_scans', JSON.stringify(newData));
+    alert(`${bundle} activated! You have ${scans} scans available.`);
+}f (upperCode.includes('WEEKEND')) {
                 bundle = 'Weekend Warrior';
                 scans = 50;
                 days = upperCode.includes('YEAR') ? 365 : 30;
