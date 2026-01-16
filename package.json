@@ -1,1 +1,8 @@
-{ "name": "itemvalue-app", "version": "1.0.0", "dependencies": { "node-fetch": "^2.6.7" } }
+{
+  "name": "itemvalue-app",
+  "version": "1.0.0",
+  "dependencies": {
+    "node-fetch": "^2.6.7",
+    "stripe": "^14.14.0"
+  }
+}
