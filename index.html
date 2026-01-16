@@ -1049,9 +1049,9 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                     if (parsed.expiryDate && new Date(parsed.expiryDate) < new Date()) {
                         const freshData = {
                             tier: 'free',
-                            scansRemaining: 0,
+                            scansRemaining: SCAN_CONFIG.FREE_SCANS,
                             totalScans: SCAN_CONFIG.FREE_SCANS,
-                            used: SCAN_CONFIG.FREE_SCANS,
+                            used: 0,
                             expiryDate: null,
                             bundle: null
                         };
