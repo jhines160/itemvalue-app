@@ -1104,9 +1104,8 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             const code = urlParams.get('code');
             
             if (code) {
-                activateAccessCode(code);
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
+            window.history.replaceState({}, document.title, window.location.pathname);
+            activateAccessCode(code);
         }
 
       
@@ -1170,7 +1169,6 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             saveScanData(scanData);
             trackEvent('bundle_activated', { bundle_name: bundle, scans_granted: scans });
             alert(`✅ ${bundle} activated! You have ${scans} scans.`);
-            window.location.reload();
             return true;
         }
 
