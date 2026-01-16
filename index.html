@@ -1152,19 +1152,6 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         alert('Invalid access code. Please check and try again.');
         return;
     }
-    
-    // Rest of your existing activation logic...
-    const expiryDate = new Date();
-    expiryDate.setDate(expiryDate.getDate() + days);
-    
-    const newData = {
-        tier: 'paid',
-        scansRemaining: scans,
-        totalScans: scans,
-        used: 0,
-        expiryDate: expiryDate.toISOString(),
-        bundle: bundle
-    };
            
             const expiryDate = new Date();
             expiryDate.setDate(expiryDate.getDate() + days);
