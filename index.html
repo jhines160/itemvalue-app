@@ -1165,26 +1165,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
         expiryDate: expiryDate.toISOString(),
         bundle: bundle
     };
-    
-    localStorage.setItem('itemvalue_scans', JSON.stringify(newData));
-    alert(`${bundle} activated! You have ${scans} scans available.`);
-} (upperCode.includes('WEEKEND')) {
-                bundle = 'Weekend Warrior';
-                scans = 50;
-                days = upperCode.includes('YEAR') ? 365 : 30;
-            } else if (upperCode.includes('MOVING')) {
-                bundle = 'Moving Master';
-                scans = 200;
-                days = upperCode.includes('YEAR') ? 365 : 60;
-            } else if (upperCode.includes('ESTATE')) {
-                bundle = 'Estate Pro';
-                scans = 1000;
-                days = upperCode.includes('YEAR') ? 365 : 90;
-            } else {
-                alert('Invalid access code.');
-                return false;
-            }
-            
+           
             const expiryDate = new Date();
             expiryDate.setDate(expiryDate.getDate() + days);
             
