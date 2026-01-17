@@ -168,9 +168,31 @@ RULES:
     const anthropicData = await anthropicResponse.json();
     console.log('Analysis complete');
     
-// Log scan to Google Sheet
-    try {
-      console.log('Attempting to log scan...');
+// Log scan to Google Sheet (skip if test mode)
+    const referer = event.headers.referer || event.headers.Referer || '';
+    const isTestMode = referer.includes('test=true');
+    
+    if (!isTestMode) {
+      try {
+        console.log('Attempting to log scan...');
+        const logResponse = await fetch(SCAN_LOG_URL, {
+          method: 'POST',
+          redirect: 'follow',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            item: itemDescription,
+            category: category || 'Not specified',
+            condition: condition || 'Not specified',
+            userType: 'unknown'
+          })
+        });
+        console.log('Scan logged, status:', logResponse.status);
+      } catch (err) {
+        console.log('Logging error:', err.message);
+      }
+    } else {
+      console.log('Test mode - skipping scan log');
+    }
       const logResponse = await fetch(SCAN_LOG_URL, {
         method: 'POST',
         redirect: 'follow',
@@ -185,17 +207,7 @@ RULES:
       console.log('Scan logged, status:', logResponse.status);
     } catch (err) {
       console.log('Logging error:', err.message);
-    }// Log scan to Google Sheet
-    fetch(SCAN_LOG_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        item: itemDescription,
-        category: category || 'Not specified',
-        condition: condition || 'Not specified',
-        userType: 'unknown'
-      })
-    }).catch(err => console.log('Log error:', err));
+   
 
     return {
       statusCode: 200,
