@@ -193,21 +193,6 @@ RULES:
     } else {
       console.log('Test mode - skipping scan log');
     }
-      const logResponse = await fetch(SCAN_LOG_URL, {
-        method: 'POST',
-        redirect: 'follow',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          item: itemDescription,
-          category: category || 'Not specified',
-          condition: condition || 'Not specified',
-          userType: 'unknown'
-        })
-      });
-      console.log('Scan logged, status:', logResponse.status);
-    } catch (err) {
-      console.log('Logging error:', err.message);
-   
 
     return {
       statusCode: 200,
