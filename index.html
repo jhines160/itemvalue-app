@@ -1985,10 +1985,11 @@ input[type="text"].pulse-hint {
                                         </div>
                                     </div>
 
-                                    {/* Detailed Analysis Option */}
-                                    <div 
-                                        className={`analysis-option pro ${!paid ? 'locked' : ''}`}
-                                        onClick={() => {
+                                    {/* Detailed Analysis Option - only show after at least 1 scan */}
+{(paid || (scanData.used && scanData.used >= 1)) && (
+<div 
+    className={`analysis-option pro ${!paid ? 'locked' : ''}`}
+    onClick={() => {
                                             if (paid) {
                                                 selectAnalysisType('detailed');
                                             } else {
@@ -2006,6 +2007,7 @@ input[type="text"].pulse-hint {
                                                 {paid ? 'PRO' : 'UPGRADE'}
                                             </div>
                                         </div>
+   )}
                                         <div className="analysis-option-desc">
                                             {paid 
                                                 ? 'More accurate with category, original price, urgency & condition details.'
