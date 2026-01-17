@@ -705,12 +705,12 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             100% { transform: rotate(360deg); }
         }
 @keyframes pulse-border {
-    0%, 100% { border-color: #e0e0e0; }
-    50% { border-color: var(--color-primary); }
+    0%, 100% { border-color: #e0e0e0; box-shadow: 0 0 0 3px transparent; }
+    50% { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(13, 124, 102, 0.2); }
 }
 
 input.pulse-hint {
-    animation: pulse-border 2s ease-in-out 3;
+    animation: pulse-border 2s ease-in-out 3 !important;
 }
         .loading-text {
             color: var(--color-primary);
