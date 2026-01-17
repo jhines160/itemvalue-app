@@ -704,7 +704,14 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+@keyframes pulse-border {
+    0%, 100% { border-color: #e0e0e0; }
+    50% { border-color: var(--color-primary); }
+}
 
+input.pulse-hint {
+    animation: pulse-border 2s ease-in-out 3;
+}
         .loading-text {
             color: var(--color-primary);
             font-weight: 600;
@@ -1865,6 +1872,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                                     <label className="input-label">What do you want to check?</label>
                                     <input
                                         type="text"
+                                        className={!itemDescription.trim() ? 'pulse-hint' : ''}
                                         placeholder="e.g., KitchenAid mixer, Levi's jeans, old iPad..."
                                         value={itemDescription}
                                         onChange={(e) => setItemDescription(e.target.value)}
