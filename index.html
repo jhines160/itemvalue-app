@@ -1869,8 +1869,11 @@ input[type="text"].pulse-hint {
                                 </div>
 
                                 <div className="input-section">
-                                    <label className="input-label">What do you want to check?</label>
-                                    <input
+    <label className="input-label">
+        What do you want to check?
+        {!itemDescription.trim() && <span style={{display: 'block', fontSize: '14px', color: 'var(--color-primary)', marginTop: '5px'}}>👇 Type your item here</span>}
+    </label>
+    <input
     type="text"
     placeholder="e.g., KitchenAid mixer, Levi's jeans, old iPad..."
     value={itemDescription}
