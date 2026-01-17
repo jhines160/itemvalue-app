@@ -1871,13 +1871,16 @@ input[type="text"].pulse-hint {
                                 <div className="input-section">
                                     <label className="input-label">What do you want to check?</label>
                                     <input
-                                        type="text"
-                                        className={!itemDescription.trim() ? 'pulse-hint' : ''}
-                                        placeholder="e.g., KitchenAid mixer, Levi's jeans, old iPad..."
-                                        value={itemDescription}
-                                        onChange={(e) => setItemDescription(e.target.value)}
-                                        onKeyPress={(e) => e.key === 'Enter' && startAnalysis()}
-                                    />
+    type="text"
+    placeholder="e.g., KitchenAid mixer, Levi's jeans, old iPad..."
+    value={itemDescription}
+    onChange={(e) => setItemDescription(e.target.value)}
+    onKeyPress={(e) => e.key === 'Enter' && startAnalysis()}
+    style={!itemDescription.trim() ? {
+        animation: 'pulse-border 2s ease-in-out infinite',
+        borderColor: 'var(--color-primary)'
+    } : {}}
+/>
                                     
                                     <button 
                                         className="action-button"
