@@ -1876,7 +1876,7 @@ src="https://www.facebook.net/tr?id=1383551356849358&ev=PageView&noscript=1"
                                         disabled={!itemDescription.trim()}
                                         onClick={startAnalysis}
                                     >
-                                        Check My Item — Free ✓
+                                        {itemDescription.trim() ? 'Check My Item — Free ✓' : 'Enter an item above to check value'}
                                     </button>
                                     
                                     <div className="time-hint">
