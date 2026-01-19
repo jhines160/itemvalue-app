@@ -1,7 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+   <!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2PXG6EEVC0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-2PXG6EEVC0');
+</script>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1383551356849358');
+fbq('track', 'PageView');
+fbq('track', 'ViewContent', {
+    content_name: 'pricing_page',
+    content_type: 'product_group'
+});
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1383551356849358&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code --> <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get More Scans | Item Value</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -469,7 +497,46 @@
         }
     </style>
 </head>
-<body>
+<body><script>
+// Track InitiateCheckout when someone clicks a buy button
+document.querySelectorAll('.quick-card-btn, .bulk-card-btn, .challenge-cta-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        var price = 0;
+        var name = 'unknown';
+        
+        if (this.href.includes('SINGLE2') || this.textContent.includes('1 Scan')) {
+            price = 2; name = 'Quick Check';
+        } else if (this.href.includes('STARTER25') || this.textContent.includes('25 Scans')) {
+            price = 7; name = 'Starter Pack';
+        } else if (this.href.includes('weekend') || this.textContent.includes('50 Scans')) {
+            price = 17; name = 'Weekend Warrior';
+        } else if (this.href.includes('moving') || this.textContent.includes('200 Scans')) {
+            price = 37; name = 'Moving Master';
+        } else if (this.href.includes('estate') || this.textContent.includes('1000 Scans')) {
+            price = 97; name = 'Estate Pro';
+        } else if (this.href.includes('challenge')) {
+            price = 27; name = 'Declutter Challenge';
+        }
+        
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'InitiateCheckout', {
+                value: price,
+                currency: 'USD',
+                content_name: name
+            });
+            console.log('Meta Pixel: InitiateCheckout', name, price);
+        }
+        
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'begin_checkout', {
+                value: price,
+                currency: 'USD',
+                items: [{ item_name: name, price: price }]
+            });
+        }
+    });
+});
+</script>
     <!-- Header -->
     <header class="header">
         <div class="header-badge">You've used your free scans</div>
