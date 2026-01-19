@@ -1036,14 +1036,42 @@ input[type="text"].pulse-hint {
         };
 
         // ============================================
-        // GA4 TRACKING
-        // ============================================
-        function trackEvent(eventName, eventParams = {}) {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', eventName, eventParams);
-                console.log('GA4 Event:', eventName, eventParams);
-            }
+// GA4 TRACKING
+// ============================================
+function trackEvent(eventName, eventParams = {}) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, eventParams);
+        console.log('GA4 Event:', eventName, eventParams);
+    }
+    
+    // Meta Pixel tracking for key conversion events
+    if (typeof fbq !== 'undefined') {
+        if (eventName === 'analysis_completed') {
+            fbq('track', 'Lead', {
+                content_name: eventParams.item_category || 'item_scan',
+                content_category: eventParams.analysis_type || 'quick'
+            });
+            console.log('Meta Pixel: Lead event fired');
         }
+        if (eventName === 'item_entered') {
+            fbq('track', 'Search', {
+                search_string: 'item_entered'
+            });
+        }
+        if (eventName === 'upgrade_cta_clicked') {
+            fbq('track', 'ViewContent', {
+                content_name: 'pricing_interest'
+            });
+        }
+        if (eventName === 'bundle_activated') {
+            fbq('track', 'Purchase', {
+                value: 0, // Will be overwritten below
+                currency: 'USD',
+                content_name: eventParams.bundle_name
+            });
+        }
+    }
+}
 
         // ============================================
         // SCAN MANAGEMENT
@@ -1174,8 +1202,28 @@ input[type="text"].pulse-hint {
             };
             
             saveScanData(scanData);
-            trackEvent('bundle_activated', { bundle_name: bundle, scans_granted: scans });
-            alert(`✅ ${bundle} activated! You have ${scans} scans.`);
+trackEvent('bundle_activated', { bundle_name: bundle, scans_granted: scans });
+
+// Fire Meta Purchase event with actual value
+if (typeof fbq !== 'undefined') {
+    let purchaseValue = 0;
+    if (bundle === 'Single Scan') purchaseValue = 2;
+    else if (bundle === 'Starter Pack') purchaseValue = 7;
+    else if (bundle === 'Challenge Bundle') purchaseValue = 27;
+    else if (bundle === 'Weekend Warrior') purchaseValue = 17;
+    else if (bundle === 'Moving Master') purchaseValue = 37;
+    else if (bundle === 'Estate Pro') purchaseValue = 97;
+    
+    fbq('track', 'Purchase', {
+        value: purchaseValue,
+        currency: 'USD',
+        content_name: bundle,
+        content_type: 'product'
+    });
+    console.log('Meta Pixel: Purchase event fired', purchaseValue);
+}
+
+alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             return true;
         }
 
