@@ -1015,7 +1015,163 @@ input[type="text"].pulse-hint {
             margin-bottom: 8px;
             font-weight: 500;
         }
+/* ============================================
+   PHOTO SCAN STYLES
+   ============================================ */
+.scan-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    background: var(--color-bg-alt);
+    border-radius: var(--radius);
+    padding: 4px;
+}
 
+.scan-tab {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    border-radius: calc(var(--radius) - 2px);
+    transition: all 0.2s;
+}
+
+.scan-tab.active {
+    background: white;
+    color: var(--color-primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.scan-tab:hover:not(.active) {
+    color: var(--color-text);
+}
+
+.photo-upload-area {
+    border: 2px dashed #d1d5db;
+    border-radius: var(--radius);
+    padding: 30px 20px;
+    text-align: center;
+    background: var(--color-bg-alt);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.photo-upload-area:hover {
+    border-color: var(--color-primary);
+    background: rgba(13, 124, 102, 0.05);
+}
+
+.photo-upload-area.has-image {
+    border-style: solid;
+    border-color: var(--color-primary);
+    padding: 10px;
+}
+
+.upload-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.upload-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.upload-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 14px;
+    transition: transform 0.1s ease;
+}
+
+.upload-btn:hover {
+    transform: scale(1.02);
+}
+
+.upload-btn:active {
+    transform: scale(0.98);
+}
+
+.upload-btn.camera {
+    background: var(--color-primary);
+    color: white;
+}
+
+.upload-btn.gallery {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.preview-container {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+}
+
+.preview-image {
+    max-width: 100%;
+    max-height: 250px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.clear-preview {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-analyzing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+}
+
+.photo-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--color-bg-alt);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: photoSpin 0.8s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes photoSpin {
+    to { transform: rotate(360deg); }
+}
+
+.photo-error {
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 14px;
+}
         @keyframes emailSpinner {
             to { transform: rotate(360deg); }
         }
@@ -1585,6 +1741,11 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             const [screen, setScreen] = useState('home');
             const [analysisType, setAnalysisType] = useState('quick'); // 'quick' or 'detailed'
             const [itemDescription, setItemDescription] = useState('');
+            const [scanMode, setScanMode] = useState('text'); // 'text' or 'photo'
+            const [photoPreview, setPhotoPreview] = useState(null);
+            const [photoFile, setPhotoFile] = useState(null);
+            const [photoLoading, setPhotoLoading] = useState(false);
+            const [photoError, setPhotoError] = useState(null);
             const [condition, setCondition] = useState(null);
             const [category, setCategory] = useState(null);
             const [originalPrice, setOriginalPrice] = useState('');
@@ -1610,7 +1771,124 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             const [bulkResults, setBulkResults] = useState([]);
 
             const refreshScanData = () => setScanData(getScanData());
+// ============================================
+// PHOTO SCAN FUNCTIONS
+// ============================================
+const handlePhotoSelect = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    if (!file.type.startsWith('image/')) {
+        setPhotoError('Please select an image file');
+        return;
+    }
+    
+    if (file.size > 10 * 1024 * 1024) {
+        setPhotoError('Image must be under 10MB');
+        return;
+    }
+    
+    setPhotoError(null);
+    setPhotoFile(file);
+    
+    const reader = new FileReader();
+    reader.onload = (e) => setPhotoPreview(e.target.result);
+    reader.readAsDataURL(file);
+    
+    trackEvent('photo_selected', { source: 'gallery' });
+};
 
+const clearPhoto = () => {
+    setPhotoPreview(null);
+    setPhotoFile(null);
+    setPhotoError(null);
+};
+
+const runPhotoAnalysis = async () => {
+    if (!photoFile) return;
+    
+    if (!canScan()) {
+        setShowUpgrade(true);
+        return;
+    }
+    
+    setPhotoLoading(true);
+    setPhotoError(null);
+    trackEvent('scan_initiated', { scan_type: 'photo' });
+    
+    try {
+        const base64 = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = reject;
+            reader.readAsDataURL(photoFile);
+        });
+        
+        const response = await fetch('/.netlify/functions/scan-photo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                image: base64,
+                mimeType: photoFile.type
+            }),
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Scan failed');
+        }
+        
+        const photoResult = await response.json();
+        
+        decrementScan();
+        refreshScanData();
+        
+        trackEvent('scan_completed', {
+            scan_type: 'photo',
+            item_category: photoResult.itemName,
+            confidence: photoResult.confidence,
+            estimated_value: photoResult.estimatedValue
+        });
+        
+        const formattedResult = {
+            recommendation: photoResult.estimatedValue >= 10 ? 'sell' : 'donate',
+            reason: photoResult.tips,
+            effortScore: photoResult.confidence === 'high' ? 'easy' : photoResult.confidence === 'medium' ? 'medium' : 'hard',
+            effortReason: `Confidence: ${photoResult.confidence}`,
+            marketData: `Best platforms: ${photoResult.bestPlatforms.join(', ')}`,
+            estimatedPrice: photoResult.valueRange.high.toFixed(2),
+            ebayFees: (photoResult.estimatedValue * 0.13).toFixed(2),
+            shippingCost: '8.00',
+            netProfit: photoResult.estimatedValue.toFixed(2),
+            taxDeduction: (photoResult.estimatedValue * 0.3).toFixed(2),
+            analysisType: 'photo'
+        };
+        
+        setResult(formattedResult);
+        setScreen('result');
+        
+        const historyItem = {
+            id: Date.now(),
+            timestamp: new Date().toISOString(),
+            itemName: photoResult.itemName,
+            condition: photoResult.condition,
+            analysisType: 'photo',
+            ...formattedResult
+        };
+        const updatedHistory = [historyItem, ...history];
+        setHistory(updatedHistory);
+        localStorage.setItem('sellDonateHistory', JSON.stringify(updatedHistory));
+        
+        clearPhoto();
+        
+    } catch (error) {
+        console.error('Photo scan error:', error);
+        setPhotoError(error.message || 'Failed to analyze image. Please try again.');
+        trackEvent('scan_error', { scan_type: 'photo', error_type: error.message });
+    } finally {
+        setPhotoLoading(false);
+    }
+};
             const handleShowEmailCapture = () => {
                 if (localStorage.getItem('itemvalue_user_email')) {
                     window.location.href = SCAN_CONFIG.SALES_PAGE_URL;
@@ -1917,35 +2195,127 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
                                 </div>
 
                                 <div className="input-section">
-    <label className="input-label">
-        What do you want to check?
-        {!itemDescription.trim() && <span style={{display: 'block', fontSize: '14px', color: 'var(--color-primary)', marginTop: '5px'}}>👇 Type your item here</span>}
-    </label>
-    <input
-    type="text"
-    autoFocus  
-    placeholder="e.g., KitchenAid mixer, Levi's jeans, old iPad..."
-    value={itemDescription}
-    onChange={(e) => setItemDescription(e.target.value)}
-    onKeyPress={(e) => e.key === 'Enter' && startAnalysis()}
-    style={!itemDescription.trim() ? {
-        animation: 'pulse-border 2s ease-in-out infinite',
-        borderColor: 'var(--color-primary)'
-    } : {}}
-/>
-                                    
-                                    <button 
-                                        className="action-button"
-                                        disabled={!itemDescription.trim()}
-                                        onClick={startAnalysis}
-                                    >
-                                        {itemDescription.trim() ? 'Check My Item — Free ✓' : 'Enter an item above to check value'}
-                                    </button>
-                                    
-                                    <div className="time-hint">
-                                        ⏱ Takes about <span>30 seconds</span> • No signup required
-                                    </div>
-                                </div>
+    {/* Scan Mode Tabs */}
+    <div className="scan-tabs">
+        <button 
+            className={`scan-tab ${scanMode === 'text' ? 'active' : ''}`}
+            onClick={() => setScanMode('text')}
+        >
+            ✏️ Type Item
+        </button>
+        <button 
+            className={`scan-tab ${scanMode === 'photo' ? 'active' : ''}`}
+            onClick={() => setScanMode('photo')}
+        >
+            📷 Photo Scan
+        </button>
+    </div>
+
+    {scanMode === 'text' ? (
+        <>
+            <label className="input-label">
+                What do you want to check?
+                {!itemDescription.trim() && <span style={{display: 'block', fontSize: '14px', color: 'var(--color-primary)', marginTop: '5px'}}>👇 Type your item here</span>}
+            </label>
+            <input
+                type="text"
+                autoFocus  
+                placeholder="e.g., KitchenAid mixer, Levi's jeans, old iPad..."
+                value={itemDescription}
+                onChange={(e) => setItemDescription(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && startAnalysis()}
+                style={!itemDescription.trim() ? {
+                    animation: 'pulse-border 2s ease-in-out infinite',
+                    borderColor: 'var(--color-primary)'
+                } : {}}
+            />
+            <button 
+                className="action-button"
+                disabled={!itemDescription.trim()}
+                onClick={startAnalysis}
+            >
+                {itemDescription.trim() ? 'Check My Item — Free ✓' : 'Enter an item above to check value'}
+            </button>
+            <div className="time-hint">
+                ⏱ Takes about <span>30 seconds</span> • No signup required
+            </div>
+        </>
+    ) : (
+        <>
+            <input
+                type="file"
+                id="photoInput"
+                accept="image/*"
+                onChange={handlePhotoSelect}
+                style={{ display: 'none' }}
+            />
+            <input
+                type="file"
+                id="cameraInput"
+                accept="image/*"
+                capture="environment"
+                onChange={handlePhotoSelect}
+                style={{ display: 'none' }}
+            />
+            
+            {photoLoading ? (
+                <div className="photo-analyzing">
+                    <div className="photo-spinner"></div>
+                    <p style={{color: 'var(--color-primary)', fontWeight: '600'}}>Analyzing your item...</p>
+                    <p style={{color: 'var(--color-text-muted)', fontSize: '14px'}}>This takes about 10 seconds</p>
+                </div>
+            ) : photoPreview ? (
+                <div className="photo-upload-area has-image">
+                    <div className="preview-container">
+                        <img src={photoPreview} alt="Item preview" className="preview-image" />
+                        <button className="clear-preview" onClick={clearPhoto}>✕</button>
+                    </div>
+                </div>
+            ) : (
+                <div className="photo-upload-area" onClick={() => document.getElementById('cameraInput').click()}>
+                    <div className="upload-icon">📷</div>
+                    <p style={{color: 'var(--color-text)', fontWeight: '600', marginBottom: '5px'}}>
+                        Take a photo of your item
+                    </p>
+                    <p style={{color: 'var(--color-text-muted)', fontSize: '14px'}}>
+                        Works best with clear, well-lit photos
+                    </p>
+                    <div className="upload-buttons" onClick={(e) => e.stopPropagation()}>
+                        <button 
+                            className="upload-btn camera"
+                            onClick={() => document.getElementById('cameraInput').click()}
+                        >
+                            📸 Take Photo
+                        </button>
+                        <button 
+                            className="upload-btn gallery"
+                            onClick={() => document.getElementById('photoInput').click()}
+                        >
+                            🖼️ Gallery
+                        </button>
+                    </div>
+                </div>
+            )}
+            
+            {photoError && (
+                <div className="photo-error">{photoError}</div>
+            )}
+            
+            {photoPreview && !photoLoading && (
+                <button
+                    className="action-button"
+                    onClick={runPhotoAnalysis}
+                >
+                    ✨ Scan This Item
+                </button>
+            )}
+            
+            <div className="time-hint">
+                ⏱ Takes about <span>10 seconds</span> • No signup required
+            </div>
+        </>
+    )}
+</div>
 
                                 {paid && (
                                     <div className="bulk-prompt">
