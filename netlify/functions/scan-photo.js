@@ -48,12 +48,23 @@ exports.handler = async (event, context) => {
       };
     }
 
+    const apiKey = process.env.OPENAI_API_KEY;
+    
+    console.log('API Key exists:', !!apiKey);
+    console.log('API Key starts with:', apiKey ? apiKey.substring(0, 7) : 'undefined');
+
+    if (!apiKey) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'API key not configured' }),
+      };
+    }
+
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        console.log('API Key exists:', !!process.env.OPENAI_API_KEY);
-      'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: 'gpt-4o',
