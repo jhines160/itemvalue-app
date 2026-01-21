@@ -1175,7 +1175,232 @@ input[type="text"].pulse-hint {
         @keyframes emailSpinner {
             to { transform: rotate(360deg); }
         }
-    </style>
+   /* ========== TESTIMONIAL MODAL ========== */
+.iv-testimonial-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+    animation: iv-fadeIn 0.2s ease-out;
+}
+
+@keyframes iv-fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes iv-slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.iv-testimonial-modal {
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    animation: iv-slideUp 0.3s ease-out;
+    overflow: hidden;
+}
+
+.iv-testimonial-header {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    padding: 24px 28px 20px;
+    color: white;
+}
+
+.iv-testimonial-emoji {
+    font-size: 32px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.iv-testimonial-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+}
+
+.iv-testimonial-subtitle {
+    font-size: 15px;
+    opacity: 0.9;
+    margin: 0;
+    font-weight: 400;
+}
+
+.iv-testimonial-body {
+    padding: 24px 28px 28px;
+}
+
+.iv-testimonial-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: var(--font-body);
+    resize: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #fff;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.iv-testimonial-textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(13, 124, 102, 0.15);
+}
+
+.iv-testimonial-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: var(--font-body);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #fff;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.iv-testimonial-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(13, 124, 102, 0.15);
+}
+
+.iv-testimonial-checkbox-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.iv-testimonial-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #cbd5e1;
+    border-radius: 6px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: #fff;
+    margin-top: 1px;
+}
+
+.iv-testimonial-checkbox.checked {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.iv-testimonial-checkbox svg {
+    width: 12px;
+    height: 12px;
+    color: white;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.15s;
+}
+
+.iv-testimonial-checkbox.checked svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.iv-testimonial-label {
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+.iv-testimonial-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.iv-testimonial-btn {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-body);
+}
+
+.iv-testimonial-btn-skip {
+    background: transparent;
+    border: 2px solid #e2e8f0;
+    color: #64748b;
+}
+
+.iv-testimonial-btn-skip:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.iv-testimonial-btn-submit {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 14px rgba(13, 124, 102, 0.35);
+}
+
+.iv-testimonial-btn-submit:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(13, 124, 102, 0.4);
+}
+
+.iv-testimonial-btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.iv-testimonial-thank-you {
+    text-align: center;
+    padding: 40px 28px;
+}
+
+.iv-testimonial-thank-you-emoji {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.iv-testimonial-thank-you-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 8px 0;
+    font-family: var(--font-display);
+}
+
+.iv-testimonial-thank-you-text {
+    font-size: 15px;
+    color: #64748b;
+    margin: 0;
+}
+/* ========== END TESTIMONIAL MODAL ========== */ </style>
 </head>
 <body>
     <div id="root"></div>
@@ -1412,7 +1637,155 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
         // ============================================
         // COMPONENTS
         // ============================================
+// ============================================
+        // TESTIMONIAL MODAL COMPONENT
+        // ============================================
+        const TESTIMONIAL_VALUE_THRESHOLD = 50;
+        const TESTIMONIAL_MIN_SCANS = 2;
 
+        function TestimonialModal({ isOpen, onClose, scanValue, scanCount }) {
+            const [feedback, setFeedback] = useState('');
+            const [firstName, setFirstName] = useState('');
+            const [canFeature, setCanFeature] = useState(false);
+            const [isSubmitting, setIsSubmitting] = useState(false);
+            const [showThankYou, setShowThankYou] = useState(false);
+
+            useEffect(() => {
+                if (isOpen) {
+                    trackEvent('testimonial_modal_shown', {
+                        trigger_value: scanValue,
+                        scan_number: scanCount
+                    });
+                }
+            }, [isOpen]);
+
+            const handleSkip = () => {
+                trackEvent('testimonial_skipped');
+                onClose();
+            };
+
+            const handleSubmit = async () => {
+                if (!feedback.trim()) return;
+                
+                setIsSubmitting(true);
+                
+                const data = {
+                    feedback: feedback.trim(),
+                    firstName: firstName.trim() || null,
+                    canFeature,
+                    scanCount,
+                    triggerValue: scanValue,
+                    submittedAt: new Date().toISOString()
+                };
+                
+                trackEvent('testimonial_submitted', {
+                    has_name: !!firstName.trim(),
+                    consent_given: canFeature
+                });
+                
+                try {
+                    await fetch('/.netlify/functions/save-testimonial', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                } catch (err) {
+                    console.error('Testimonial error:', err);
+                }
+                
+                localStorage.setItem('iv_testimonial_submitted', 'true');
+                setIsSubmitting(false);
+                setShowThankYou(true);
+                
+                setTimeout(() => {
+                    onClose();
+                    setShowThankYou(false);
+                    setFeedback('');
+                    setFirstName('');
+                    setCanFeature(false);
+                }, 2000);
+            };
+
+            if (!isOpen) return null;
+
+            return (
+                <div className="iv-testimonial-overlay" onClick={handleSkip}>
+                    <div className="iv-testimonial-modal" onClick={(e) => e.stopPropagation()}>
+                        {showThankYou ? (
+                            <div className="iv-testimonial-thank-you">
+                                <span className="iv-testimonial-thank-you-emoji">💚</span>
+                                <h3 className="iv-testimonial-thank-you-title">Thanks so much!</h3>
+                                <p className="iv-testimonial-thank-you-text">Your feedback means a lot.</p>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="iv-testimonial-header">
+                                    <span className="iv-testimonial-emoji">🎉</span>
+                                    <h2 className="iv-testimonial-title">Nice find!</h2>
+                                    <p className="iv-testimonial-subtitle">Did this help you discover something valuable?</p>
+                                </div>
+                                <div className="iv-testimonial-body">
+                                    <textarea
+                                        className="iv-testimonial-textarea"
+                                        rows={3}
+                                        placeholder="Share a quick thought..."
+                                        value={feedback}
+                                        onChange={(e) => setFeedback(e.target.value)}
+                                    />
+                                    <input
+                                        type="text"
+                                        className="iv-testimonial-input"
+                                        placeholder="Your first name (optional)"
+                                        value={firstName}
+                                        onChange={(e) => setFirstName(e.target.value)}
+                                    />
+                                    <div 
+                                        className="iv-testimonial-checkbox-wrapper"
+                                        onClick={() => setCanFeature(!canFeature)}
+                                    >
+                                        <div className={`iv-testimonial-checkbox ${canFeature ? 'checked' : ''}`}>
+                                            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M2 6l3 3 5-6" />
+                                            </svg>
+                                        </div>
+                                        <span className="iv-testimonial-label">
+                                            You can feature my feedback — I might end up on your site!
+                                        </span>
+                                    </div>
+                                    <div className="iv-testimonial-buttons">
+                                        <button 
+                                            className="iv-testimonial-btn iv-testimonial-btn-skip"
+                                            onClick={handleSkip}
+                                        >
+                                            Skip
+                                        </button>
+                                        <button 
+                                            className="iv-testimonial-btn iv-testimonial-btn-submit"
+                                            onClick={handleSubmit}
+                                            disabled={!feedback.trim() || isSubmitting}
+                                        >
+                                            {isSubmitting ? 'Sending...' : 'Submit'}
+                                        </button>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        function shouldShowTestimonial(scanValue, scanCount) {
+            const alreadyShown = sessionStorage.getItem('iv_testimonial_shown');
+            const alreadySubmitted = localStorage.getItem('iv_testimonial_submitted');
+            
+            return (
+                scanValue >= TESTIMONIAL_VALUE_THRESHOLD &&
+                scanCount >= TESTIMONIAL_MIN_SCANS &&
+                !alreadyShown &&
+                !alreadySubmitted
+            );
+        }
         function ScanCounter({ onClick }) {
             const data = getScanData();
             const remaining = data.scansRemaining;
@@ -1765,6 +2138,8 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             const [showAccount, setShowAccount] = useState(false);
             const [showEmailCapture, setShowEmailCapture] = useState(false);
             const [showHistory, setShowHistory] = useState(false);
+           const [showTestimonial, setShowTestimonial] = useState(false);
+            const [testimonialValue, setTestimonialValue] = useState(0);
 
             // Bulk mode
             const [bulkItems, setBulkItems] = useState('');
@@ -1865,6 +2240,14 @@ const runPhotoAnalysis = async () => {
         };
         
         setResult(formattedResult);
+       // Check if we should show testimonial
+                        const currentScanCount = parseInt(localStorage.getItem('iv_scan_count') || '0') + 1;
+                        localStorage.setItem('iv_scan_count', currentScanCount.toString());
+                        if (shouldShowTestimonial(photoResult.estimatedValue, currentScanCount)) {
+                            sessionStorage.setItem('iv_testimonial_shown', 'true');
+                            setTestimonialValue(photoResult.estimatedValue);
+                            setTimeout(() => setShowTestimonial(true), 1500);
+                        }
         setScreen('result');
         
         const historyItem = {
@@ -1985,6 +2368,15 @@ const runPhotoAnalysis = async () => {
                     };
 
                     setResult(resultData);
+                   // Check if we should show testimonial
+                        const currentScanCount = parseInt(localStorage.getItem('iv_scan_count') || '0') + 1;
+                        localStorage.setItem('iv_scan_count', currentScanCount.toString());
+                        const netProfitValue = parseFloat(resultData.netProfit);
+                        if (shouldShowTestimonial(netProfitValue, currentScanCount)) {
+                            sessionStorage.setItem('iv_testimonial_shown', 'true');
+                            setTestimonialValue(netProfitValue);
+                            setTimeout(() => setShowTestimonial(true), 1500);
+                        }
                     setScreen('result');
 
                     trackEvent('analysis_completed', {
@@ -2354,6 +2746,14 @@ const runPhotoAnalysis = async () => {
                                     localStorage.removeItem('sellDonateHistory');
                                     setShowHistory(false);
                                 }}
+                            />
+                        )}
+                       {showTestimonial && (
+                            <TestimonialModal
+                                isOpen={showTestimonial}
+                                onClose={() => setShowTestimonial(false)}
+                                scanValue={testimonialValue}
+                                scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')}
                             />
                         )}
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
@@ -2934,6 +3334,14 @@ const runPhotoAnalysis = async () => {
                                 }}
                             />
                         )}
+                       {showTestimonial && (
+                            <TestimonialModal
+                                isOpen={showTestimonial}
+                                onClose={() => setShowTestimonial(false)}
+                                scanValue={testimonialValue}
+                                scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')}
+                            />
+                        )}
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                     </>
                 );
@@ -3058,6 +3466,14 @@ const runPhotoAnalysis = async () => {
                                     localStorage.removeItem('sellDonateHistory');
                                     setShowHistory(false);
                                 }}
+                            />
+                        )}
+                       {showTestimonial && (
+                            <TestimonialModal
+                                isOpen={showTestimonial}
+                                onClose={() => setShowTestimonial(false)}
+                                scanValue={testimonialValue}
+                                scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')}
                             />
                         )}
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
