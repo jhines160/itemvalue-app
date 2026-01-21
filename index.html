@@ -28,8 +28,8 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
 <!-- End Meta Pixel Code -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Item Value — Know in 30 Seconds If It's Worth Selling</title>
-    <meta name="description" content="AI-powered app that tells you if your stuff is worth selling. Get real profit estimates after fees and shipping.">
+    <title>Item Value — Scan Any Item. Know If It's Worth Selling.</title>
+    <meta name="description" content="AI-powered app that tells you if your stuff is worth selling. Snap a photo, get instant value. Free to try.">
     
     <!-- PWA Configuration -->
     <meta name="theme-color" content="#0D7C66">
@@ -1427,10 +1427,10 @@ function trackEvent(eventName, eventParams = {}) {
     
     // Meta Pixel tracking for key conversion events
     if (typeof fbq !== 'undefined') {
-        if (eventName === 'analysis_completed') {
+        if (eventName === 'analysis_completed' || eventName === 'scan_completed') {
             fbq('track', 'Lead', {
                 content_name: eventParams.item_category || 'item_scan',
-                content_category: eventParams.analysis_type || 'quick'
+                content_category: eventParams.analysis_type || eventParams.scan_type || 'quick'
             });
             console.log('Meta Pixel: Lead event fired');
         }
@@ -1446,7 +1446,7 @@ function trackEvent(eventName, eventParams = {}) {
         }
         if (eventName === 'bundle_activated') {
             fbq('track', 'Purchase', {
-                value: 0, // Will be overwritten below
+                value: 0,
                 currency: 'USD',
                 content_name: eventParams.bundle_name
             });
@@ -1532,25 +1532,18 @@ function trackEvent(eventName, eventParams = {}) {
     let scans = 0;
     let days = 0;
     
-    // $2 Single Scan
     if (upperCode === 'SINGLE2') {
         bundle = 'Single Scan';
         scans = 1;
         days = 30;
-   
-    // $7 Starter Pack
    } else if (upperCode === 'STARTER25') {
         bundle = 'Starter Pack';
         scans = 25;
         days = 365;
- 
-    // $27 Challenge
     } else if (upperCode === 'CHALLENGE100') {
         bundle = 'Challenge Bundle';
         scans = 100;
         days = 365;
-  
-    // Existing codes below...
     } else if (upperCode.includes('WEEKEND')) {
         bundle = 'Weekend Warrior';
         scans = 50;
@@ -1585,7 +1578,6 @@ function trackEvent(eventName, eventParams = {}) {
             saveScanData(scanData);
 trackEvent('bundle_activated', { bundle_name: bundle, scans_granted: scans });
 
-// Fire Meta Purchase event with actual value
 if (typeof fbq !== 'undefined') {
     let purchaseValue = 0;
     if (bundle === 'Single Scan') purchaseValue = 2;
@@ -1635,9 +1627,6 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
         ];
 
         // ============================================
-        // COMPONENTS
-        // ============================================
-// ============================================
         // TESTIMONIAL MODAL COMPONENT
         // ============================================
         const TESTIMONIAL_VALUE_THRESHOLD = 50;
@@ -1786,6 +1775,7 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
                 !alreadySubmitted
             );
         }
+        
         function ScanCounter({ onClick }) {
             const data = getScanData();
             const remaining = data.scansRemaining;
@@ -2108,13 +2098,11 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
         // MAIN APP
         // ============================================
         function App() {
-            // Screens: home, chooseType, condition, loading, result, 
-            //          detailed_category, detailed_condition, detailed_price, detailed_urgency, detailed_extras
-            //          bulk, bulkResults
             const [screen, setScreen] = useState('home');
-            const [analysisType, setAnalysisType] = useState('quick'); // 'quick' or 'detailed'
+            const [analysisType, setAnalysisType] = useState('quick');
             const [itemDescription, setItemDescription] = useState('');
-            const [scanMode, setScanMode] = useState('text'); // 'text' or 'photo'
+            // CHANGE 1: Default to photo scan mode
+            const [scanMode, setScanMode] = useState('photo');
             const [photoPreview, setPhotoPreview] = useState(null);
             const [photoFile, setPhotoFile] = useState(null);
             const [photoLoading, setPhotoLoading] = useState(false);
@@ -2133,22 +2121,19 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             });
             const [scanData, setScanData] = useState(getScanData());
             
-            // Modals
             const [showUpgrade, setShowUpgrade] = useState(false);
             const [showAccount, setShowAccount] = useState(false);
             const [showEmailCapture, setShowEmailCapture] = useState(false);
             const [showHistory, setShowHistory] = useState(false);
-           const [showTestimonial, setShowTestimonial] = useState(false);
+            const [showTestimonial, setShowTestimonial] = useState(false);
             const [testimonialValue, setTestimonialValue] = useState(0);
 
-            // Bulk mode
             const [bulkItems, setBulkItems] = useState('');
             const [bulkResults, setBulkResults] = useState([]);
 
             const refreshScanData = () => setScanData(getScanData());
-// ============================================
+
 // PHOTO SCAN FUNCTIONS
-// ============================================
 const handlePhotoSelect = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -2240,14 +2225,13 @@ const runPhotoAnalysis = async () => {
         };
         
         setResult(formattedResult);
-       // Check if we should show testimonial
-                        const currentScanCount = parseInt(localStorage.getItem('iv_scan_count') || '0') + 1;
-                        localStorage.setItem('iv_scan_count', currentScanCount.toString());
-                        if (shouldShowTestimonial(photoResult.estimatedValue, currentScanCount)) {
-                            sessionStorage.setItem('iv_testimonial_shown', 'true');
-                            setTestimonialValue(photoResult.estimatedValue);
-                            setTimeout(() => setShowTestimonial(true), 1500);
-                        }
+        const currentScanCount = parseInt(localStorage.getItem('iv_scan_count') || '0') + 1;
+        localStorage.setItem('iv_scan_count', currentScanCount.toString());
+        if (shouldShowTestimonial(photoResult.estimatedValue, currentScanCount)) {
+            sessionStorage.setItem('iv_testimonial_shown', 'true');
+            setTestimonialValue(photoResult.estimatedValue);
+            setTimeout(() => setShowTestimonial(true), 1500);
+        }
         setScreen('result');
         
         const historyItem = {
@@ -2272,6 +2256,7 @@ const runPhotoAnalysis = async () => {
         setPhotoLoading(false);
     }
 };
+
             const handleShowEmailCapture = () => {
                 if (localStorage.getItem('itemvalue_user_email')) {
                     window.location.href = SCAN_CONFIG.SALES_PAGE_URL;
@@ -2280,6 +2265,7 @@ const runPhotoAnalysis = async () => {
                 }
             };
 
+            // CHANGE 2: Skip analysis type selection for free users
             const startAnalysis = () => {
                 if (!canScan()) {
                     setShowUpgrade(true);
@@ -2288,7 +2274,15 @@ const runPhotoAnalysis = async () => {
                 if (!itemDescription.trim()) return;
                 
                 trackEvent('item_entered', { item_length: itemDescription.length });
-                setScreen('chooseType');
+                
+                // Free users go straight to condition selection
+                // Paid users get the analysis type choice
+                if (isPaidUser()) {
+                    setScreen('chooseType');
+                } else {
+                    setAnalysisType('quick');
+                    setScreen('condition');
+                }
             };
 
             const selectAnalysisType = (type) => {
@@ -2368,15 +2362,14 @@ const runPhotoAnalysis = async () => {
                     };
 
                     setResult(resultData);
-                   // Check if we should show testimonial
-                        const currentScanCount = parseInt(localStorage.getItem('iv_scan_count') || '0') + 1;
-                        localStorage.setItem('iv_scan_count', currentScanCount.toString());
-                        const netProfitValue = parseFloat(resultData.netProfit);
-                        if (shouldShowTestimonial(netProfitValue, currentScanCount)) {
-                            sessionStorage.setItem('iv_testimonial_shown', 'true');
-                            setTestimonialValue(netProfitValue);
-                            setTimeout(() => setShowTestimonial(true), 1500);
-                        }
+                    const currentScanCount = parseInt(localStorage.getItem('iv_scan_count') || '0') + 1;
+                    localStorage.setItem('iv_scan_count', currentScanCount.toString());
+                    const netProfitValue = parseFloat(resultData.netProfit);
+                    if (shouldShowTestimonial(netProfitValue, currentScanCount)) {
+                        sessionStorage.setItem('iv_testimonial_shown', 'true');
+                        setTestimonialValue(netProfitValue);
+                        setTimeout(() => setShowTestimonial(true), 1500);
+                    }
                     setScreen('result');
 
                     trackEvent('analysis_completed', {
@@ -2525,7 +2518,6 @@ const runPhotoAnalysis = async () => {
             // SCREENS
             // ============================================
 
-            // Loading
             if (screen === 'loading') {
                 const isDetailed = analysisType === 'detailed';
                 return (
@@ -2549,7 +2541,7 @@ const runPhotoAnalysis = async () => {
                 );
             }
 
-            // Home
+            // Home - Updated headline and default to photo
             if (screen === 'home') {
                 return (
                     <>
@@ -2558,81 +2550,35 @@ const runPhotoAnalysis = async () => {
                         <div className="container">
                             <div className="card">
                                 <div style={{textAlign: 'center'}}>
-                                    <div className="ai-badge">✨ The 30-Second Worth-It Test™</div>
+                                    <div className="ai-badge">📷 Instant Item Scanner</div>
                                 </div>
                                 
                                 <h1>
-                                    Type Any Item.<br/>
+                                    Snap a Photo.<br/>
                                     <span className="highlight">Know If It's Worth Selling.</span>
                                 </h1>
                                 
                                 <p className="subtitle">
-                                    Get real profit estimates after fees and shipping — in 30 seconds.
+                                    Get real profit estimates after fees and shipping — instantly.
                                 </p>
 
-                                <div className="example-result">
-                                    <div className="example-label">Example Result</div>
-                                    <div className="example-item-name">iPhone 13 Pro 128GB</div>
-                                    <div className="example-stats">
-                                        <div className="example-stat">
-                                            <span className="check">✓</span>
-                                            <span>Sells for: <strong>$580</strong></span>
-                                        </div>
-                                        <div className="example-stat">
-                                            <span className="check">✓</span>
-                                            <span>Your profit after fees: <strong>$509.70</strong></span>
-                                        </div>
-                                    </div>
-                                    <div className="example-verdict">💰 SELL IT — Worth your time!</div>
-                                </div>
-
                                 <div className="input-section">
-    {/* Scan Mode Tabs */}
     <div className="scan-tabs">
-        <button 
-            className={`scan-tab ${scanMode === 'text' ? 'active' : ''}`}
-            onClick={() => setScanMode('text')}
-        >
-            ✏️ Type Item
-        </button>
         <button 
             className={`scan-tab ${scanMode === 'photo' ? 'active' : ''}`}
             onClick={() => setScanMode('photo')}
         >
             📷 Photo Scan
         </button>
+        <button 
+            className={`scan-tab ${scanMode === 'text' ? 'active' : ''}`}
+            onClick={() => setScanMode('text')}
+        >
+            ✏️ Type Item
+        </button>
     </div>
 
-    {scanMode === 'text' ? (
-        <>
-            <label className="input-label">
-                What do you want to check?
-                {!itemDescription.trim() && <span style={{display: 'block', fontSize: '14px', color: 'var(--color-primary)', marginTop: '5px'}}>👇 Type your item here</span>}
-            </label>
-            <input
-                type="text"
-                autoFocus  
-                placeholder="e.g., KitchenAid mixer, Levi's jeans, old iPad..."
-                value={itemDescription}
-                onChange={(e) => setItemDescription(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && startAnalysis()}
-                style={!itemDescription.trim() ? {
-                    animation: 'pulse-border 2s ease-in-out infinite',
-                    borderColor: 'var(--color-primary)'
-                } : {}}
-            />
-            <button 
-                className="action-button"
-                disabled={!itemDescription.trim()}
-                onClick={startAnalysis}
-            >
-                {itemDescription.trim() ? 'Check My Item — Free ✓' : 'Enter an item above to check value'}
-            </button>
-            <div className="time-hint">
-                ⏱ Takes about <span>30 seconds</span> • No signup required
-            </div>
-        </>
-    ) : (
+    {scanMode === 'photo' ? (
         <>
             <input
                 type="file"
@@ -2698,12 +2644,36 @@ const runPhotoAnalysis = async () => {
                     className="action-button"
                     onClick={runPhotoAnalysis}
                 >
-                    ✨ Scan This Item
+                    ✨ Scan This Item — Free
                 </button>
             )}
             
             <div className="time-hint">
                 ⏱ Takes about <span>10 seconds</span> • No signup required
+            </div>
+        </>
+    ) : (
+        <>
+            <label className="input-label">
+                What do you want to check?
+            </label>
+            <input
+                type="text"
+                autoFocus  
+                placeholder="e.g., KitchenAid mixer, Levi's jeans, old iPad..."
+                value={itemDescription}
+                onChange={(e) => setItemDescription(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && startAnalysis()}
+            />
+            <button 
+                className="action-button"
+                disabled={!itemDescription.trim()}
+                onClick={startAnalysis}
+            >
+                {itemDescription.trim() ? 'Check My Item — Free ✓' : 'Enter an item above'}
+            </button>
+            <div className="time-hint">
+                ⏱ Takes about <span>30 seconds</span> • No signup required
             </div>
         </>
     )}
@@ -2748,7 +2718,7 @@ const runPhotoAnalysis = async () => {
                                 }}
                             />
                         )}
-                       {showTestimonial && (
+                        {showTestimonial && (
                             <TestimonialModal
                                 isOpen={showTestimonial}
                                 onClose={() => setShowTestimonial(false)}
@@ -2763,7 +2733,7 @@ const runPhotoAnalysis = async () => {
                 );
             }
 
-            // Choose Analysis Type
+            // Choose Analysis Type - Only shown for paid users now
             if (screen === 'chooseType') {
                 return (
                     <>
@@ -2784,7 +2754,6 @@ const runPhotoAnalysis = async () => {
                                 </p>
 
                                 <div className="analysis-choice">
-                                    {/* Quick Check Option */}
                                     <div 
                                         className="analysis-option"
                                         onClick={() => selectAnalysisType('quick')}
@@ -2803,41 +2772,24 @@ const runPhotoAnalysis = async () => {
                                         </div>
                                     </div>
                        
-{/* Detailed Analysis Option - only show after at least 1 scan */}
-{(paid || (scanData.used && scanData.used >= 1)) && (
-    <div 
-        className={`analysis-option pro ${!paid ? 'locked' : ''}`}
-        onClick={() => {
-            if (paid) {
-                selectAnalysisType('detailed');
-            } else {
-                trackEvent('detailed_analysis_teaser_clicked');
-                setShowUpgrade(true);
-            }
-        }}
-    >
-        <div className="analysis-option-header">
-            <div className="analysis-option-title pro">
-                {!paid && <span className="lock-icon">🔒</span>}
-                ✨ Detailed Analysis
-            </div>
-            <div className={`analysis-option-badge ${paid ? 'pro' : 'locked'}`}>
-                {paid ? 'PRO' : 'UPGRADE'}
-            </div>
-        </div>
-        <div className="analysis-option-desc">
-            {paid 
-                ? 'More accurate with category, original price, urgency & condition details.'
-                : 'Unlock with any paid plan for more accurate recommendations.'}
-        </div>
-        <div className="analysis-option-features">
-            <span className="feature-tag pro">Category-specific data</span>
-            <span className="feature-tag pro">Effort score</span>
-            <span className="feature-tag pro">Urgency factors</span>
-            <span className="feature-tag pro">Defect adjustments</span>
-        </div>
-  </div>
-)}
+                                    <div 
+                                        className="analysis-option pro"
+                                        onClick={() => selectAnalysisType('detailed')}
+                                    >
+                                        <div className="analysis-option-header">
+                                            <div className="analysis-option-title pro">✨ Detailed Analysis</div>
+                                            <div className="analysis-option-badge pro">PRO</div>
+                                        </div>
+                                        <div className="analysis-option-desc">
+                                            More accurate with category, original price, urgency & condition details.
+                                        </div>
+                                        <div className="analysis-option-features">
+                                            <span className="feature-tag pro">Category-specific data</span>
+                                            <span className="feature-tag pro">Effort score</span>
+                                            <span className="feature-tag pro">Urgency factors</span>
+                                            <span className="feature-tag pro">Defect adjustments</span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <button 
                                     className="back-button"
@@ -2850,13 +2802,11 @@ const runPhotoAnalysis = async () => {
                         </div>
 
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
-                        {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} onShowEmailCapture={handleShowEmailCapture} />}
-                        {showEmailCapture && <EmailCaptureModal onClose={() => setShowEmailCapture(false)} lastItem={null} />}
                     </>
                 );
             }
 
-            // Quick: Condition selection
+            // CHANGE 3: Update condition screen back button for free users
             if (screen === 'condition') {
                 return (
                     <>
@@ -2890,7 +2840,7 @@ const runPhotoAnalysis = async () => {
 
                                 <button 
                                     className="back-button"
-                                    onClick={() => setScreen('chooseType')}
+                                    onClick={() => paid ? setScreen('chooseType') : setScreen('home')}
                                     style={{marginTop: '20px'}}
                                 >
                                     ← Back
@@ -2913,18 +2863,16 @@ const runPhotoAnalysis = async () => {
                 );
             }
 
-            // Detailed: Category
+            // Detailed screens (only for paid users)
             if (screen === 'detailed_category') {
                 return (
                     <>
                         <ScanCounter onClick={() => setShowAccount(true)} />
-                        
                         <div className="container">
                             <div className="card">
                                 <div style={{textAlign: 'center', marginBottom: '5px'}}>
                                     <div className="pro-badge">✨ Detailed Analysis — Step 1/5</div>
                                 </div>
-                                
                                 <div className="progress-dots">
                                     <div className="progress-dot pro active"></div>
                                     <div className="progress-dot"></div>
@@ -2932,59 +2880,30 @@ const runPhotoAnalysis = async () => {
                                     <div className="progress-dot"></div>
                                     <div className="progress-dot"></div>
                                 </div>
-                                
-                                <h1 style={{fontSize: '22px', marginBottom: '20px'}}>
-                                    What type of item is it?
-                                </h1>
-
+                                <h1 style={{fontSize: '22px', marginBottom: '20px'}}>What type of item is it?</h1>
                                 <div className="button-grid">
                                     {CATEGORIES.map(cat => (
-                                        <button
-                                            key={cat.id}
-                                            className={`option-button ${category === cat.id ? 'selected' : ''}`}
-                                            onClick={() => setCategory(cat.id)}
-                                        >
-                                            {cat.label}
-                                        </button>
+                                        <button key={cat.id} className={`option-button ${category === cat.id ? 'selected' : ''}`} onClick={() => setCategory(cat.id)}>{cat.label}</button>
                                     ))}
                                 </div>
-
-                                <button 
-                                    className="back-button"
-                                    onClick={() => setScreen('chooseType')}
-                                    style={{marginTop: '20px'}}
-                                >
-                                    ← Back
-                                </button>
-
-                                <button 
-                                    className="action-button pro"
-                                    disabled={!category}
-                                    onClick={() => setScreen('detailed_condition')}
-                                    style={{marginTop: '10px'}}
-                                >
-                                    Next →
-                                </button>
+                                <button className="back-button" onClick={() => setScreen('chooseType')} style={{marginTop: '20px'}}>← Back</button>
+                                <button className="action-button pro" disabled={!category} onClick={() => setScreen('detailed_condition')} style={{marginTop: '10px'}}>Next →</button>
                             </div>
                         </div>
-
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                     </>
                 );
             }
 
-            // Detailed: Condition
             if (screen === 'detailed_condition') {
                 return (
                     <>
                         <ScanCounter onClick={() => setShowAccount(true)} />
-                        
                         <div className="container">
                             <div className="card">
                                 <div style={{textAlign: 'center', marginBottom: '5px'}}>
                                     <div className="pro-badge">✨ Detailed Analysis — Step 2/5</div>
                                 </div>
-                                
                                 <div className="progress-dots">
                                     <div className="progress-dot pro completed"></div>
                                     <div className="progress-dot pro active"></div>
@@ -2992,59 +2911,30 @@ const runPhotoAnalysis = async () => {
                                     <div className="progress-dot"></div>
                                     <div className="progress-dot"></div>
                                 </div>
-                                
-                                <h1 style={{fontSize: '22px', marginBottom: '20px'}}>
-                                    What condition is it in?
-                                </h1>
-
+                                <h1 style={{fontSize: '22px', marginBottom: '20px'}}>What condition is it in?</h1>
                                 <div className="button-grid">
                                     {CONDITIONS.map(cond => (
-                                        <button
-                                            key={cond.id}
-                                            className={`option-button ${condition === cond.id ? 'selected' : ''}`}
-                                            onClick={() => setCondition(cond.id)}
-                                        >
-                                            {cond.label}
-                                        </button>
+                                        <button key={cond.id} className={`option-button ${condition === cond.id ? 'selected' : ''}`} onClick={() => setCondition(cond.id)}>{cond.label}</button>
                                     ))}
                                 </div>
-
-                                <button 
-                                    className="back-button"
-                                    onClick={() => setScreen('detailed_category')}
-                                    style={{marginTop: '20px'}}
-                                >
-                                    ← Back
-                                </button>
-
-                                <button 
-                                    className="action-button pro"
-                                    disabled={!condition}
-                                    onClick={() => setScreen('detailed_price')}
-                                    style={{marginTop: '10px'}}
-                                >
-                                    Next →
-                                </button>
+                                <button className="back-button" onClick={() => setScreen('detailed_category')} style={{marginTop: '20px'}}>← Back</button>
+                                <button className="action-button pro" disabled={!condition} onClick={() => setScreen('detailed_price')} style={{marginTop: '10px'}}>Next →</button>
                             </div>
                         </div>
-
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                     </>
                 );
             }
 
-            // Detailed: Original Price
             if (screen === 'detailed_price') {
                 return (
                     <>
                         <ScanCounter onClick={() => setShowAccount(true)} />
-                        
                         <div className="container">
                             <div className="card">
                                 <div style={{textAlign: 'center', marginBottom: '5px'}}>
                                     <div className="pro-badge">✨ Detailed Analysis — Step 3/5</div>
                                 </div>
-                                
                                 <div className="progress-dots">
                                     <div className="progress-dot pro completed"></div>
                                     <div className="progress-dot pro completed"></div>
@@ -3052,55 +2942,27 @@ const runPhotoAnalysis = async () => {
                                     <div className="progress-dot"></div>
                                     <div className="progress-dot"></div>
                                 </div>
-                                
-                                <h1 style={{fontSize: '22px', marginBottom: '10px'}}>
-                                    What did you pay for it?
-                                </h1>
+                                <h1 style={{fontSize: '22px', marginBottom: '10px'}}>What did you pay for it?</h1>
                                 <p className="subtitle" style={{marginBottom: '20px'}}>Optional — helps calculate if it's worth your time</p>
-
-                                <input
-                                    type="number"
-                                    placeholder="$0 or leave blank"
-                                    value={originalPrice}
-                                    onChange={(e) => setOriginalPrice(e.target.value)}
-                                    min="0"
-                                />
-
-                                <button 
-                                    className="back-button"
-                                    onClick={() => setScreen('detailed_condition')}
-                                    style={{marginTop: '20px'}}
-                                >
-                                    ← Back
-                                </button>
-
-                                <button 
-                                    className="action-button pro"
-                                    onClick={() => setScreen('detailed_urgency')}
-                                    style={{marginTop: '10px'}}
-                                >
-                                    Next →
-                                </button>
+                                <input type="number" placeholder="$0 or leave blank" value={originalPrice} onChange={(e) => setOriginalPrice(e.target.value)} min="0" />
+                                <button className="back-button" onClick={() => setScreen('detailed_condition')} style={{marginTop: '20px'}}>← Back</button>
+                                <button className="action-button pro" onClick={() => setScreen('detailed_urgency')} style={{marginTop: '10px'}}>Next →</button>
                             </div>
                         </div>
-
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                     </>
                 );
             }
 
-            // Detailed: Urgency
             if (screen === 'detailed_urgency') {
                 return (
                     <>
                         <ScanCounter onClick={() => setShowAccount(true)} />
-                        
                         <div className="container">
                             <div className="card">
                                 <div style={{textAlign: 'center', marginBottom: '5px'}}>
                                     <div className="pro-badge">✨ Detailed Analysis — Step 4/5</div>
                                 </div>
-                                
                                 <div className="progress-dots">
                                     <div className="progress-dot pro completed"></div>
                                     <div className="progress-dot pro completed"></div>
@@ -3108,59 +2970,30 @@ const runPhotoAnalysis = async () => {
                                     <div className="progress-dot pro active"></div>
                                     <div className="progress-dot"></div>
                                 </div>
-                                
-                                <h1 style={{fontSize: '22px', marginBottom: '20px'}}>
-                                    How fast do you need it gone?
-                                </h1>
-
+                                <h1 style={{fontSize: '22px', marginBottom: '20px'}}>How fast do you need it gone?</h1>
                                 <div className="button-grid single-col">
                                     {URGENCY.map(urg => (
-                                        <button
-                                            key={urg.id}
-                                            className={`option-button ${urgency === urg.id ? 'selected' : ''}`}
-                                            onClick={() => setUrgency(urg.id)}
-                                        >
-                                            {urg.label}
-                                        </button>
+                                        <button key={urg.id} className={`option-button ${urgency === urg.id ? 'selected' : ''}`} onClick={() => setUrgency(urg.id)}>{urg.label}</button>
                                     ))}
                                 </div>
-
-                                <button 
-                                    className="back-button"
-                                    onClick={() => setScreen('detailed_price')}
-                                    style={{marginTop: '20px'}}
-                                >
-                                    ← Back
-                                </button>
-
-                                <button 
-                                    className="action-button pro"
-                                    disabled={!urgency}
-                                    onClick={() => setScreen('detailed_extras')}
-                                    style={{marginTop: '10px'}}
-                                >
-                                    Next →
-                                </button>
+                                <button className="back-button" onClick={() => setScreen('detailed_price')} style={{marginTop: '20px'}}>← Back</button>
+                                <button className="action-button pro" disabled={!urgency} onClick={() => setScreen('detailed_extras')} style={{marginTop: '10px'}}>Next →</button>
                             </div>
                         </div>
-
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                     </>
                 );
             }
 
-            // Detailed: Extras
             if (screen === 'detailed_extras') {
                 return (
                     <>
                         <ScanCounter onClick={() => setShowAccount(true)} />
-                        
                         <div className="container">
                             <div className="card">
                                 <div style={{textAlign: 'center', marginBottom: '5px'}}>
                                     <div className="pro-badge">✨ Detailed Analysis — Step 5/5</div>
                                 </div>
-                                
                                 <div className="progress-dots">
                                     <div className="progress-dot pro completed"></div>
                                     <div className="progress-dot pro completed"></div>
@@ -3168,59 +3001,24 @@ const runPhotoAnalysis = async () => {
                                     <div className="progress-dot pro completed"></div>
                                     <div className="progress-dot pro active"></div>
                                 </div>
-                                
-                                <h1 style={{fontSize: '22px', marginBottom: '10px'}}>
-                                    Any extra details?
-                                </h1>
+                                <h1 style={{fontSize: '22px', marginBottom: '10px'}}>Any extra details?</h1>
                                 <p className="subtitle" style={{marginBottom: '20px'}}>Optional — improves accuracy</p>
-
                                 <div style={{marginBottom: '15px'}}>
                                     <label className="small-label">Brand or maker</label>
-                                    <input
-                                        type="text"
-                                        placeholder="e.g., Nike, Apple, IKEA"
-                                        value={brand}
-                                        onChange={(e) => setBrand(e.target.value)}
-                                    />
+                                    <input type="text" placeholder="e.g., Nike, Apple, IKEA" value={brand} onChange={(e) => setBrand(e.target.value)} />
                                 </div>
-
                                 <div style={{marginBottom: '15px'}}>
                                     <label className="small-label">Any damage or defects?</label>
-                                    <textarea
-                                        placeholder="e.g., Small scratch, missing piece..."
-                                        value={defects}
-                                        onChange={(e) => setDefects(e.target.value)}
-                                        rows="2"
-                                    />
+                                    <textarea placeholder="e.g., Small scratch, missing piece..." value={defects} onChange={(e) => setDefects(e.target.value)} rows="2" />
                                 </div>
-
                                 <div style={{marginBottom: '15px'}}>
                                     <label className="small-label">Anything else?</label>
-                                    <textarea
-                                        placeholder="e.g., Original box, limited edition..."
-                                        value={additionalInfo}
-                                        onChange={(e) => setAdditionalInfo(e.target.value)}
-                                        rows="2"
-                                    />
+                                    <textarea placeholder="e.g., Original box, limited edition..." value={additionalInfo} onChange={(e) => setAdditionalInfo(e.target.value)} rows="2" />
                                 </div>
-
-                                <button 
-                                    className="back-button"
-                                    onClick={() => setScreen('detailed_urgency')}
-                                >
-                                    ← Back
-                                </button>
-
-                                <button 
-                                    className="action-button pro"
-                                    onClick={runAnalysis}
-                                    style={{marginTop: '10px'}}
-                                >
-                                    ✨ Run Detailed Analysis
-                                </button>
+                                <button className="back-button" onClick={() => setScreen('detailed_urgency')}>← Back</button>
+                                <button className="action-button pro" onClick={runAnalysis} style={{marginTop: '10px'}}>✨ Run Detailed Analysis</button>
                             </div>
                         </div>
-
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                     </>
                 );
@@ -3232,20 +3030,14 @@ const runPhotoAnalysis = async () => {
                 return (
                     <>
                         <ScanCounter onClick={() => setShowAccount(true)} />
-                        
                         <div className="container">
                             <div className="result-card">
                                 {isDetailed && <div className="detailed-badge">✨ Detailed Analysis</div>}
-                                {!isDetailed && <div className="ai-badge">⚡ Quick Check</div>}
+                                {result.analysisType === 'photo' && <div className="ai-badge">📷 Photo Scan</div>}
+                                {result.analysisType === 'quick' && <div className="ai-badge">⚡ Quick Check</div>}
                                 
-                                <div className="result-icon">
-                                    {result.recommendation === 'sell' ? '💰' : '❤️'}
-                                </div>
-                                
-                                <h2 className={`result-title ${result.recommendation}`}>
-                                    {result.recommendation === 'sell' ? 'SELL IT!' : 'DONATE IT'}
-                                </h2>
-                                
+                                <div className="result-icon">{result.recommendation === 'sell' ? '💰' : '❤️'}</div>
+                                <h2 className={`result-title ${result.recommendation}`}>{result.recommendation === 'sell' ? 'SELL IT!' : 'DONATE IT'}</h2>
                                 <p className="result-reason">{result.reason}</p>
 
                                 {result.effortScore && (
@@ -3255,9 +3047,7 @@ const runPhotoAnalysis = async () => {
                                             {result.effortScore === 'medium' && '🟡 Medium Effort'}
                                             {result.effortScore === 'hard' && '🔴 Hard to Sell'}
                                         </div>
-                                        {result.effortReason && (
-                                            <div className="effort-reason">{result.effortReason}</div>
-                                        )}
+                                        {result.effortReason && <div className="effort-reason">{result.effortReason}</div>}
                                     </div>
                                 )}
 
@@ -3299,17 +3089,9 @@ const runPhotoAnalysis = async () => {
                                 </div>
 
                                 <div className="result-actions">
-                                    <button className="primary-action" onClick={reset}>
-                                        Check Another Item
-                                    </button>
+                                    <button className="primary-action" onClick={reset}>Check Another Item</button>
                                     {paid && (
-                                        <button 
-                                            className="secondary-action"
-                                            onClick={() => {
-                                                trackEvent('mode_selected', { mode: 'bulk', from: 'result' });
-                                                setScreen('bulk');
-                                            }}
-                                        >
+                                        <button className="secondary-action" onClick={() => { trackEvent('mode_selected', { mode: 'bulk', from: 'result' }); setScreen('bulk'); }}>
                                             📋 Use Bulk Scan
                                         </button>
                                     )}
@@ -3322,80 +3104,32 @@ const runPhotoAnalysis = async () => {
                                 📋 History <span className="history-badge">{history.length}</span>
                             </button>
                         )}
-
-                        {showHistory && (
-                            <HistoryModal 
-                                history={history}
-                                onClose={() => setShowHistory(false)}
-                                onClear={() => {
-                                    setHistory([]);
-                                    localStorage.removeItem('sellDonateHistory');
-                                    setShowHistory(false);
-                                }}
-                            />
-                        )}
-                       {showTestimonial && (
-                            <TestimonialModal
-                                isOpen={showTestimonial}
-                                onClose={() => setShowTestimonial(false)}
-                                scanValue={testimonialValue}
-                                scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')}
-                            />
-                        )}
+                        {showHistory && <HistoryModal history={history} onClose={() => setShowHistory(false)} onClear={() => { setHistory([]); localStorage.removeItem('sellDonateHistory'); setShowHistory(false); }} />}
+                        {showTestimonial && <TestimonialModal isOpen={showTestimonial} onClose={() => setShowTestimonial(false)} scanValue={testimonialValue} scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')} />}
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                     </>
                 );
             }
 
-            // Bulk input
+            // Bulk screens
             if (screen === 'bulk') {
                 const itemCount = bulkItems.split('\n').filter(i => i.trim()).length;
-                
                 return (
                     <>
                         <ScanCounter onClick={() => setShowAccount(true)} />
-                        
                         <div className="container">
                             <div className="card">
-                                <div style={{textAlign: 'center'}}>
-                                    <div className="ai-badge">📋 Bulk Scan</div>
-                                </div>
-                                
+                                <div style={{textAlign: 'center'}}><div className="ai-badge">📋 Bulk Scan</div></div>
                                 <h1 style={{fontSize: '24px'}}>Check Multiple Items</h1>
                                 <p className="subtitle">One item per line. Be specific for best results.</p>
-
                                 <div className="bulk-input-section">
-                                    <textarea
-                                        placeholder={"iPhone 12 Pro 128GB\nNike Air Max size 10\nKitchenAid Stand Mixer\nLevi's 501 jeans 32x30"}
-                                        value={bulkItems}
-                                        onChange={(e) => setBulkItems(e.target.value)}
-                                    />
-                                    {itemCount > 0 && (
-                                        <div className="bulk-item-count">
-                                            {itemCount} item{itemCount !== 1 ? 's' : ''} • Uses {itemCount} of {scanData.scansRemaining} scans
-                                        </div>
-                                    )}
+                                    <textarea placeholder={"iPhone 12 Pro 128GB\nNike Air Max size 10\nKitchenAid Stand Mixer\nLevi's 501 jeans 32x30"} value={bulkItems} onChange={(e) => setBulkItems(e.target.value)} />
+                                    {itemCount > 0 && <div className="bulk-item-count">{itemCount} item{itemCount !== 1 ? 's' : ''} • Uses {itemCount} of {scanData.scansRemaining} scans</div>}
                                 </div>
-
-                                <button 
-                                    className="back-button"
-                                    onClick={reset}
-                                    style={{marginTop: '15px'}}
-                                >
-                                    ← Back
-                                </button>
-
-                                <button 
-                                    className="action-button"
-                                    disabled={itemCount === 0}
-                                    onClick={runBulkAnalysis}
-                                    style={{marginTop: '10px'}}
-                                >
-                                    🔍 Analyze {itemCount} Item{itemCount !== 1 ? 's' : ''}
-                                </button>
+                                <button className="back-button" onClick={reset} style={{marginTop: '15px'}}>← Back</button>
+                                <button className="action-button" disabled={itemCount === 0} onClick={runBulkAnalysis} style={{marginTop: '10px'}}>🔍 Analyze {itemCount} Item{itemCount !== 1 ? 's' : ''}</button>
                             </div>
                         </div>
-
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                         {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} onShowEmailCapture={handleShowEmailCapture} />}
                         {showEmailCapture && <EmailCaptureModal onClose={() => setShowEmailCapture(false)} lastItem={null} />}
@@ -3403,79 +3137,40 @@ const runPhotoAnalysis = async () => {
                 );
             }
 
-            // Bulk results
             if (screen === 'bulkResults') {
                 const sellItems = bulkResults.filter(r => r.recommendation === 'sell');
                 const totalProfit = sellItems.reduce((sum, r) => sum + parseFloat(r.netProfit || 0), 0);
-
                 return (
                     <>
                         <ScanCounter onClick={() => setShowAccount(true)} />
-                        
                         <div className="container">
                             <div className="card">
-                                <div style={{textAlign: 'center'}}>
-                                    <div className="ai-badge">✨ Results Ready</div>
-                                </div>
-                                
+                                <div style={{textAlign: 'center'}}><div className="ai-badge">✨ Results Ready</div></div>
                                 <h1 style={{fontSize: '24px'}}>{bulkResults.length} Items Analyzed</h1>
-                                
                                 {sellItems.length > 0 && (
                                     <div style={{background: 'rgba(13, 124, 102, 0.08)', padding: '15px', borderRadius: 'var(--radius)', marginBottom: '20px', textAlign: 'center'}}>
                                         <div style={{fontSize: '14px', color: 'var(--color-primary-dark)'}}>Potential profit from selling</div>
                                         <div style={{fontSize: '28px', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-display)'}}>${totalProfit.toFixed(2)}</div>
                                     </div>
                                 )}
-
                                 <div className="bulk-results">
                                     {bulkResults.map((item, index) => (
                                         <div key={index} className={`bulk-result-item ${item.recommendation}`}>
                                             <div className="bulk-item-name">{item.itemName}</div>
                                             <div className={`bulk-item-recommendation ${item.recommendation}`}>
-                                                {item.recommendation === 'sell' ? '💰 SELL' : 
-                                                 item.recommendation === 'donate' ? '❤️ DONATE' : '⚠️ ERROR'}
+                                                {item.recommendation === 'sell' ? '💰 SELL' : item.recommendation === 'donate' ? '❤️ DONATE' : '⚠️ ERROR'}
                                             </div>
-                                            {item.recommendation === 'sell' && (
-                                                <div className="bulk-item-details">
-                                                    Est. profit: ${item.netProfit}
-                                                </div>
-                                            )}
+                                            {item.recommendation === 'sell' && <div className="bulk-item-details">Est. profit: ${item.netProfit}</div>}
                                             <div className="bulk-item-details">{item.reason}</div>
                                         </div>
                                     ))}
                                 </div>
-
-                                <button className="primary-action" onClick={reset} style={{marginTop: '20px'}}>
-                                    Analyze More Items
-                                </button>
+                                <button className="primary-action" onClick={reset} style={{marginTop: '20px'}}>Analyze More Items</button>
                             </div>
                         </div>
-
-                        {history.length > 0 && (
-                            <button className="history-button" onClick={() => setShowHistory(true)}>
-                                📋 History <span className="history-badge">{history.length}</span>
-                            </button>
-                        )}
-
-                        {showHistory && (
-                            <HistoryModal 
-                                history={history}
-                                onClose={() => setShowHistory(false)}
-                                onClear={() => {
-                                    setHistory([]);
-                                    localStorage.removeItem('sellDonateHistory');
-                                    setShowHistory(false);
-                                }}
-                            />
-                        )}
-                       {showTestimonial && (
-                            <TestimonialModal
-                                isOpen={showTestimonial}
-                                onClose={() => setShowTestimonial(false)}
-                                scanValue={testimonialValue}
-                                scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')}
-                            />
-                        )}
+                        {history.length > 0 && <button className="history-button" onClick={() => setShowHistory(true)}>📋 History <span className="history-badge">{history.length}</span></button>}
+                        {showHistory && <HistoryModal history={history} onClose={() => setShowHistory(false)} onClear={() => { setHistory([]); localStorage.removeItem('sellDonateHistory'); setShowHistory(false); }} />}
+                        {showTestimonial && <TestimonialModal isOpen={showTestimonial} onClose={() => setShowTestimonial(false)} scanValue={testimonialValue} scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')} />}
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                     </>
                 );
