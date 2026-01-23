@@ -803,11 +803,11 @@ input[type="text"].pulse-hint {
             color: white;
         }
 
-        /* History button */
+        /* History button - FIX: Moved to top-left to avoid covering input */
         .history-button {
             position: fixed;
-            bottom: 60px;
-            right: 20px;
+            top: 20px;
+            left: 20px;
             background: linear-gradient(135deg, var(--color-contrast), #2D4A42);
             color: white;
             border: none;
@@ -1793,206 +1793,63 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             );
         }
 
-        // UPDATED UpgradeModal - Replace the existing UpgradeModal function in index.html with this
+        function UpgradeModal({ onClose, onShowEmailCapture }) {
+            useEffect(() => {
+                trackEvent('upgrade_prompt_shown', { scans_used: getScanData().used || 0 });
+            }, []);
 
-function UpgradeModal({ onClose }) {
-    useEffect(() => {
-        trackEvent('upgrade_prompt_shown', { scans_used: getScanData().used || 0 });
-    }, []);
-
-    const handleQuickBuy = () => {
-        trackEvent('upgrade_cta_clicked', { option: 'single_scan_2' });
-        
-        // Track InitiateCheckout for Meta Pixel
-        if (typeof fbq !== 'undefined') {
-            fbq('track', 'InitiateCheckout', {
-                value: 2,
-                currency: 'USD',
-                content_name: 'Quick Check'
-            });
-        }
-        
-        // Direct to Stripe payment link for $2 single scan
-        window.location.href = 'https://buy.stripe.com/dRm6oHbat5cm6ml6d58bS02';
-    };
-
-    const handleSeeAllOptions = () => {
-        trackEvent('upgrade_cta_clicked', { option: 'see_all_pricing' });
-        window.location.href = '/pricing.html';
-    };
-
-    return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{
-                maxWidth: '400px', 
-                textAlign: 'center',
-                padding: '0',
-                overflow: 'hidden'
-            }}>
-                {/* Header */}
-                <div style={{
-                    background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))',
-                    padding: '24px 24px 20px',
-                    color: 'white'
-                }}>
-                    <div style={{fontSize: '40px', marginBottom: '8px'}}>🔍</div>
-                    <h2 style={{
-                        fontFamily: 'var(--font-display)', 
-                        fontSize: '22px', 
-                        margin: '0 0 6px 0',
-                        fontWeight: '700'
-                    }}>
-                        Want to keep scanning?
-                    </h2>
-                    <p style={{
-                        margin: '0',
-                        opacity: '0.9',
-                        fontSize: '15px'
-                    }}>
-                        You've used your 3 free scans
-                    </p>
-                </div>
-
-                {/* Body */}
-                <div style={{padding: '24px'}}>
-                    
-                    {/* $2 Option - The Hero */}
-                    <div style={{
-                        background: 'linear-gradient(135deg, rgba(13, 124, 102, 0.08), rgba(13, 124, 102, 0.03))',
-                        border: '2px solid var(--color-primary)',
-                        borderRadius: '16px',
-                        padding: '20px',
-                        marginBottom: '16px'
-                    }}>
-                        <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            marginBottom: '12px'
-                        }}>
-                            <span style={{
-                                background: 'var(--color-primary)',
-                                color: 'white',
-                                fontSize: '11px',
-                                fontWeight: '700',
-                                padding: '4px 10px',
-                                borderRadius: '20px',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px'
-                            }}>
-                                Quick & Easy
-                            </span>
-                            <span style={{
-                                fontFamily: 'var(--font-display)',
-                                fontSize: '28px',
-                                fontWeight: '700',
-                                color: 'var(--color-contrast)'
-                            }}>
-                                $2
-                            </span>
-                        </div>
-                        
-                        <p style={{
-                            margin: '0 0 16px 0',
-                            color: 'var(--color-text-muted)',
-                            fontSize: '14px',
-                            lineHeight: '1.4'
-                        }}>
-                            Just need to check one more item? Grab a single scan instantly.
+            return (
+                <div className="modal-overlay" onClick={onClose}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{maxWidth: '420px', textAlign: 'center'}}>
+                        <div style={{fontSize: '56px', marginBottom: '15px'}}>🔍</div>
+                        <h2 style={{fontFamily: 'var(--font-display)', color: 'var(--color-contrast)', marginBottom: '12px', fontSize: '22px'}}>You've Used Your Free Scans!</h2>
+                        <p style={{color: 'var(--color-text-muted)', marginBottom: '20px', fontSize: '15px', lineHeight: '1.5'}}>
+                            Upgrade to keep discovering hidden value. Most users find $500+ worth of sellable items!
                         </p>
                         
                         <button 
-                            onClick={handleQuickBuy}
+                            onClick={() => {
+                                trackEvent('upgrade_cta_clicked');
+                                onClose();
+                                onShowEmailCapture();
+                            }}
                             style={{
                                 width: '100%',
-                                padding: '14px 20px',
+                                padding: '14px',
                                 background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))',
                                 color: 'white',
                                 border: 'none',
-                                borderRadius: '12px',
+                                borderRadius: 'var(--radius)',
                                 fontSize: '16px',
-                                fontWeight: '700',
+                                fontWeight: '600',
                                 cursor: 'pointer',
-                                fontFamily: 'var(--font-body)',
-                                boxShadow: '0 4px 14px rgba(13, 124, 102, 0.3)',
-                                transition: 'all 0.2s'
-                            }}
-                            onMouseOver={(e) => {
-                                e.target.style.transform = 'translateY(-2px)';
-                                e.target.style.boxShadow = '0 6px 20px rgba(13, 124, 102, 0.4)';
-                            }}
-                            onMouseOut={(e) => {
-                                e.target.style.transform = 'translateY(0)';
-                                e.target.style.boxShadow = '0 4px 14px rgba(13, 124, 102, 0.3)';
+                                marginBottom: '10px',
+                                fontFamily: 'var(--font-body)'
                             }}
                         >
-                            Get 1 Scan → $2
+                            View Pricing Options →
+                        </button>
+                        
+                        <button 
+                            onClick={() => { trackEvent('upgrade_dismissed'); onClose(); }}
+                            style={{
+                                width: '100%',
+                                padding: '12px',
+                                background: 'transparent',
+                                color: 'var(--color-text-muted)',
+                                border: '2px solid #e2e8f0',
+                                borderRadius: 'var(--radius)',
+                                fontSize: '15px',
+                                cursor: 'pointer',
+                                fontFamily: 'var(--font-body)'
+                            }}
+                        >
+                            Maybe Later
                         </button>
                     </div>
-
-                    {/* Divider */}
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '12px',
-                        margin: '16px 0'
-                    }}>
-                        <div style={{flex: 1, height: '1px', background: '#e2e8f0'}}></div>
-                        <span style={{color: 'var(--color-text-muted)', fontSize: '12px', fontWeight: '600'}}>OR</span>
-                        <div style={{flex: 1, height: '1px', background: '#e2e8f0'}}></div>
-                    </div>
-
-                    {/* See All Options */}
-                    <button 
-                        onClick={handleSeeAllOptions}
-                        style={{
-                            width: '100%',
-                            padding: '12px 20px',
-                            background: 'white',
-                            color: 'var(--color-primary)',
-                            border: '2px solid var(--color-primary)',
-                            borderRadius: '12px',
-                            fontSize: '15px',
-                            fontWeight: '600',
-                            cursor: 'pointer',
-                            fontFamily: 'var(--font-body)',
-                            marginBottom: '12px',
-                            transition: 'all 0.2s'
-                        }}
-                        onMouseOver={(e) => {
-                            e.target.style.background = 'rgba(13, 124, 102, 0.05)';
-                        }}
-                        onMouseOut={(e) => {
-                            e.target.style.background = 'white';
-                        }}
-                    >
-                        See All Options (from $2)
-                    </button>
-
-                    {/* Maybe Later */}
-                    <button 
-                        onClick={() => { 
-                            trackEvent('upgrade_dismissed'); 
-                            onClose(); 
-                        }}
-                        style={{
-                            width: '100%',
-                            padding: '10px',
-                            background: 'transparent',
-                            color: '#94a3b8',
-                            border: 'none',
-                            fontSize: '14px',
-                            cursor: 'pointer',
-                            fontFamily: 'var(--font-body)'
-                        }}
-                    >
-                        Maybe later
-                    </button>
                 </div>
-            </div>
-        </div>
-    );
-}
+            );
+        }
 
         function AccountModal({ onClose }) {
             const data = getScanData();
@@ -2244,7 +2101,7 @@ function UpgradeModal({ onClose }) {
             const [screen, setScreen] = useState('home');
             const [analysisType, setAnalysisType] = useState('quick');
             const [itemDescription, setItemDescription] = useState('');
-            // CHANGE 1: Default to photo scan mode
+            // Default to photo scan mode
             const [scanMode, setScanMode] = useState('photo');
             const [photoPreview, setPhotoPreview] = useState(null);
             const [photoFile, setPhotoFile] = useState(null);
@@ -2408,7 +2265,7 @@ const runPhotoAnalysis = async () => {
                 }
             };
 
-            // CHANGE 2: Skip analysis type selection for free users
+            // Skip analysis type selection for free users
             const startAnalysis = () => {
                 if (!canScan()) {
                     setShowUpgrade(true);
@@ -2684,7 +2541,7 @@ const runPhotoAnalysis = async () => {
                 );
             }
 
-            // Home - Updated headline and default to photo
+            // Home screen
             if (screen === 'home') {
                 return (
                     <>
@@ -2844,7 +2701,8 @@ const runPhotoAnalysis = async () => {
                             </div>
                         </div>
 
-                        {history.length > 0 && (
+                        {/* FIX: Only show History button for users with more than 1 item */}
+                        {history.length > 1 && (
                             <button className="history-button" onClick={() => setShowHistory(true)}>
                                 📋 History <span className="history-badge">{history.length}</span>
                             </button>
@@ -2870,12 +2728,13 @@ const runPhotoAnalysis = async () => {
                             />
                         )}
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
-                        {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} />}
+                        {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} onShowEmailCapture={handleShowEmailCapture} />}
+                        {showEmailCapture && <EmailCaptureModal onClose={() => setShowEmailCapture(false)} lastItem={null} />}
                     </>
                 );
             }
 
-            // Choose Analysis Type - Only shown for paid users now
+            // Choose Analysis Type - Only shown for paid users
             if (screen === 'chooseType') {
                 return (
                     <>
@@ -2948,7 +2807,7 @@ const runPhotoAnalysis = async () => {
                 );
             }
 
-            // CHANGE 3: Update condition screen back button for free users
+            // Condition screen - back button goes to home for free users
             if (screen === 'condition') {
                 return (
                     <>
@@ -3000,7 +2859,7 @@ const runPhotoAnalysis = async () => {
                         </div>
 
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
-                        {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} />}
+                        {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} onShowEmailCapture={handleShowEmailCapture} />}
                     </>
                 );
             }
@@ -3185,75 +3044,87 @@ const runPhotoAnalysis = async () => {
                                 {result.effortScore && (
                                     <div>
                                         <div className={`effort-score ${result.effortScore}`}>
-                                            {result.effortScore === 'easy' && '🟢 Easy to Sell'}
-                                            {result.effortScore === 'medium' && '🟡 Medium Effort'}
-                                            {result.effortScore === 'hard' && '🔴 Hard to Sell'}
+                                            {result.effortScore === 'easy' && '🟢 Easy Sell'}
+                                            {result.effortScore === 'medium' && '🟡 Moderate Effort'}
+                                            {result.effortScore === 'hard' && '🔴 High Effort'}
                                         </div>
                                         {result.effortReason && <div className="effort-reason">{result.effortReason}</div>}
                                     </div>
                                 )}
 
+                                {result.recommendation === 'sell' && (
+                                    <div className="result-details">
+                                        <div className="detail-row">
+                                            <span className="detail-label">Estimated Sale Price</span>
+                                            <span className="detail-value">${result.estimatedPrice}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Platform Fees (~13%)</span>
+                                            <span className="detail-value">-${result.ebayFees}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Est. Shipping</span>
+                                            <span className="detail-value">-${result.shippingCost}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Your Profit</span>
+                                            <span className="detail-value highlight">${result.netProfit}</span>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {result.recommendation === 'donate' && (
+                                    <div className="result-details">
+                                        <div className="detail-row">
+                                            <span className="detail-label">Est. Tax Deduction</span>
+                                            <span className="detail-value highlight">${result.taxDeduction}</span>
+                                        </div>
+                                    </div>
+                                )}
+
                                 {result.marketData && (
                                     <div className="market-data">
-                                        <div className="market-data-title">📊 Real Marketplace Data</div>
+                                        <div className="market-data-title">📊 Market Insights</div>
                                         <div className="market-data-content">{result.marketData}</div>
                                     </div>
                                 )}
 
-                                <div className="result-details">
-                                    {result.recommendation === 'sell' ? (
-                                        <>
-                                            <div className="detail-row">
-                                                <span className="detail-label">Est. Sale Price</span>
-                                                <span className="detail-value">${result.estimatedPrice}</span>
-                                            </div>
-                                            <div className="detail-row">
-                                                <span className="detail-label">Fees & Shipping</span>
-                                                <span className="detail-value">-${(parseFloat(result.ebayFees) + parseFloat(result.shippingCost)).toFixed(2)}</span>
-                                            </div>
-                                            <div className="detail-row">
-                                                <span className="detail-label">Your Profit</span>
-                                                <span className="detail-value highlight">${result.netProfit}</span>
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <div className="detail-row">
-                                                <span className="detail-label">Tax Deduction</span>
-                                                <span className="detail-value highlight">${result.taxDeduction}</span>
-                                            </div>
-                                            <div className="detail-row">
-                                                <span className="detail-label">Time Saved</span>
-                                                <span className="detail-value">15-30 min</span>
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-
                                 <div className="result-actions">
-                                    <button className="primary-action" onClick={reset}>Check Another Item</button>
-                                    {paid && (
-                                        <button className="secondary-action" onClick={() => { trackEvent('mode_selected', { mode: 'bulk', from: 'result' }); setScreen('bulk'); }}>
-                                            📋 Use Bulk Scan
-                                        </button>
-                                    )}
+                                    <button className="primary-action" onClick={reset}>
+                                        Check Another Item
+                                    </button>
+                                    <button className="secondary-action" onClick={() => setShowHistory(true)}>
+                                        View History ({history.length})
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
-                        {history.length > 0 && (
-                            <button className="history-button" onClick={() => setShowHistory(true)}>
-                                📋 History <span className="history-badge">{history.length}</span>
-                            </button>
+                        {showHistory && (
+                            <HistoryModal 
+                                history={history}
+                                onClose={() => setShowHistory(false)}
+                                onClear={() => {
+                                    setHistory([]);
+                                    localStorage.removeItem('sellDonateHistory');
+                                    setShowHistory(false);
+                                }}
+                            />
                         )}
-                        {showHistory && <HistoryModal history={history} onClose={() => setShowHistory(false)} onClear={() => { setHistory([]); localStorage.removeItem('sellDonateHistory'); setShowHistory(false); }} />}
-                        {showTestimonial && <TestimonialModal isOpen={showTestimonial} onClose={() => setShowTestimonial(false)} scanValue={testimonialValue} scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')} />}
+                        {showTestimonial && (
+                            <TestimonialModal
+                                isOpen={showTestimonial}
+                                onClose={() => setShowTestimonial(false)}
+                                scanValue={testimonialValue}
+                                scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')}
+                            />
+                        )}
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                     </>
                 );
             }
 
-            // Bulk screens
+            // Bulk scan input
             if (screen === 'bulk') {
                 const itemCount = bulkItems.split('\n').filter(i => i.trim()).length;
                 return (
@@ -3261,23 +3132,29 @@ const runPhotoAnalysis = async () => {
                         <ScanCounter onClick={() => setShowAccount(true)} />
                         <div className="container">
                             <div className="card">
-                                <div style={{textAlign: 'center'}}><div className="ai-badge">📋 Bulk Scan</div></div>
-                                <h1 style={{fontSize: '24px'}}>Check Multiple Items</h1>
-                                <p className="subtitle">One item per line. Be specific for best results.</p>
-                                <div className="bulk-input-section">
-                                    <textarea placeholder={"iPhone 12 Pro 128GB\nNike Air Max size 10\nKitchenAid Stand Mixer\nLevi's 501 jeans 32x30"} value={bulkItems} onChange={(e) => setBulkItems(e.target.value)} />
-                                    {itemCount > 0 && <div className="bulk-item-count">{itemCount} item{itemCount !== 1 ? 's' : ''} • Uses {itemCount} of {scanData.scansRemaining} scans</div>}
+                                <div style={{textAlign: 'center'}}>
+                                    <div className="pro-badge">✨ Bulk Scan</div>
                                 </div>
-                                <button className="back-button" onClick={reset} style={{marginTop: '15px'}}>← Back</button>
-                                <button className="action-button" disabled={itemCount === 0} onClick={runBulkAnalysis} style={{marginTop: '10px'}}>🔍 Analyze {itemCount} Item{itemCount !== 1 ? 's' : ''}</button>
+                                <h1 style={{fontSize: '22px', marginBottom: '10px'}}>Check Multiple Items</h1>
+                                <p className="subtitle" style={{marginBottom: '20px'}}>Enter one item per line</p>
+                                <div className="bulk-input-section">
+                                    <textarea 
+                                        placeholder="iPhone 12 Pro&#10;Nike Air Jordan 1&#10;KitchenAid mixer&#10;Vintage Pyrex dishes"
+                                        value={bulkItems}
+                                        onChange={(e) => setBulkItems(e.target.value)}
+                                    />
+                                    <div className="bulk-item-count">{itemCount} items (uses {itemCount} scans)</div>
+                                </div>
+                                <button className="back-button" onClick={() => setScreen('home')} style={{marginTop: '20px'}}>← Back</button>
+                                <button className="action-button pro" disabled={itemCount === 0} onClick={runBulkAnalysis} style={{marginTop: '10px'}}>✨ Analyze All Items</button>
                             </div>
                         </div>
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
-                        {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} />}
                     </>
                 );
             }
 
+            // Bulk results
             if (screen === 'bulkResults') {
                 const sellItems = bulkResults.filter(r => r.recommendation === 'sell');
                 const totalProfit = sellItems.reduce((sum, r) => sum + parseFloat(r.netProfit || 0), 0);
@@ -3286,32 +3163,41 @@ const runPhotoAnalysis = async () => {
                         <ScanCounter onClick={() => setShowAccount(true)} />
                         <div className="container">
                             <div className="card">
-                                <div style={{textAlign: 'center'}}><div className="ai-badge">✨ Results Ready</div></div>
-                                <h1 style={{fontSize: '24px'}}>{bulkResults.length} Items Analyzed</h1>
-                                {sellItems.length > 0 && (
-                                    <div style={{background: 'rgba(13, 124, 102, 0.08)', padding: '15px', borderRadius: 'var(--radius)', marginBottom: '20px', textAlign: 'center'}}>
-                                        <div style={{fontSize: '14px', color: 'var(--color-primary-dark)'}}>Potential profit from selling</div>
-                                        <div style={{fontSize: '28px', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-display)'}}>${totalProfit.toFixed(2)}</div>
+                                <div style={{textAlign: 'center'}}>
+                                    <div className="pro-badge">✨ Bulk Results</div>
+                                </div>
+                                <h1 style={{fontSize: '22px', marginBottom: '20px'}}>Your Items Analyzed</h1>
+                                
+                                <div className="history-stats" style={{marginBottom: '20px'}}>
+                                    <div className="stat-box">
+                                        <div className="stat-number">{bulkResults.length}</div>
+                                        <div className="stat-label">Items</div>
                                     </div>
-                                )}
+                                    <div className="stat-box">
+                                        <div className="stat-number" style={{color: 'var(--color-primary)'}}>{sellItems.length}</div>
+                                        <div className="stat-label">Sell</div>
+                                    </div>
+                                    <div className="stat-box">
+                                        <div className="stat-number" style={{color: 'var(--color-primary)'}}>${totalProfit.toFixed(0)}</div>
+                                        <div className="stat-label">Potential</div>
+                                    </div>
+                                </div>
+
                                 <div className="bulk-results">
-                                    {bulkResults.map((item, index) => (
-                                        <div key={index} className={`bulk-result-item ${item.recommendation}`}>
+                                    {bulkResults.map((item, idx) => (
+                                        <div key={idx} className={`bulk-result-item ${item.recommendation}`}>
                                             <div className="bulk-item-name">{item.itemName}</div>
                                             <div className={`bulk-item-recommendation ${item.recommendation}`}>
-                                                {item.recommendation === 'sell' ? '💰 SELL' : item.recommendation === 'donate' ? '❤️ DONATE' : '⚠️ ERROR'}
+                                                {item.recommendation === 'sell' ? `💰 SELL — $${item.netProfit} profit` : '❤️ DONATE'}
                                             </div>
-                                            {item.recommendation === 'sell' && <div className="bulk-item-details">Est. profit: ${item.netProfit}</div>}
                                             <div className="bulk-item-details">{item.reason}</div>
                                         </div>
                                     ))}
                                 </div>
-                                <button className="primary-action" onClick={reset} style={{marginTop: '20px'}}>Analyze More Items</button>
+
+                                <button className="primary-action" onClick={reset} style={{marginTop: '20px'}}>Check More Items</button>
                             </div>
                         </div>
-                        {history.length > 0 && <button className="history-button" onClick={() => setShowHistory(true)}>📋 History <span className="history-badge">{history.length}</span></button>}
-                        {showHistory && <HistoryModal history={history} onClose={() => setShowHistory(false)} onClear={() => { setHistory([]); localStorage.removeItem('sellDonateHistory'); setShowHistory(false); }} />}
-                        {showTestimonial && <TestimonialModal isOpen={showTestimonial} onClose={() => setShowTestimonial(false)} scanValue={testimonialValue} scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')} />}
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                     </>
                 );
@@ -3322,8 +3208,8 @@ const runPhotoAnalysis = async () => {
 
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
-    
-    <div class="footer-disclaimer">
+
+    <div className="footer-disclaimer">
         Independent tool. Not affiliated with any marketplace. Data for informational purposes only.
         | <a href="/terms.html">Terms</a> | <a href="/privacy.html">Privacy</a> | <a href="/faq.html">FAQ</a>
     </div>
