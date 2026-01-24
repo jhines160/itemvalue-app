@@ -898,6 +898,174 @@ input[type="text"].pulse-hint {
             border-left: 4px solid #e0e0e0;
             padding: 15px;
             margin-bottom: 12px;
+        }
+
+        /* ============================================
+           TREASURE HUNT STYLES
+           ============================================ */
+        .treasure-badge {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #1a1a1a;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 15px;
+            letter-spacing: 0.3px;
+        }
+
+        .treasure-progress {
+            background: var(--color-bg-alt);
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .treasure-progress-bar {
+            background: linear-gradient(90deg, var(--color-primary) 0%, #0D9C80 100%);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .treasure-progress-text {
+            text-align: center;
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin-bottom: 20px;
+        }
+
+        .treasure-category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .treasure-category-item {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius);
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .treasure-category-item:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .treasure-category-item.completed {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-color: var(--color-primary);
+        }
+
+        .treasure-category-item.skipped {
+            background: #f9fafb;
+            border-color: #e2e8f0;
+            opacity: 0.7;
+        }
+
+        .treasure-emoji {
+            font-size: 32px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-bg-alt);
+            border-radius: 12px;
+        }
+
+        .treasure-category-info {
+            flex: 1;
+        }
+
+        .treasure-category-name {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--color-text);
+            margin-bottom: 4px;
+        }
+
+        .treasure-category-hint {
+            font-size: 13px;
+            color: var(--color-text-muted);
+        }
+
+        .treasure-category-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .treasure-category-result {
+            font-size: 13px;
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        .treasure-category-result.donate {
+            color: var(--color-text-muted);
+        }
+
+        .treasure-total {
+            background: linear-gradient(135deg, var(--color-accent-light) 0%, #FEF3C7 100%);
+            border: 2px solid var(--color-accent);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .treasure-total-label {
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin-bottom: 5px;
+        }
+
+        .treasure-total-value {
+            font-family: var(--font-display);
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .treasure-scan-prompt {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .treasure-scan-category {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 10px;
+        }
+
+        .treasure-scan-hint {
+            font-size: 15px;
+            color: var(--color-text-muted);
+            margin-bottom: 25px;
+        }
+
+        .treasure-skip-btn {
+            background: transparent;
+            border: none;
+            color: var(--color-text-muted);
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 15px;
+            text-decoration: underline;
+            font-family: var(--font-body);
             border-radius: 8px;
         }
 
@@ -1627,6 +1795,22 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
         ];
 
         // ============================================
+        // TREASURE HUNT CATEGORIES
+        // ============================================
+        const TREASURE_CATEGORIES = [
+            { id: 'pyrex', emoji: '🍲', name: 'Vintage Pyrex', hint: 'Colorful bowls, casserole dishes from the 60s-80s', value: '$20–$300+' },
+            { id: 'games', emoji: '🎮', name: 'Video Games', hint: 'Old cartridges, consoles, or boxed games', value: '$15–$500+' },
+            { id: 'bags', emoji: '👜', name: 'Designer Bags', hint: 'Coach, Kate Spade, Michael Kors, luxury brands', value: '$50–$2,000+' },
+            { id: 'toys', emoji: '🧸', name: 'Vintage Toys', hint: 'Star Wars, Barbies, Hot Wheels, LEGO sets', value: '$25–$1,000+' },
+            { id: 'vinyl', emoji: '💿', name: 'Vinyl Records', hint: 'Classic rock, jazz, first pressings', value: '$10–$500+' },
+            { id: 'jewelry', emoji: '💎', name: 'Jewelry', hint: 'Gold, silver, costume jewelry, watches', value: '$25–$5,000+' },
+            { id: 'sports', emoji: '⚾', name: 'Sports Cards', hint: 'Baseball, basketball, football cards', value: '$5–$10,000+' },
+            { id: 'art', emoji: '🖼️', name: 'Art & Prints', hint: 'Paintings, signed prints, vintage posters', value: '$50–$5,000+' },
+            { id: 'electronics', emoji: '📱', name: 'Electronics', hint: 'Phones, tablets, laptops, cameras', value: '$50–$800+' },
+            { id: 'wildcard', emoji: '🎁', name: 'Your Wild Card', hint: 'Anything unusual you\'re curious about!', value: '$?–$???' }
+        ];
+
+        // ============================================
         // TESTIMONIAL MODAL COMPONENT
         // ============================================
         const TESTIMONIAL_VALUE_THRESHOLD = 50;
@@ -2131,7 +2315,156 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             const [bulkItems, setBulkItems] = useState('');
             const [bulkResults, setBulkResults] = useState([]);
 
+            // TREASURE HUNT STATE
+            const [treasureMode, setTreasureMode] = useState(false);
+            const [treasureProgress, setTreasureProgress] = useState(() => {
+                const saved = localStorage.getItem('itemvalue_treasure_progress');
+                return saved ? JSON.parse(saved) : {};
+            });
+            const [scanningCategoryId, setScanningCategoryId] = useState(null);
+
             const refreshScanData = () => setScanData(getScanData());
+
+            // TREASURE HUNT: Check URL for treasure mode and grant bonus scans
+            useEffect(() => {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('mode') === 'treasure') {
+                    // Grant 10 bonus scans (first time only)
+                    const bonusGranted = localStorage.getItem('itemvalue_treasure_bonus');
+                    if (!bonusGranted) {
+                        const data = getScanData();
+                        data.scansRemaining = Math.max(data.scansRemaining, 10);
+                        if (data.scansRemaining < 10) data.scansRemaining = 10;
+                        saveScanData(data);
+                        localStorage.setItem('itemvalue_treasure_bonus', 'true');
+                        refreshScanData();
+                    }
+                    setTreasureMode(true);
+                    setScreen('treasure_home');
+                    trackEvent('treasure_hunt_started', { source: 'url_param' });
+                    // Clean URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            }, []);
+
+            // Save treasure progress to localStorage
+            useEffect(() => {
+                if (Object.keys(treasureProgress).length > 0) {
+                    localStorage.setItem('itemvalue_treasure_progress', JSON.stringify(treasureProgress));
+                }
+            }, [treasureProgress]);
+
+            // TREASURE HUNT: Handle photo scan for treasure category
+            const runTreasureScan = async () => {
+                if (!photoFile || !scanningCategoryId) return;
+                
+                if (!canScan()) {
+                    setShowUpgrade(true);
+                    return;
+                }
+                
+                setPhotoLoading(true);
+                setPhotoError(null);
+                trackEvent('treasure_scan_initiated', { category: scanningCategoryId });
+                
+                try {
+                    const base64 = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result.split(',')[1]);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(photoFile);
+                    });
+                    
+                    const response = await fetch('/.netlify/functions/scan-photo', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            image: base64,
+                            mimeType: photoFile.type
+                        }),
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Scan failed');
+                    }
+                    
+                    const photoResult = await response.json();
+                    
+                    decrementScan();
+                    refreshScanData();
+                    
+                    // Update treasure progress
+                    const newProgress = {
+                        ...treasureProgress,
+                        [scanningCategoryId]: {
+                            completed: true,
+                            value: photoResult.estimatedValue,
+                            itemName: photoResult.itemName,
+                            recommendation: photoResult.estimatedValue >= 10 ? 'sell' : 'donate'
+                        }
+                    };
+                    setTreasureProgress(newProgress);
+                    
+                    trackEvent('treasure_category_completed', {
+                        category: scanningCategoryId,
+                        value: photoResult.estimatedValue,
+                        recommendation: photoResult.estimatedValue >= 10 ? 'sell' : 'donate'
+                    });
+                    
+                    // Save to regular history too
+                    const formattedResult = {
+                        recommendation: photoResult.estimatedValue >= 10 ? 'sell' : 'donate',
+                        reason: photoResult.tips,
+                        effortScore: photoResult.confidence === 'high' ? 'easy' : 'medium',
+                        effortReason: `Confidence: ${photoResult.confidence}`,
+                        marketData: `Best platforms: ${photoResult.bestPlatforms.join(', ')}`,
+                        estimatedPrice: photoResult.valueRange.high.toFixed(2),
+                        ebayFees: (photoResult.estimatedValue * 0.13).toFixed(2),
+                        shippingCost: '8.00',
+                        netProfit: photoResult.estimatedValue.toFixed(2),
+                        taxDeduction: (photoResult.estimatedValue * 0.3).toFixed(2),
+                        analysisType: 'treasure'
+                    };
+                    
+                    const historyItem = {
+                        id: Date.now(),
+                        timestamp: new Date().toISOString(),
+                        itemName: photoResult.itemName,
+                        condition: photoResult.condition,
+                        analysisType: 'treasure',
+                        ...formattedResult
+                    };
+                    const updatedHistory = [historyItem, ...history];
+                    setHistory(updatedHistory);
+                    localStorage.setItem('sellDonateHistory', JSON.stringify(updatedHistory));
+                    
+                    // Store result for display
+                    setResult({
+                        ...formattedResult,
+                        itemName: photoResult.itemName,
+                        treasureCategory: scanningCategoryId
+                    });
+                    
+                    clearPhoto();
+                    setScreen('treasure_result');
+                    
+                } catch (error) {
+                    console.error('Treasure scan error:', error);
+                    setPhotoError(error.message || 'Failed to analyze. Please try again.');
+                    trackEvent('treasure_scan_error', { category: scanningCategoryId, error: error.message });
+                } finally {
+                    setPhotoLoading(false);
+                }
+            };
+
+            const skipTreasureCategory = (categoryId) => {
+                setTreasureProgress({
+                    ...treasureProgress,
+                    [categoryId]: { skipped: true }
+                });
+                trackEvent('treasure_category_skipped', { category: categoryId });
+            };
 
 // PHOTO SCAN FUNCTIONS
 const handlePhotoSelect = (e) => {
@@ -2517,6 +2850,300 @@ const runPhotoAnalysis = async () => {
             // ============================================
             // SCREENS
             // ============================================
+
+            // TREASURE HUNT HOME SCREEN
+            if (screen === 'treasure_home') {
+                const completedCount = Object.values(treasureProgress).filter(p => p.completed).length;
+                const totalValue = Object.values(treasureProgress)
+                    .filter(p => p.completed && p.recommendation === 'sell')
+                    .reduce((sum, p) => sum + (p.value || 0), 0);
+                
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        <div className="container">
+                            <div className="card">
+                                <div style={{textAlign: 'center'}}>
+                                    <div className="treasure-badge">🏆 Hidden Treasure Hunt</div>
+                                </div>
+                                
+                                <h1 style={{fontSize: '24px'}}>
+                                    Find Your <span className="highlight">Hidden Gold</span>
+                                </h1>
+                                
+                                <p className="subtitle">
+                                    Scan items from each category to discover what's valuable!
+                                </p>
+                                
+                                <div className="treasure-progress">
+                                    <div 
+                                        className="treasure-progress-bar" 
+                                        style={{width: `${(completedCount / TREASURE_CATEGORIES.length) * 100}%`}}
+                                    ></div>
+                                </div>
+                                <div className="treasure-progress-text">
+                                    {completedCount} of {TREASURE_CATEGORIES.length} categories scanned
+                                </div>
+                                
+                                <div className="treasure-category-list">
+                                    {TREASURE_CATEGORIES.map(cat => {
+                                        const progress = treasureProgress[cat.id];
+                                        const isCompleted = progress?.completed;
+                                        const isSkipped = progress?.skipped;
+                                        
+                                        return (
+                                            <div 
+                                                key={cat.id}
+                                                className={`treasure-category-item ${isCompleted ? 'completed' : ''} ${isSkipped ? 'skipped' : ''}`}
+                                                onClick={() => {
+                                                    if (!isSkipped) {
+                                                        setScanningCategoryId(cat.id);
+                                                        setScreen('treasure_scan');
+                                                    }
+                                                }}
+                                            >
+                                                <div className="treasure-emoji">{cat.emoji}</div>
+                                                <div className="treasure-category-info">
+                                                    <div className="treasure-category-name">
+                                                        {isCompleted && '✓ '}{cat.name}
+                                                    </div>
+                                                    {isCompleted ? (
+                                                        <div className={`treasure-category-result ${progress.recommendation}`}>
+                                                            {progress.recommendation === 'sell' 
+                                                                ? `💰 Worth $${progress.value?.toFixed(0) || '?'}` 
+                                                                : '❤️ Better to donate'}
+                                                        </div>
+                                                    ) : isSkipped ? (
+                                                        <div className="treasure-category-hint">Skipped — tap to try again</div>
+                                                    ) : (
+                                                        <div className="treasure-category-hint">{cat.hint}</div>
+                                                    )}
+                                                </div>
+                                                {!isCompleted && !isSkipped && (
+                                                    <div className="treasure-category-value">{cat.value}</div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                                
+                                {totalValue > 0 && (
+                                    <div className="treasure-total">
+                                        <div className="treasure-total-label">💰 Total Found Value</div>
+                                        <div className="treasure-total-value">${totalValue.toFixed(0)}</div>
+                                    </div>
+                                )}
+                                
+                                <button 
+                                    className="secondary-action" 
+                                    onClick={() => {
+                                        setTreasureMode(false);
+                                        setScreen('home');
+                                    }}
+                                    style={{marginTop: '20px'}}
+                                >
+                                    Exit Treasure Hunt
+                                </button>
+                            </div>
+                        </div>
+                        
+                        {showUpgrade && (
+                            <UpgradeModal 
+                                onClose={() => setShowUpgrade(false)} 
+                                onShowEmailCapture={handleShowEmailCapture}
+                            />
+                        )}
+                        {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
+                    </>
+                );
+            }
+
+            // TREASURE HUNT SCAN SCREEN
+            if (screen === 'treasure_scan') {
+                const currentCategory = TREASURE_CATEGORIES.find(c => c.id === scanningCategoryId);
+                
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        <div className="container">
+                            <div className="card">
+                                <div style={{textAlign: 'center'}}>
+                                    <div className="treasure-badge">🔍 Scanning: {currentCategory?.name}</div>
+                                </div>
+                                
+                                <div className="treasure-scan-prompt">
+                                    <div style={{fontSize: '48px', marginBottom: '15px'}}>{currentCategory?.emoji}</div>
+                                    <div className="treasure-scan-category">{currentCategory?.name}</div>
+                                    <div className="treasure-scan-hint">{currentCategory?.hint}</div>
+                                    <div style={{fontSize: '14px', color: 'var(--color-primary)', marginBottom: '20px'}}>
+                                        Potential value: {currentCategory?.value}
+                                    </div>
+                                </div>
+                                
+                                <div className="photo-upload-area" style={{marginBottom: '20px'}}>
+                                    {photoPreview ? (
+                                        <div className="photo-preview">
+                                            <img src={photoPreview} alt="Preview" />
+                                            <button className="photo-remove" onClick={clearPhoto}>✕</button>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                capture="environment"
+                                                onChange={handlePhotoSelect}
+                                                id="treasure-photo-input"
+                                                style={{display: 'none'}}
+                                            />
+                                            <label htmlFor="treasure-photo-input" className="photo-upload-label">
+                                                <span className="photo-upload-icon">📸</span>
+                                                <span className="photo-upload-text">Tap to take a photo</span>
+                                                <span className="photo-upload-hint">or choose from gallery</span>
+                                            </label>
+                                        </>
+                                    )}
+                                </div>
+                                
+                                {photoError && (
+                                    <div className="photo-error">{photoError}</div>
+                                )}
+                                
+                                {photoPreview && (
+                                    <button 
+                                        className="action-button"
+                                        onClick={runTreasureScan}
+                                        disabled={photoLoading}
+                                        style={{marginBottom: '15px'}}
+                                    >
+                                        {photoLoading ? '🔍 Analyzing...' : '✨ Scan This Item'}
+                                    </button>
+                                )}
+                                
+                                <div style={{display: 'flex', gap: '10px'}}>
+                                    <button 
+                                        className="back-button"
+                                        onClick={() => {
+                                            clearPhoto();
+                                            setScreen('treasure_home');
+                                        }}
+                                        style={{flex: 1}}
+                                    >
+                                        ← Back
+                                    </button>
+                                    <button 
+                                        className="treasure-skip-btn"
+                                        onClick={() => {
+                                            skipTreasureCategory(scanningCategoryId);
+                                            clearPhoto();
+                                            setScreen('treasure_home');
+                                        }}
+                                        style={{flex: 1, background: 'var(--color-bg-alt)', borderRadius: 'var(--radius)', padding: '12px'}}
+                                    >
+                                        Don't have this →
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {showUpgrade && (
+                            <UpgradeModal 
+                                onClose={() => setShowUpgrade(false)} 
+                                onShowEmailCapture={handleShowEmailCapture}
+                            />
+                        )}
+                        {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
+                    </>
+                );
+            }
+
+            // TREASURE HUNT RESULT SCREEN
+            if (screen === 'treasure_result') {
+                const currentCategory = TREASURE_CATEGORIES.find(c => c.id === scanningCategoryId);
+                const isSell = result?.recommendation === 'sell';
+                const completedCount = Object.values(treasureProgress).filter(p => p.completed).length;
+                
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        <div className="container">
+                            <div className="card">
+                                <div style={{textAlign: 'center'}}>
+                                    <div className="treasure-badge">
+                                        {isSell ? '💰 Treasure Found!' : '❤️ Good Deed Item'}
+                                    </div>
+                                </div>
+                                
+                                <div style={{textAlign: 'center', marginBottom: '20px'}}>
+                                    <div style={{fontSize: '48px', marginBottom: '10px'}}>{currentCategory?.emoji}</div>
+                                    <h2 style={{fontFamily: 'var(--font-display)', fontSize: '20px', marginBottom: '5px'}}>
+                                        {result?.itemName || currentCategory?.name}
+                                    </h2>
+                                </div>
+                                
+                                <div className={`result-verdict ${result?.recommendation}`}>
+                                    <div className="verdict-emoji">{isSell ? '💰' : '❤️'}</div>
+                                    <div className="verdict-text">{isSell ? 'SELL IT!' : 'DONATE IT'}</div>
+                                </div>
+                                
+                                {isSell && (
+                                    <div className="result-details">
+                                        <div className="detail-row">
+                                            <span className="detail-label">Estimated Value</span>
+                                            <span className="detail-value highlight">${result?.netProfit}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Best Platforms</span>
+                                            <span className="detail-value">{result?.marketData?.replace('Best platforms: ', '')}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                {!isSell && (
+                                    <div className="result-details">
+                                        <div className="detail-row">
+                                            <span className="detail-label">Est. Tax Deduction</span>
+                                            <span className="detail-value highlight">${result?.taxDeduction}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                <div style={{
+                                    background: 'var(--color-bg-alt)', 
+                                    borderRadius: 'var(--radius)', 
+                                    padding: '15px', 
+                                    textAlign: 'center',
+                                    marginTop: '20px'
+                                }}>
+                                    <div style={{fontSize: '14px', color: 'var(--color-text-muted)'}}>
+                                        🏆 Progress: {completedCount} of {TREASURE_CATEGORIES.length} categories
+                                    </div>
+                                </div>
+                                
+                                <button 
+                                    className="primary-action"
+                                    onClick={() => {
+                                        setScanningCategoryId(null);
+                                        setResult(null);
+                                        setScreen('treasure_home');
+                                    }}
+                                    style={{marginTop: '20px'}}
+                                >
+                                    Continue Treasure Hunt →
+                                </button>
+                            </div>
+                        </div>
+                        
+                        {showUpgrade && (
+                            <UpgradeModal 
+                                onClose={() => setShowUpgrade(false)} 
+                                onShowEmailCapture={handleShowEmailCapture}
+                            />
+                        )}
+                        {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
+                    </>
+                );
+            }
 
             if (screen === 'loading') {
                 const isDetailed = analysisType === 'detailed';
