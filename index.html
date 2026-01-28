@@ -1381,5 +1381,306 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
 
         ReactDOM.createRoot(document.getElementById('root')).render(<App />);
     </script>
+<!-- EXIT INTENT SURVEY - Paste this just before </body> in your index.html -->
+
+<style>
+  .exit-survey-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    opacity: 0;
+    animation: exitFadeIn 0.2s ease-out forwards;
+  }
+  
+  @keyframes exitFadeIn {
+    to { opacity: 1; }
+  }
+  
+  .exit-survey-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 32px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    opacity: 0;
+    animation: exitSlideUp 0.3s ease-out forwards;
+  }
+  
+  @keyframes exitSlideUp {
+    to { 
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+  
+  .exit-survey-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #999;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+  }
+  
+  .exit-survey-close:hover {
+    color: #666;
+  }
+  
+  .exit-survey-heading {
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  
+  .exit-survey-subheading {
+    margin: 0 0 24px 0;
+    font-size: 15px;
+    color: #666;
+  }
+  
+  .exit-survey-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  
+  .exit-survey-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.15s ease;
+    background-color: #fafafa;
+  }
+  
+  .exit-survey-option:hover {
+    border-color: #2563eb;
+    background-color: #f0f7ff;
+  }
+  
+  .exit-survey-option input {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+    accent-color: #2563eb;
+  }
+  
+  .exit-survey-option span {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .exit-survey-text-input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    outline: none;
+  }
+  
+  .exit-survey-text-input:focus {
+    border-color: #2563eb;
+  }
+  
+  .exit-survey-submit {
+    width: 100%;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #2563eb;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+  
+  .exit-survey-submit:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .exit-survey-submit:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+  }
+  
+  .exit-survey-thankyou {
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  .exit-survey-checkmark {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+    border-radius: 50%;
+    background-color: #22c55e;
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+  
+  .exit-survey-thankyou p {
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+  }
+  
+  .exit-survey-hidden {
+    display: none !important;
+  }
+</style>
+
+<div id="exitSurveyBackdrop" class="exit-survey-backdrop exit-survey-hidden"></div>
+<div id="exitSurveyModal" class="exit-survey-modal exit-survey-hidden">
+  <button class="exit-survey-close" onclick="closeExitSurvey()">&times;</button>
+  
+  <div id="exitSurveyForm">
+    <h2 class="exit-survey-heading">Quick question before you go</h2>
+    <p class="exit-survey-subheading">What stopped you from trying a scan today?</p>
+    
+    <div class="exit-survey-options">
+      <label class="exit-survey-option">
+        <input type="radio" name="exitSurvey" value="I wasn't sure how it works">
+        <span>I wasn't sure how it works</span>
+      </label>
+      
+      <label class="exit-survey-option">
+        <input type="radio" name="exitSurvey" value="I don't have an item nearby to try">
+        <span>I don't have an item nearby to try</span>
+      </label>
+      
+      <label class="exit-survey-option">
+        <input type="radio" name="exitSurvey" value="I'm not sure I'd trust the value it gives">
+        <span>I'm not sure I'd trust the value it gives</span>
+      </label>
+      
+      <label class="exit-survey-option">
+        <input type="radio" name="exitSurvey" value="I was just curious, not ready to use it yet">
+        <span>I was just curious, not ready to use it yet</span>
+      </label>
+      
+      <label class="exit-survey-option">
+        <input type="radio" name="exitSurvey" value="other">
+        <span>Something else</span>
+      </label>
+      
+      <input type="text" id="exitSurveyOther" class="exit-survey-text-input exit-survey-hidden" placeholder="Tell us what's on your mind...">
+    </div>
+    
+    <button class="exit-survey-submit" onclick="submitExitSurvey()" disabled>Submit</button>
+  </div>
+  
+  <div id="exitSurveyThanks" class="exit-survey-thankyou exit-survey-hidden">
+    <span class="exit-survey-checkmark">✓</span>
+    <p>Thanks for your feedback!</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  var hasShown = sessionStorage.getItem('exitSurveyShown');
+  
+  if (!hasShown) {
+    document.addEventListener('mouseleave', function(e) {
+      if (e.clientY <= 0 && !sessionStorage.getItem('exitSurveyShown')) {
+        showExitSurvey();
+        sessionStorage.setItem('exitSurveyShown', 'true');
+      }
+    });
+  }
+  
+  // Handle radio button changes
+  document.querySelectorAll('input[name="exitSurvey"]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      var otherInput = document.getElementById('exitSurveyOther');
+      var submitBtn = document.querySelector('.exit-survey-submit');
+      
+      if (this.value === 'other') {
+        otherInput.classList.remove('exit-survey-hidden');
+        otherInput.focus();
+        submitBtn.disabled = otherInput.value.trim() === '';
+      } else {
+        otherInput.classList.add('exit-survey-hidden');
+        submitBtn.disabled = false;
+      }
+    });
+  });
+  
+  // Handle other text input
+  document.getElementById('exitSurveyOther').addEventListener('input', function() {
+    var selectedRadio = document.querySelector('input[name="exitSurvey"]:checked');
+    if (selectedRadio && selectedRadio.value === 'other') {
+      document.querySelector('.exit-survey-submit').disabled = this.value.trim() === '';
+    }
+  });
+})();
+
+function showExitSurvey() {
+  document.getElementById('exitSurveyBackdrop').classList.remove('exit-survey-hidden');
+  document.getElementById('exitSurveyModal').classList.remove('exit-survey-hidden');
+}
+
+function closeExitSurvey() {
+  var selectedRadio = document.querySelector('input[name="exitSurvey"]:checked');
+  if (!selectedRadio && typeof gtag !== 'undefined') {
+    gtag('event', 'exit_survey_dismissed');
+  }
+  document.getElementById('exitSurveyBackdrop').classList.add('exit-survey-hidden');
+  document.getElementById('exitSurveyModal').classList.add('exit-survey-hidden');
+}
+
+function submitExitSurvey() {
+  var selectedRadio = document.querySelector('input[name="exitSurvey"]:checked');
+  if (!selectedRadio) return;
+  
+  var response = selectedRadio.value;
+  var otherText = '';
+  
+  if (response === 'other') {
+    otherText = document.getElementById('exitSurveyOther').value.trim();
+  }
+  
+  // Send to GA4
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'exit_survey_response', {
+      response: response,
+      other_text: otherText
+    });
+  }
+  
+  // Show thank you
+  document.getElementById('exitSurveyForm').classList.add('exit-survey-hidden');
+  document.getElementById('exitSurveyThanks').classList.remove('exit-survey-hidden');
+  
+  // Auto close after 2 seconds
+  setTimeout(closeExitSurvey, 2000);
+}
+
+// Close on backdrop click
+document.getElementById('exitSurveyBackdrop').addEventListener('click', closeExitSurvey);
+</script>
+
+<!-- END EXIT INTENT SURVEY -->
+
 </body>
 </html>
