@@ -8,48 +8,6 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-2PXG6EEVC0');
-
-  // ============================================
-  // IMPROVED TRACKING: Session & UTM Capture
-  // ============================================
-  const IV_SESSION = sessionStorage.getItem('iv_sid') || (() => {
-      const id = 's_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
-      sessionStorage.setItem('iv_sid', id);
-      return id;
-  })();
-
-  const IV_UTM = (() => {
-      const p = new URLSearchParams(window.location.search);
-      if (p.get('utm_source')) {
-          const d = { 
-              source: p.get('utm_source') || 'direct', 
-              medium: p.get('utm_medium') || 'none', 
-              campaign: p.get('utm_campaign') || 'none',
-              content: p.get('utm_content') || '',
-              term: p.get('utm_term') || '',
-              landing: window.location.pathname,
-              landed: new Date().toISOString()
-          };
-          sessionStorage.setItem('iv_utm', JSON.stringify(d));
-          return d;
-      }
-      const stored = sessionStorage.getItem('iv_utm');
-      return stored ? JSON.parse(stored) : { source: 'direct', medium: 'none', campaign: 'none' };
-  })();
-
-  const IV_DEVICE = /iPhone|iPad|iPod/.test(navigator.userAgent) ? 'ios' : 
-                    /Android/.test(navigator.userAgent) ? 'android' : 'desktop';
-
-  // Track page land immediately
-  gtag('event', 'page_land', { 
-      session_id: IV_SESSION,
-      traffic_source: IV_UTM.source,
-      traffic_medium: IV_UTM.medium,
-      traffic_campaign: IV_UTM.campaign,
-      device_type: IV_DEVICE,
-      landing_page: window.location.pathname,
-      referrer: document.referrer || 'none'
-  });
 </script> 
     <!-- Meta Pixel Code -->
 <script>
@@ -114,7 +72,11 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             --radius-lg: 20px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: var(--font-body);
@@ -125,7 +87,10 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             color: var(--color-text);
         }
 
-        .container { max-width: 500px; margin: 0 auto; }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
 
         .card {
             background: white;
@@ -146,7 +111,9 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             font-weight: 600;
         }
 
-        h1 .highlight { color: var(--color-primary); }
+        h1 .highlight {
+            color: var(--color-primary);
+        }
 
         .subtitle {
             color: var(--color-text-muted);
@@ -178,7 +145,71 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             margin-bottom: 15px;
         }
 
-        .input-section { margin-top: 10px; }
+        /* Example Result Card - FRICTION FIX #3 */
+        .example-result {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .example-label {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--color-primary);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .example-item-name {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-contrast);
+            margin-bottom: 8px;
+            margin-top: 5px;
+        }
+
+        .example-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .example-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--color-text-muted);
+        }
+
+        .example-stat .check {
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+
+        .example-verdict {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--color-primary);
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        /* Input Section */
+        .input-section {
+            margin-top: 10px;
+        }
 
         .input-label {
             display: block;
@@ -208,8 +239,13 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             box-shadow: 0 0 0 3px rgba(13, 124, 102, 0.1);
         }
 
-        input::placeholder, textarea::placeholder { color: #94a3b8; }
-        textarea { resize: vertical; }
+        input::placeholder, textarea::placeholder {
+            color: #94a3b8;
+        }
+
+        textarea {
+            resize: vertical;
+        }
 
         .action-button {
             width: 100%;
@@ -243,6 +279,10 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             color: var(--color-contrast);
         }
 
+        .action-button.pro:hover {
+            box-shadow: 0 5px 20px rgba(232, 185, 49, 0.4);
+        }
+
         .time-hint {
             text-align: center;
             color: var(--color-text-muted);
@@ -255,13 +295,138 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             font-weight: 600;
         }
 
+        /* Analysis Type Selection */
+        .analysis-choice {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .analysis-option {
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius);
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            background: white;
+        }
+
+        .analysis-option:hover {
+            border-color: var(--color-primary);
+            background: rgba(13, 124, 102, 0.02);
+        }
+
+        .analysis-option.pro {
+            border-color: var(--color-accent);
+            background: linear-gradient(135deg, var(--color-accent-light) 0%, #FEF9E7 100%);
+        }
+
+        .analysis-option.pro:hover {
+            border-color: #D4A528;
+        }
+
+        .analysis-option.locked {
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        .analysis-option.locked:hover {
+            border-color: #e2e8f0;
+            background: white;
+        }
+
+        .analysis-option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .analysis-option-title {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-contrast);
+        }
+
+        .analysis-option-title.pro {
+            color: #92700C;
+        }
+
+        .analysis-option-badge {
+            background: var(--color-primary);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        .analysis-option-badge.pro {
+            background: linear-gradient(135deg, var(--color-accent), #D4A528);
+            color: var(--color-contrast);
+        }
+
+        .analysis-option-badge.locked {
+            background: #94a3b8;
+        }
+
+        .analysis-option-desc {
+            font-size: 14px;
+            color: var(--color-text-muted);
+            line-height: 1.4;
+        }
+
+        .analysis-option-features {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .feature-tag {
+            background: var(--color-bg-alt);
+            color: var(--color-text-muted);
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .feature-tag.pro {
+            background: rgba(232, 185, 49, 0.2);
+            color: #92700C;
+        }
+
+        .lock-icon {
+            font-size: 20px;
+            margin-right: 8px;
+        }
+
+        /* Condition Selection */
+        .question {
+            margin-bottom: 25px;
+        }
+
+        .question-label {
+            display: block;
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--color-contrast);
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
         .button-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
 
-        .button-grid.single-col { grid-template-columns: 1fr; }
+        .button-grid.single-col {
+            grid-template-columns: 1fr;
+        }
 
         .option-button {
             padding: 16px 12px;
@@ -309,6 +474,34 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             background: var(--color-bg-alt);
         }
 
+        /* Progress indicator */
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #e2e8f0;
+        }
+
+        .progress-dot.active {
+            background: var(--color-primary);
+        }
+
+        .progress-dot.completed {
+            background: var(--color-primary);
+        }
+
+        .progress-dot.pro {
+            background: var(--color-accent);
+        }
+
+        /* Results */
         .result-card {
             background: white;
             border-radius: var(--radius-lg);
@@ -318,7 +511,10 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             border: 1px solid rgba(0,0,0,0.04);
         }
 
-        .result-icon { font-size: 64px; margin-bottom: 20px; }
+        .result-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
 
         .result-title {
             font-family: var(--font-display);
@@ -327,8 +523,13 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             margin-bottom: 10px;
         }
 
-        .result-title.sell { color: var(--color-primary); }
-        .result-title.donate { color: var(--color-accent); }
+        .result-title.sell {
+            color: var(--color-primary);
+        }
+
+        .result-title.donate {
+            color: var(--color-accent);
+        }
 
         .result-reason {
             color: var(--color-text-muted);
@@ -352,10 +553,24 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             border-bottom: 1px solid rgba(0,0,0,0.06);
         }
 
-        .detail-row:last-child { border-bottom: none; }
-        .detail-label { color: var(--color-text-muted); font-weight: 500; }
-        .detail-value { font-weight: 700; color: var(--color-text); }
-        .detail-value.highlight { color: var(--color-primary); font-size: 20px; }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--color-text-muted);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-weight: 700;
+            color: var(--color-text);
+        }
+
+        .detail-value.highlight {
+            color: var(--color-primary);
+            font-size: 20px;
+        }
 
         .market-data {
             background: rgba(13, 124, 102, 0.08);
@@ -407,7 +622,69 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             border: 2px solid #ef4444;
         }
 
-        .loading { text-align: center; padding: 40px; }
+        .effort-reason {
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* Detailed analysis badge on result */
+        .detailed-badge {
+            background: linear-gradient(135deg, var(--color-accent), #D4A528);
+            color: var(--color-contrast);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        /* Post-result actions */
+        .result-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .primary-action {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-body);
+        }
+
+        .secondary-action {
+            width: 100%;
+            padding: 14px;
+            background: white;
+            color: var(--color-text-muted);
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-body);
+        }
+
+        .secondary-action:hover {
+            border-color: #cbd5e1;
+            background: var(--color-bg-alt);
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
 
         .loading-spinner {
             border: 4px solid var(--color-bg-alt);
@@ -419,17 +696,39 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             margin: 0 auto 20px;
         }
 
-        .loading-spinner.pro { border-top-color: var(--color-accent); }
+        .loading-spinner.pro {
+            border-top-color: var(--color-accent);
+        }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+@keyframes pulse-border {
+    0%, 100% { border-color: #e0e0e0 !important; box-shadow: 0 0 0 3px transparent !important; }
+    50% { border-color: var(--color-primary) !important; box-shadow: 0 0 0 3px rgba(13, 124, 102, 0.3) !important; }
+}
 
-        .loading-text { color: var(--color-primary); font-weight: 600; font-size: 16px; }
-        .loading-text.pro { color: #92700C; }
-        .loading-subtext { color: var(--color-text-muted); font-size: 14px; margin-top: 8px; }
+input[type="text"].pulse-hint {
+    animation: pulse-border 2s ease-in-out infinite !important;
+}
+        .loading-text {
+            color: var(--color-primary);
+            font-weight: 600;
+            font-size: 16px;
+        }
 
+        .loading-text.pro {
+            color: #92700C;
+        }
+
+        .loading-subtext {
+            color: var(--color-text-muted);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Scan Counter - FRICTION FIX #4 */
         .scan-counter {
             position: fixed;
             top: 20px;
@@ -446,11 +745,87 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             transition: all 0.2s;
         }
 
-        .scan-counter:hover { transform: translateY(-2px); }
-        .scan-counter.warning { background: linear-gradient(135deg, var(--color-accent), #D4A528); color: var(--color-contrast); }
-        .scan-counter.empty { background: linear-gradient(135deg, #ef4444, #dc2626); }
-        .scan-counter.paid { background: linear-gradient(135deg, var(--color-accent), #D4A528); color: var(--color-contrast); }
+        .scan-counter:hover {
+            transform: translateY(-2px);
+        }
 
+        .scan-counter.warning {
+            background: linear-gradient(135deg, var(--color-accent), #D4A528);
+            color: var(--color-contrast);
+        }
+
+        .scan-counter.empty {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .scan-counter.paid {
+            background: linear-gradient(135deg, var(--color-accent), #D4A528);
+            color: var(--color-contrast);
+        }
+        
+        .scan-counter-tooltip {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: white;
+            color: var(--color-text);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 400;
+            width: 200px;
+            box-shadow: var(--shadow-medium);
+            display: none;
+            text-align: left;
+            line-height: 1.4;
+        }
+        
+        .scan-counter:hover .scan-counter-tooltip {
+            display: block;
+        }
+
+        /* Bulk scan prompt */
+        .bulk-prompt {
+            background: var(--color-bg-alt);
+            border: 2px dashed #cbd5e1;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .bulk-prompt-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 8px;
+        }
+
+        .bulk-prompt-desc {
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin-bottom: 12px;
+        }
+
+        .bulk-prompt-button {
+            background: white;
+            border: 2px solid var(--color-primary);
+            color: var(--color-primary);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-body);
+        }
+
+        .bulk-prompt-button:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        /* History button */
         .history-button {
             position: fixed;
             bottom: 60px;
@@ -477,9 +852,13 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             margin-left: 8px;
         }
 
+        /* Modals */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.6);
             display: flex;
             justify-content: center;
@@ -499,134 +878,88 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             box-shadow: var(--shadow-medium);
         }
 
-        .scan-tabs {
-            display: flex;
-            gap: 0;
-            margin-bottom: 20px;
-            background: var(--color-bg-alt);
-            border-radius: var(--radius);
-            padding: 4px;
+        /* Footer */
+        .footer-disclaimer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--color-contrast);
+            color: rgba(255,255,255,0.7);
+            padding: 12px 20px;
+            font-size: 11px;
+            text-align: center;
+            z-index: 998;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
-        .scan-tab {
-            flex: 1;
-            padding: 12px 16px;
-            border: none;
-            background: transparent;
-            font-family: var(--font-body);
-            font-weight: 600;
+        .footer-disclaimer a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        /* Bulk mode styles */
+        .bulk-input-section textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .bulk-item-count {
+            text-align: right;
             font-size: 14px;
             color: var(--color-text-muted);
-            cursor: pointer;
-            border-radius: calc(var(--radius) - 2px);
-            transition: all 0.2s;
+            margin-top: 8px;
         }
 
-        .scan-tab.active {
-            background: white;
-            color: var(--color-primary);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        .bulk-results {
+            margin-top: 20px;
         }
 
-        .photo-upload-area {
-            border: 2px dashed #d1d5db;
-            border-radius: var(--radius);
-            padding: 30px 20px;
-            text-align: center;
+        .bulk-result-item {
             background: var(--color-bg-alt);
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .photo-upload-area:hover {
-            border-color: var(--color-primary);
-            background: rgba(13, 124, 102, 0.05);
-        }
-
-        .photo-upload-area.has-image {
-            border-style: solid;
-            border-color: var(--color-primary);
-            padding: 10px;
-        }
-
-        .upload-icon { font-size: 48px; margin-bottom: 10px; }
-
-        .upload-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 15px;
-        }
-
-        .upload-btn {
-            padding: 10px 20px;
+            border-left: 4px solid #e0e0e0;
+            padding: 15px;
+            margin-bottom: 12px;
             border-radius: 8px;
-            border: none;
+        }
+
+        .bulk-result-item.sell {
+            border-left-color: var(--color-primary);
+            background: rgba(13, 124, 102, 0.08);
+        }
+
+        .bulk-result-item.donate {
+            border-left-color: var(--color-accent);
+            background: var(--color-accent-light);
+        }
+
+        .bulk-item-name {
+            font-family: var(--font-display);
             font-weight: 600;
-            cursor: pointer;
-            font-family: var(--font-body);
-            font-size: 14px;
+            color: var(--color-contrast);
+            margin-bottom: 5px;
         }
 
-        .upload-btn.camera { background: var(--color-primary); color: white; }
-        .upload-btn.gallery { background: #e5e7eb; color: #374151; }
-
-        .preview-container {
-            position: relative;
-            display: inline-block;
-            max-width: 100%;
-        }
-
-        .preview-image {
-            max-width: 100%;
-            max-height: 250px;
-            object-fit: contain;
-            border-radius: 8px;
-        }
-
-        .clear-preview {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            cursor: pointer;
+        .bulk-item-recommendation {
+            font-weight: 700;
             font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        .photo-analyzing {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 30px;
+        .bulk-item-recommendation.sell {
+            color: var(--color-primary);
         }
 
-        .photo-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--color-bg-alt);
-            border-top-color: var(--color-primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-bottom: 15px;
+        .bulk-item-recommendation.donate {
+            color: #92700C;
         }
 
-        .photo-error {
-            background: #fef2f2;
-            color: #dc2626;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-top: 15px;
+        .bulk-item-details {
             font-size: 14px;
+            color: var(--color-text-muted);
+            margin-top: 5px;
         }
 
+        /* History modal */
         .history-header {
             display: flex;
             justify-content: space-between;
@@ -653,9 +986,21 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             border-radius: var(--radius);
         }
 
-        .stat-box { text-align: center; }
-        .stat-number { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--color-contrast); }
-        .stat-label { font-size: 12px; color: var(--color-text-muted); }
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-contrast);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--color-text-muted);
+        }
 
         .history-item {
             background: var(--color-bg-alt);
@@ -665,8 +1010,13 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             border-radius: 8px;
         }
 
-        .history-item.sell { border-left-color: var(--color-primary); }
-        .history-item.donate { border-left-color: var(--color-accent); }
+        .history-item.sell {
+            border-left-color: var(--color-primary);
+        }
+
+        .history-item.donate {
+            border-left-color: var(--color-accent);
+        }
 
         .close-button {
             background: var(--color-primary);
@@ -679,21 +1029,429 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             font-family: var(--font-body);
         }
 
-        @keyframes emailSpinner { to { transform: rotate(360deg); } }
-    </style>
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "v9pa63sy1j");
-</script>
+        /* Small input label */
+        .small-label {
+            display: block;
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+/* ============================================
+   PHOTO SCAN STYLES - FRICTION FIX #2
+   ============================================ */
+.scan-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    background: var(--color-bg-alt);
+    border-radius: var(--radius);
+    padding: 4px;
+}
+
+.scan-tab {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    border-radius: calc(var(--radius) - 2px);
+    transition: all 0.2s;
+}
+
+.scan-tab.active {
+    background: white;
+    color: var(--color-primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.scan-tab:hover:not(.active) {
+    color: var(--color-text);
+}
+
+/* Simplified photo upload - single tap area */
+.photo-upload-area {
+    border: 2px dashed var(--color-primary);
+    border-radius: var(--radius);
+    padding: 40px 20px;
+    text-align: center;
+    background: rgba(13, 124, 102, 0.03);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.photo-upload-area:hover {
+    border-color: var(--color-primary-dark);
+    background: rgba(13, 124, 102, 0.08);
+}
+
+.photo-upload-area:active {
+    transform: scale(0.99);
+}
+
+.photo-upload-area.has-image {
+    border-style: solid;
+    border-color: var(--color-primary);
+    padding: 10px;
+}
+
+.upload-icon {
+    font-size: 56px;
+    margin-bottom: 12px;
+}
+
+.upload-main-text {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-contrast);
+    margin-bottom: 6px;
+}
+
+.upload-sub-text {
+    color: var(--color-text-muted);
+    font-size: 14px;
+}
+
+.preview-container {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+}
+
+.preview-image {
+    max-width: 100%;
+    max-height: 250px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.clear-preview {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Enhanced loading state with photo preview */
+.photo-analyzing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.photo-analyzing-preview {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    opacity: 0.8;
+    box-shadow: var(--shadow-soft);
+}
+
+.photo-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--color-bg-alt);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: photoSpin 0.8s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes photoSpin {
+    to { transform: rotate(360deg); }
+}
+
+.photo-progress-steps {
+    margin-top: 15px;
+    text-align: left;
+    width: 100%;
+    max-width: 250px;
+}
+
+.photo-progress-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--color-text-muted);
+}
+
+.photo-progress-step.active {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.photo-progress-step.done {
+    color: var(--color-primary);
+}
+
+.photo-progress-step .step-icon {
+    width: 20px;
+    text-align: center;
+}
+
+.photo-error {
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 14px;
+}
+        @keyframes emailSpinner {
+            to { transform: rotate(360deg); }
+        }
+   /* ========== TESTIMONIAL MODAL ========== */
+.iv-testimonial-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+    animation: iv-fadeIn 0.2s ease-out;
+}
+
+@keyframes iv-fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes iv-slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.iv-testimonial-modal {
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    animation: iv-slideUp 0.3s ease-out;
+    overflow: hidden;
+}
+
+.iv-testimonial-header {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    padding: 24px 28px 20px;
+    color: white;
+}
+
+.iv-testimonial-emoji {
+    font-size: 32px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.iv-testimonial-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+}
+
+.iv-testimonial-subtitle {
+    font-size: 15px;
+    opacity: 0.9;
+    margin: 0;
+    font-weight: 400;
+}
+
+.iv-testimonial-body {
+    padding: 24px 28px 28px;
+}
+
+.iv-testimonial-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: var(--font-body);
+    resize: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #fff;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.iv-testimonial-textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(13, 124, 102, 0.15);
+}
+
+.iv-testimonial-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: var(--font-body);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #fff;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.iv-testimonial-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(13, 124, 102, 0.15);
+}
+
+.iv-testimonial-checkbox-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.iv-testimonial-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #cbd5e1;
+    border-radius: 6px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: #fff;
+    margin-top: 1px;
+}
+
+.iv-testimonial-checkbox.checked {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.iv-testimonial-checkbox svg {
+    width: 12px;
+    height: 12px;
+    color: white;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.15s;
+}
+
+.iv-testimonial-checkbox.checked svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.iv-testimonial-label {
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+.iv-testimonial-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.iv-testimonial-btn {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-body);
+}
+
+.iv-testimonial-btn-skip {
+    background: transparent;
+    border: 2px solid #e2e8f0;
+    color: #64748b;
+}
+
+.iv-testimonial-btn-skip:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.iv-testimonial-btn-submit {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 14px rgba(13, 124, 102, 0.35);
+}
+
+.iv-testimonial-btn-submit:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(13, 124, 102, 0.4);
+}
+
+.iv-testimonial-btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.iv-testimonial-thank-you {
+    text-align: center;
+    padding: 40px 28px;
+}
+
+.iv-testimonial-thank-you-emoji {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.iv-testimonial-thank-you-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 8px 0;
+    font-family: var(--font-display);
+}
+
+.iv-testimonial-thank-you-text {
+    font-size: 15px;
+    color: #64748b;
+    margin: 0;
+}
+/* ========== END TESTIMONIAL MODAL ========== */ </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useRef } = React;
 
         // ============================================
         // CONFIGURATION
@@ -704,74 +1462,42 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
         };
 
         // ============================================
-        // IMPROVED GA4 TRACKING WITH ATTRIBUTION
-        // ============================================
-        function trackEvent(eventName, eventParams = {}) {
-            // Get scan data for context
-            let scanContext = { tier: 'free', scansRemaining: 0 };
-            try {
-                const data = localStorage.getItem('itemvalue_scans');
-                if (data) scanContext = JSON.parse(data);
-            } catch(e) {}
-
-            // Build enhanced params with attribution
-            const enhanced = {
-                ...eventParams,
-                // Session & attribution (from head script)
-                session_id: window.IV_SESSION || sessionStorage.getItem('iv_sid') || 'unknown',
-                traffic_source: (window.IV_UTM || JSON.parse(sessionStorage.getItem('iv_utm') || '{}')).source || 'direct',
-                traffic_medium: (window.IV_UTM || JSON.parse(sessionStorage.getItem('iv_utm') || '{}')).medium || 'none',
-                traffic_campaign: (window.IV_UTM || JSON.parse(sessionStorage.getItem('iv_utm') || '{}')).campaign || 'none',
-                // Device
-                device_type: window.IV_DEVICE || (/iPhone|iPad|iPod/.test(navigator.userAgent) ? 'ios' : /Android/.test(navigator.userAgent) ? 'android' : 'desktop'),
-                // User state
-                user_tier: scanContext.tier,
-                scans_remaining: scanContext.scansRemaining
-            };
-
-            // GA4 tracking
-            if (typeof gtag !== 'undefined') {
-                gtag('event', eventName, enhanced);
-                console.log('📊 GA4:', eventName, enhanced);
-            }
-            
-            // Meta Pixel tracking for key conversion events
-            if (typeof fbq !== 'undefined') {
-                // Unified scan completion event
-                if (eventName === 'scan_completed') {
-                    fbq('track', 'Lead', {
-                        content_name: eventParams.item_name || eventParams.item_category || 'item_scan',
-                        content_category: eventParams.scan_type || 'quick',
-                        value: eventParams.estimated_value || 0,
-                        currency: 'USD'
-                    });
-                    console.log('📘 Meta: Lead');
-                }
-                if (eventName === 'item_entered') {
-                    fbq('track', 'Search', { search_string: 'item_entered' });
-                }
-                if (eventName === 'paywall_shown' || eventName === 'upgrade_cta_clicked') {
-                    fbq('track', 'ViewContent', { content_name: 'pricing_interest' });
-                }
-                if (eventName === 'email_captured') {
-                    fbq('track', 'CompleteRegistration', { content_name: 'email_capture' });
-                }
-                if (eventName === 'bundle_activated') {
-                    fbq('track', 'Purchase', {
-                        value: eventParams.purchase_value || 0,
-                        currency: 'USD',
-                        content_name: eventParams.bundle_name
-                    });
-                }
-            }
+// GA4 TRACKING
+// ============================================
+function trackEvent(eventName, eventParams = {}) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, eventParams);
+        console.log('GA4 Event:', eventName, eventParams);
+    }
+    
+    // Meta Pixel tracking for key conversion events
+    if (typeof fbq !== 'undefined') {
+        if (eventName === 'analysis_completed' || eventName === 'scan_completed') {
+            fbq('track', 'Lead', {
+                content_name: eventParams.item_category || 'item_scan',
+                content_category: eventParams.analysis_type || eventParams.scan_type || 'quick'
+            });
+            console.log('Meta Pixel: Lead event fired');
         }
-
-        // Track engagement start (first interaction)
-        function trackEngagement(inputType) {
-            if (sessionStorage.getItem('iv_engaged')) return;
-            sessionStorage.setItem('iv_engaged', 'true');
-            trackEvent('engagement_start', { input_type: inputType });
+        if (eventName === 'item_entered') {
+            fbq('track', 'Search', {
+                search_string: 'item_entered'
+            });
         }
+        if (eventName === 'upgrade_cta_clicked') {
+            fbq('track', 'ViewContent', {
+                content_name: 'pricing_interest'
+            });
+        }
+        if (eventName === 'bundle_activated') {
+            fbq('track', 'Purchase', {
+                value: 0,
+                currency: 'USD',
+                content_name: eventParams.bundle_name
+            });
+        }
+    }
+}
 
         // ============================================
         // SCAN MANAGEMENT
@@ -782,20 +1508,38 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
                 if (data) {
                     const parsed = JSON.parse(data);
                     if (parsed.expiryDate && new Date(parsed.expiryDate) < new Date()) {
-                        const freshData = { tier: 'free', scansRemaining: SCAN_CONFIG.FREE_SCANS, totalScans: SCAN_CONFIG.FREE_SCANS, used: 0, expiryDate: null, bundle: null };
+                        const freshData = {
+                            tier: 'free',
+                            scansRemaining: SCAN_CONFIG.FREE_SCANS,
+                            totalScans: SCAN_CONFIG.FREE_SCANS,
+                            used: 0,
+                            expiryDate: null,
+                            bundle: null
+                        };
                         localStorage.setItem('itemvalue_scans', JSON.stringify(freshData));
                         return freshData;
                     }
                     return parsed;
                 }
-            } catch (e) { console.error('Error reading scan data:', e); }
+            } catch (e) {
+                console.error('Error reading scan data:', e);
+            }
             
-            const defaultData = { tier: 'free', scansRemaining: SCAN_CONFIG.FREE_SCANS, totalScans: SCAN_CONFIG.FREE_SCANS, used: 0, expiryDate: null, bundle: null };
+            const defaultData = {
+                tier: 'free',
+                scansRemaining: SCAN_CONFIG.FREE_SCANS,
+                totalScans: SCAN_CONFIG.FREE_SCANS,
+                used: 0,
+                expiryDate: null,
+                bundle: null
+            };
             localStorage.setItem('itemvalue_scans', JSON.stringify(defaultData));
             return defaultData;
         }
 
-        function saveScanData(data) { localStorage.setItem('itemvalue_scans', JSON.stringify(data)); }
+        function saveScanData(data) {
+            localStorage.setItem('itemvalue_scans', JSON.stringify(data));
+        }
 
         function decrementScan() {
             const data = getScanData();
@@ -807,46 +1551,112 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             return data;
         }
 
-        function canScan() { return getScanData().scansRemaining > 0; }
-        function isPaidUser() { return getScanData().tier === 'paid'; }
+        function canScan() {
+            return getScanData().scansRemaining > 0;
+        }
+
+        function isPaidUser() {
+            return getScanData().tier === 'paid';
+        }
 
         // Check for access code in URL
         function checkAccessCode() {
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
+            
             if (code) {
-                window.history.replaceState({}, document.title, window.location.pathname);
-                activateAccessCode(code);
-            }
+            window.history.replaceState({}, document.title, window.location.pathname);
+            activateAccessCode(code);
+        }
         }
       
-        function activateAccessCode(code) {
-            const upperCode = code.toUpperCase();
-            let bundle = null, scans = 0, days = 0, purchaseValue = 0;
             
-            if (upperCode === 'SINGLE2') { bundle = 'Single Scan'; scans = 1; days = 30; purchaseValue = 2; }
-            else if (upperCode === 'STARTER25') { bundle = 'Starter Pack'; scans = 25; days = 365; purchaseValue = 7; }
-            else if (upperCode === 'CHALLENGE100') { bundle = 'Challenge Bundle'; scans = 100; days = 365; purchaseValue = 27; }
-            else if (upperCode.includes('WEEKEND')) { bundle = 'Weekend Warrior'; scans = 50; days = upperCode.includes('YEAR') ? 365 : 30; purchaseValue = 17; }
-            else if (upperCode.includes('MOVING')) { bundle = 'Moving Master'; scans = 200; days = upperCode.includes('YEAR') ? 365 : 60; purchaseValue = 37; }
-            else if (upperCode.includes('ESTATE')) { bundle = 'Estate Pro'; scans = 1000; days = upperCode.includes('YEAR') ? 365 : 90; purchaseValue = 97; }
-            else { alert('Invalid access code. Please check and try again.'); return; }
+            function activateAccessCode(code) {
+    const upperCode = code.toUpperCase();
+    let bundle = null;
+    let scans = 0;
+    let days = 0;
+    
+    if (upperCode === 'SINGLE2') {
+        bundle = 'Single Scan';
+        scans = 1;
+        days = 30;
+   } else if (upperCode === 'STARTER25') {
+        bundle = 'Starter Pack';
+        scans = 25;
+        days = 365;
+    } else if (upperCode === 'CHALLENGE100') {
+        bundle = 'Challenge Bundle';
+        scans = 100;
+        days = 365;
+    } else if (upperCode.includes('WEEKEND')) {
+        bundle = 'Weekend Warrior';
+        scans = 50;
+        days = upperCode.includes('YEAR') ? 365 : 30;
+    } else if (upperCode.includes('MOVING')) {
+        bundle = 'Moving Master';
+        scans = 200;
+        days = upperCode.includes('YEAR') ? 365 : 60;
+    } else if (upperCode.includes('ESTATE')) {
+        bundle = 'Estate Pro';
+        scans = 1000;
+        days = upperCode.includes('YEAR') ? 365 : 90;
+    } else {
+        alert('Invalid access code. Please check and try again.');
+        return;
+    }
            
             const expiryDate = new Date();
             expiryDate.setDate(expiryDate.getDate() + days);
             
             const scanData = {
-                tier: 'paid', bundle, scansRemaining: scans, totalScans: scans, used: 0,
-                expiryDate: expiryDate.toISOString(), activatedDate: new Date().toISOString(), accessCode: code
+                tier: 'paid',
+                bundle: bundle,
+                scansRemaining: scans,
+                totalScans: scans,
+                used: 0,
+                expiryDate: expiryDate.toISOString(),
+                activatedDate: new Date().toISOString(),
+                accessCode: code
             };
             
             saveScanData(scanData);
-            trackEvent('bundle_activated', { bundle_name: bundle, scans_granted: scans, purchase_value: purchaseValue });
-            alert(`✅ ${bundle} activated! You have ${scans} scans.`);
+trackEvent('bundle_activated', { bundle_name: bundle, scans_granted: scans });
+
+if (typeof fbq !== 'undefined') {
+    let purchaseValue = 0;
+    if (bundle === 'Single Scan') purchaseValue = 2;
+    else if (bundle === 'Starter Pack') purchaseValue = 7;
+    else if (bundle === 'Challenge Bundle') purchaseValue = 27;
+    else if (bundle === 'Weekend Warrior') purchaseValue = 17;
+    else if (bundle === 'Moving Master') purchaseValue = 37;
+    else if (bundle === 'Estate Pro') purchaseValue = 97;
+    
+    fbq('track', 'Purchase', {
+        value: purchaseValue,
+        currency: 'USD',
+        content_name: bundle,
+        content_type: 'product'
+    });
+    console.log('Meta Pixel: Purchase event fired', purchaseValue);
+}
+
+alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             return true;
         }
 
         checkAccessCode();
+
+        const CATEGORIES = [
+            { id: 'electronics', label: '📱 Electronics' },
+            { id: 'clothing', label: '👕 Clothing' },
+            { id: 'home', label: '🏠 Home & Garden' },
+            { id: 'toys', label: '🎮 Toys & Games' },
+            { id: 'books', label: '📚 Books & Media' },
+            { id: 'collectibles', label: '⭐ Collectibles' },
+            { id: 'furniture', label: '🪑 Furniture' },
+            { id: 'sports', label: '⚽ Sports' },
+        ];
 
         const CONDITIONS = [
             { id: 'new', label: '📦 New/Sealed' },
@@ -855,9 +1665,163 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             { id: 'fair', label: '👌 Fair/Worn' },
         ];
 
+        const URGENCY = [
+            { id: 'week', label: '🏃 This Week' },
+            { id: 'month', label: '📅 This Month' },
+            { id: 'whenever', label: '⏰ Whenever' },
+        ];
+
         // ============================================
-        // COMPONENTS
+        // TESTIMONIAL MODAL COMPONENT
         // ============================================
+        const TESTIMONIAL_VALUE_THRESHOLD = 50;
+        const TESTIMONIAL_MIN_SCANS = 2;
+
+        function TestimonialModal({ isOpen, onClose, scanValue, scanCount }) {
+            const [feedback, setFeedback] = useState('');
+            const [firstName, setFirstName] = useState('');
+            const [canFeature, setCanFeature] = useState(false);
+            const [isSubmitting, setIsSubmitting] = useState(false);
+            const [showThankYou, setShowThankYou] = useState(false);
+
+            useEffect(() => {
+                if (isOpen) {
+                    trackEvent('testimonial_modal_shown', {
+                        trigger_value: scanValue,
+                        scan_number: scanCount
+                    });
+                }
+            }, [isOpen]);
+
+            const handleSkip = () => {
+                trackEvent('testimonial_skipped');
+                onClose();
+            };
+
+            const handleSubmit = async () => {
+                if (!feedback.trim()) return;
+                
+                setIsSubmitting(true);
+                
+                const data = {
+                    feedback: feedback.trim(),
+                    firstName: firstName.trim() || null,
+                    canFeature,
+                    scanCount,
+                    triggerValue: scanValue,
+                    submittedAt: new Date().toISOString()
+                };
+                
+                trackEvent('testimonial_submitted', {
+                    has_name: !!firstName.trim(),
+                    consent_given: canFeature
+                });
+                
+                try {
+                    await fetch('/.netlify/functions/save-testimonial', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                } catch (err) {
+                    console.error('Testimonial error:', err);
+                }
+                
+                localStorage.setItem('iv_testimonial_submitted', 'true');
+                setIsSubmitting(false);
+                setShowThankYou(true);
+                
+                setTimeout(() => {
+                    onClose();
+                    setShowThankYou(false);
+                    setFeedback('');
+                    setFirstName('');
+                    setCanFeature(false);
+                }, 2000);
+            };
+
+            if (!isOpen) return null;
+
+            return (
+                <div className="iv-testimonial-overlay" onClick={handleSkip}>
+                    <div className="iv-testimonial-modal" onClick={(e) => e.stopPropagation()}>
+                        {showThankYou ? (
+                            <div className="iv-testimonial-thank-you">
+                                <span className="iv-testimonial-thank-you-emoji">💚</span>
+                                <h3 className="iv-testimonial-thank-you-title">Thanks so much!</h3>
+                                <p className="iv-testimonial-thank-you-text">Your feedback means a lot.</p>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="iv-testimonial-header">
+                                    <span className="iv-testimonial-emoji">🎉</span>
+                                    <h2 className="iv-testimonial-title">Nice find!</h2>
+                                    <p className="iv-testimonial-subtitle">Did this help you discover something valuable?</p>
+                                </div>
+                                <div className="iv-testimonial-body">
+                                    <textarea
+                                        className="iv-testimonial-textarea"
+                                        rows={3}
+                                        placeholder="Share a quick thought..."
+                                        value={feedback}
+                                        onChange={(e) => setFeedback(e.target.value)}
+                                    />
+                                    <input
+                                        type="text"
+                                        className="iv-testimonial-input"
+                                        placeholder="Your first name (optional)"
+                                        value={firstName}
+                                        onChange={(e) => setFirstName(e.target.value)}
+                                    />
+                                    <div 
+                                        className="iv-testimonial-checkbox-wrapper"
+                                        onClick={() => setCanFeature(!canFeature)}
+                                    >
+                                        <div className={`iv-testimonial-checkbox ${canFeature ? 'checked' : ''}`}>
+                                            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M2 6l3 3 5-6" />
+                                            </svg>
+                                        </div>
+                                        <span className="iv-testimonial-label">
+                                            You can feature my feedback — I might end up on your site!
+                                        </span>
+                                    </div>
+                                    <div className="iv-testimonial-buttons">
+                                        <button 
+                                            className="iv-testimonial-btn iv-testimonial-btn-skip"
+                                            onClick={handleSkip}
+                                        >
+                                            Skip
+                                        </button>
+                                        <button 
+                                            className="iv-testimonial-btn iv-testimonial-btn-submit"
+                                            onClick={handleSubmit}
+                                            disabled={!feedback.trim() || isSubmitting}
+                                        >
+                                            {isSubmitting ? 'Sending...' : 'Submit'}
+                                        </button>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        function shouldShowTestimonial(scanValue, scanCount) {
+            const alreadyShown = sessionStorage.getItem('iv_testimonial_shown');
+            const alreadySubmitted = localStorage.getItem('iv_testimonial_submitted');
+            
+            return (
+                scanValue >= TESTIMONIAL_VALUE_THRESHOLD &&
+                scanCount >= TESTIMONIAL_MIN_SCANS &&
+                !alreadyShown &&
+                !alreadySubmitted
+            );
+        }
+        
+        // FRICTION FIX #4: Clearer scan counter with tooltip
         function ScanCounter({ onClick }) {
             const data = getScanData();
             const remaining = data.scansRemaining;
@@ -868,16 +1832,23 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             else if (remaining <= 0) className += ' empty';
             else if (remaining <= 1) className += ' warning';
             
+            const tooltipText = isPaid 
+                ? `You have ${remaining} scans in your ${data.bundle} plan. Tap for details.`
+                : remaining > 0 
+                    ? `You have ${remaining} free scans to try Item Value. Each scan checks one item's resale value.`
+                    : `You've used all free scans. Tap to see pricing options.`;
+            
             return (
                 <div className={className} onClick={onClick}>
-                    {isPaid ? '✨' : '🆓'} {remaining} {isPaid ? 'scans' : 'free'} left
+                    {isPaid ? '✨' : '🎁'} {remaining} {isPaid ? 'scans' : (remaining === 1 ? 'free scan' : 'free scans')}
+                    <div className="scan-counter-tooltip">{tooltipText}</div>
                 </div>
             );
         }
 
         function UpgradeModal({ onClose, onShowEmailCapture }) {
             useEffect(() => {
-                trackEvent('paywall_shown', { scans_used: getScanData().used || 0 });
+                trackEvent('upgrade_prompt_shown', { scans_used: getScanData().used || 0 });
             }, []);
 
             return (
@@ -889,13 +1860,43 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
                             Upgrade to keep discovering hidden value. Most users find $500+ worth of sellable items!
                         </p>
                         
-                        <button onClick={() => { trackEvent('upgrade_cta_clicked'); onClose(); onShowEmailCapture(); }}
-                            style={{ width: '100%', padding: '14px', background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))', color: 'white', border: 'none', borderRadius: 'var(--radius)', fontSize: '16px', fontWeight: '600', cursor: 'pointer', marginBottom: '10px', fontFamily: 'var(--font-body)' }}>
+                        <button 
+                            onClick={() => {
+                                trackEvent('upgrade_cta_clicked');
+                                onClose();
+                                onShowEmailCapture();
+                            }}
+                            style={{
+                                width: '100%',
+                                padding: '14px',
+                                background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: 'var(--radius)',
+                                fontSize: '16px',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                marginBottom: '10px',
+                                fontFamily: 'var(--font-body)'
+                            }}
+                        >
                             View Pricing Options →
                         </button>
                         
-                        <button onClick={() => { trackEvent('upgrade_dismissed'); onClose(); }}
-                            style={{ width: '100%', padding: '12px', background: 'transparent', color: 'var(--color-text-muted)', border: '2px solid #e2e8f0', borderRadius: 'var(--radius)', fontSize: '15px', cursor: 'pointer', fontFamily: 'var(--font-body)' }}>
+                        <button 
+                            onClick={() => { trackEvent('upgrade_dismissed'); onClose(); }}
+                            style={{
+                                width: '100%',
+                                padding: '12px',
+                                background: 'transparent',
+                                color: 'var(--color-text-muted)',
+                                border: '2px solid #e2e8f0',
+                                borderRadius: 'var(--radius)',
+                                fontSize: '15px',
+                                cursor: 'pointer',
+                                fontFamily: 'var(--font-body)'
+                            }}
+                        >
                             Maybe Later
                         </button>
                     </div>
@@ -906,9 +1907,11 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
         function AccountModal({ onClose }) {
             const data = getScanData();
             const isPaid = data.tier === 'paid';
+            
             let expiryText = 'N/A';
             if (data.expiryDate) {
-                const daysLeft = Math.ceil((new Date(data.expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
+                const expiry = new Date(data.expiryDate);
+                const daysLeft = Math.ceil((expiry - new Date()) / (1000 * 60 * 60 * 24));
                 expiryText = `${daysLeft} days left`;
             }
             
@@ -916,28 +1919,66 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
                 <div className="modal-overlay" onClick={onClose}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{maxWidth: '380px'}}>
                         <h2 style={{marginBottom: '20px', color: 'var(--color-contrast)', fontFamily: 'var(--font-display)'}}>📊 Your Account</h2>
+                        
                         <div style={{background: 'var(--color-bg-alt)', padding: '20px', borderRadius: 'var(--radius)', marginBottom: '20px'}}>
                             <div style={{marginBottom: '15px'}}>
                                 <div style={{color: 'var(--color-text-muted)', fontSize: '13px'}}>Plan</div>
-                                <div style={{color: 'var(--color-contrast)', fontSize: '18px', fontWeight: '700', fontFamily: 'var(--font-display)'}}>{isPaid ? data.bundle : 'Free Tier'}</div>
+                                <div style={{color: 'var(--color-contrast)', fontSize: '18px', fontWeight: '700', fontFamily: 'var(--font-display)'}}>
+                                    {isPaid ? data.bundle : 'Free Trial'}
+                                </div>
                             </div>
+                            
                             <div style={{marginBottom: isPaid ? '15px' : '0'}}>
                                 <div style={{color: 'var(--color-text-muted)', fontSize: '13px'}}>Scans Remaining</div>
-                                <div style={{color: 'var(--color-primary)', fontSize: '24px', fontWeight: '700', fontFamily: 'var(--font-display)'}}>{data.scansRemaining} / {data.totalScans}</div>
-                            </div>
-                            {isPaid && (
-                                <div>
-                                    <div style={{color: 'var(--color-text-muted)', fontSize: '13px'}}>Expires</div>
-                                    <div style={{color: 'var(--color-contrast)', fontSize: '16px', fontWeight: '600'}}>{expiryText}</div>
+                                <div style={{color: 'var(--color-primary)', fontSize: '24px', fontWeight: '700', fontFamily: 'var(--font-display)'}}>
+                                    {data.scansRemaining} / {data.totalScans}
                                 </div>
+                            </div>
+                            
+                            {isPaid && (
+                                <>
+                                    <div style={{marginBottom: '15px'}}>
+                                        <div style={{color: 'var(--color-text-muted)', fontSize: '13px'}}>Expires</div>
+                                        <div style={{color: 'var(--color-contrast)', fontSize: '16px', fontWeight: '600'}}>{expiryText}</div>
+                                    </div>
+                                    <div style={{background: 'var(--color-accent-light)', padding: '10px', borderRadius: '8px'}}>
+                                        <div style={{color: '#92700C', fontSize: '13px', fontWeight: '600'}}>✨ Detailed Analysis Unlocked</div>
+                                    </div>
+                                </>
                             )}
                         </div>
+                        
                         {!isPaid && (
-                            <a href={SCAN_CONFIG.SALES_PAGE_URL} style={{ display: 'block', padding: '14px', background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))', color: 'white', borderRadius: 'var(--radius)', fontSize: '15px', fontWeight: '600', textAlign: 'center', textDecoration: 'none', marginBottom: '10px' }}>
+                            <a href={SCAN_CONFIG.SALES_PAGE_URL} style={{
+                                display: 'block',
+                                padding: '14px',
+                                background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))',
+                                color: 'white',
+                                borderRadius: 'var(--radius)',
+                                fontSize: '15px',
+                                fontWeight: '600',
+                                textAlign: 'center',
+                                textDecoration: 'none',
+                                marginBottom: '10px'
+                            }}>
                                 Upgrade for More Scans
                             </a>
                         )}
-                        <button onClick={onClose} style={{ width: '100%', padding: '12px', background: 'var(--color-text-muted)', color: 'white', border: 'none', borderRadius: 'var(--radius)', fontSize: '15px', fontWeight: '600', cursor: 'pointer', fontFamily: 'var(--font-body)' }}>Close</button>
+                        
+                        <button onClick={onClose} style={{
+                            width: '100%',
+                            padding: '12px',
+                            background: 'var(--color-text-muted)',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: 'var(--radius)',
+                            fontSize: '15px',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            fontFamily: 'var(--font-body)'
+                        }}>
+                            Close
+                        </button>
                     </div>
                 </div>
             );
@@ -949,20 +1990,35 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             const [isLoading, setIsLoading] = useState(false);
 
             const handleSubmit = async () => {
-                if (!email || !email.includes('@')) { alert('Please enter a valid email'); return; }
+                if (!email || !email.includes('@')) {
+                    alert('Please enter a valid email');
+                    return;
+                }
                 setIsLoading(true);
                 trackEvent('email_captured', { has_first_name: !!firstName });
+
                 try {
                     await fetch('/.netlify/functions/capture-email', {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email, firstName: firstName || null, scansUsed: getScanData().used || 3, lastItemScanned: lastItem })
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email,
+                            firstName: firstName || null,
+                            scansUsed: getScanData().used || 3,
+                            lastItemScanned: lastItem
+                        })
                     });
                     localStorage.setItem('itemvalue_user_email', email);
-                } catch (e) { console.error('Email capture error:', e); }
+                } catch (e) {
+                    console.error('Email capture error:', e);
+                }
                 window.location.href = SCAN_CONFIG.SALES_PAGE_URL;
             };
 
-            const handleSkip = () => { trackEvent('email_skipped'); window.location.href = SCAN_CONFIG.SALES_PAGE_URL; };
+            const handleSkip = () => {
+                trackEvent('email_skipped');
+                window.location.href = SCAN_CONFIG.SALES_PAGE_URL;
+            };
 
             return (
                 <div className="modal-overlay" onClick={onClose}>
@@ -971,13 +2027,49 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
                             <div style={{fontSize: '48px', marginBottom: '10px'}}>🔍</div>
                             <h2 style={{color: 'white', margin: '0', fontSize: '20px', fontFamily: 'var(--font-display)'}}>You've Used Your Free Scans!</h2>
                         </div>
+                        
                         {!isLoading ? (
                             <>
-                                <p style={{color: 'var(--color-text-muted)', marginBottom: '15px', fontSize: '15px'}}>Enter your email for <strong>exclusive pricing</strong>:</p>
-                                <input type="text" placeholder="First name (optional)" value={firstName} onChange={(e) => setFirstName(e.target.value)} style={{width: '100%', padding: '12px 14px', border: '2px solid #e2e8f0', borderRadius: '8px', fontSize: '16px', marginBottom: '10px', fontFamily: 'var(--font-body)'}} />
-                                <input type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} style={{width: '100%', padding: '12px 14px', border: '2px solid #e2e8f0', borderRadius: '8px', fontSize: '16px', marginBottom: '15px', fontFamily: 'var(--font-body)'}} />
-                                <button onClick={handleSubmit} style={{ width: '100%', background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))', color: 'white', padding: '14px', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: '600', cursor: 'pointer', fontFamily: 'var(--font-body)' }}>See My Options →</button>
-                                <p style={{textAlign: 'center', marginTop: '12px'}}><a onClick={handleSkip} style={{color: '#94a3b8', fontSize: '13px', cursor: 'pointer'}}>No thanks, I'll pay full price →</a></p>
+                                <p style={{color: 'var(--color-text-muted)', marginBottom: '15px', fontSize: '15px'}}>
+                                    Enter your email for <strong>exclusive pricing</strong>:
+                                </p>
+                                
+                                <input 
+                                    type="text" 
+                                    placeholder="First name (optional)"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    style={{width: '100%', padding: '12px 14px', border: '2px solid #e2e8f0', borderRadius: '8px', fontSize: '16px', marginBottom: '10px', fontFamily: 'var(--font-body)'}}
+                                />
+                                
+                                <input 
+                                    type="email" 
+                                    placeholder="Email address"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    style={{width: '100%', padding: '12px 14px', border: '2px solid #e2e8f0', borderRadius: '8px', fontSize: '16px', marginBottom: '15px', fontFamily: 'var(--font-body)'}}
+                                />
+                                
+                                <button onClick={handleSubmit} style={{
+                                    width: '100%',
+                                    background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))',
+                                    color: 'white',
+                                    padding: '14px',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    fontSize: '16px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    fontFamily: 'var(--font-body)'
+                                }}>
+                                    See My Options →
+                                </button>
+                                
+                                <p style={{textAlign: 'center', marginTop: '12px'}}>
+                                    <a onClick={handleSkip} style={{color: '#94a3b8', fontSize: '13px', cursor: 'pointer'}}>
+                                        No thanks, I'll pay full price →
+                                    </a>
+                                </p>
                             </>
                         ) : (
                             <div style={{textAlign: 'center', padding: '20px'}}>
@@ -985,6 +2077,7 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
                                 <p style={{color: 'var(--color-text-muted)'}}>Saving...</p>
                             </div>
                         )}
+                        
                         <button onClick={onClose} style={{position: 'absolute', top: '15px', right: '15px', background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', width: '30px', height: '30px', borderRadius: '50%', fontSize: '16px', cursor: 'pointer'}}>×</button>
                     </div>
                 </div>
@@ -993,6 +2086,7 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
 
         function HistoryModal({ history, onClose, onClear }) {
             const sellItems = history.filter(item => item.recommendation === 'sell');
+            const donateItems = history.filter(item => item.recommendation === 'donate');
             const totalProfit = sellItems.reduce((sum, item) => sum + parseFloat(item.netProfit || 0), 0);
 
             return (
@@ -1005,24 +2099,45 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
                                 <button className="close-button" onClick={onClose}>✕</button>
                             </div>
                         </div>
+
                         <div className="history-stats">
-                            <div className="stat-box"><div className="stat-number">{history.length}</div><div className="stat-label">Items</div></div>
-                            <div className="stat-box"><div className="stat-number" style={{color: 'var(--color-primary)'}}>{sellItems.length}</div><div className="stat-label">Sell</div></div>
-                            <div className="stat-box"><div className="stat-number" style={{color: '#92700C'}}>{history.length - sellItems.length}</div><div className="stat-label">Donate</div></div>
+                            <div className="stat-box">
+                                <div className="stat-number">{history.length}</div>
+                                <div className="stat-label">Items</div>
+                            </div>
+                            <div className="stat-box">
+                                <div className="stat-number" style={{color: 'var(--color-primary)'}}>{sellItems.length}</div>
+                                <div className="stat-label">Sell</div>
+                            </div>
+                            <div className="stat-box">
+                                <div className="stat-number" style={{color: '#92700C'}}>{donateItems.length}</div>
+                                <div className="stat-label">Donate</div>
+                            </div>
                         </div>
+
                         {sellItems.length > 0 && (
                             <div style={{marginBottom: '15px', padding: '12px', background: 'rgba(13, 124, 102, 0.08)', borderRadius: '10px', textAlign: 'center'}}>
                                 <div style={{fontSize: '13px', color: 'var(--color-primary-dark)'}}>Potential profit</div>
                                 <div style={{fontSize: '24px', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-display)'}}>${totalProfit.toFixed(2)}</div>
                             </div>
                         )}
+
                         <div style={{maxHeight: '300px', overflowY: 'auto'}}>
                             {history.map((item) => (
                                 <div key={item.id} className={`history-item ${item.recommendation}`}>
-                                    <div style={{fontWeight: '600', color: 'var(--color-contrast)', marginBottom: '4px', fontFamily: 'var(--font-display)'}}>{item.itemName}</div>
+                                    <div style={{fontWeight: '600', color: 'var(--color-contrast)', marginBottom: '4px', fontFamily: 'var(--font-display)'}}>
+                                        {item.itemName}
+                                        {item.analysisType === 'detailed' && (
+                                            <span style={{marginLeft: '8px', background: 'var(--color-accent-light)', color: '#92700C', fontSize: '10px', padding: '2px 6px', borderRadius: '10px'}}>DETAILED</span>
+                                        )}
+                                    </div>
                                     <div style={{fontSize: '13px'}}>
-                                        <span style={{color: item.recommendation === 'sell' ? 'var(--color-primary)' : '#92700C', fontWeight: '600'}}>{item.recommendation === 'sell' ? '💰 SELL' : '❤️ DONATE'}</span>
-                                        {item.recommendation === 'sell' && <span style={{color: 'var(--color-text-muted)', marginLeft: '10px'}}>Net: ${item.netProfit}</span>}
+                                        <span style={{color: item.recommendation === 'sell' ? 'var(--color-primary)' : '#92700C', fontWeight: '600'}}>
+                                            {item.recommendation === 'sell' ? '💰 SELL' : '❤️ DONATE'}
+                                        </span>
+                                        {item.recommendation === 'sell' && (
+                                            <span style={{color: 'var(--color-text-muted)', marginLeft: '10px'}}>Net: ${item.netProfit}</span>
+                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -1037,13 +2152,21 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
         // ============================================
         function App() {
             const [screen, setScreen] = useState('home');
+            const [analysisType, setAnalysisType] = useState('quick');
             const [itemDescription, setItemDescription] = useState('');
             const [scanMode, setScanMode] = useState('photo');
             const [photoPreview, setPhotoPreview] = useState(null);
             const [photoFile, setPhotoFile] = useState(null);
             const [photoLoading, setPhotoLoading] = useState(false);
             const [photoError, setPhotoError] = useState(null);
+            const [photoLoadingStep, setPhotoLoadingStep] = useState(0);
             const [condition, setCondition] = useState(null);
+            const [category, setCategory] = useState(null);
+            const [originalPrice, setOriginalPrice] = useState('');
+            const [urgency, setUrgency] = useState(null);
+            const [brand, setBrand] = useState('');
+            const [defects, setDefects] = useState('');
+            const [additionalInfo, setAdditionalInfo] = useState('');
             const [result, setResult] = useState(null);
             const [history, setHistory] = useState(() => {
                 const saved = localStorage.getItem('sellDonateHistory');
@@ -1055,91 +2178,155 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             const [showAccount, setShowAccount] = useState(false);
             const [showEmailCapture, setShowEmailCapture] = useState(false);
             const [showHistory, setShowHistory] = useState(false);
+            const [showTestimonial, setShowTestimonial] = useState(false);
+            const [testimonialValue, setTestimonialValue] = useState(0);
+
+            const [bulkItems, setBulkItems] = useState('');
+            const [bulkResults, setBulkResults] = useState([]);
 
             const refreshScanData = () => setScanData(getScanData());
 
-            // Photo scan functions
-            const handlePhotoSelect = (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                if (!file.type.startsWith('image/')) { setPhotoError('Please select an image file'); return; }
-                if (file.size > 10 * 1024 * 1024) { setPhotoError('Image must be under 10MB'); return; }
-                
-                setPhotoError(null);
-                setPhotoFile(file);
-                const reader = new FileReader();
-                reader.onload = (e) => setPhotoPreview(e.target.result);
-                reader.readAsDataURL(file);
-                
-                trackEngagement('photo');
-                trackEvent('photo_selected', { source: 'gallery' });
-            };
+// FRICTION FIX #1: Auto-trigger scan on photo select
+const handlePhotoSelect = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    if (!file.type.startsWith('image/')) {
+        setPhotoError('Please select an image file');
+        return;
+    }
+    
+    if (file.size > 10 * 1024 * 1024) {
+        setPhotoError('Image must be under 10MB');
+        return;
+    }
+    
+    setPhotoError(null);
+    setPhotoFile(file);
+    
+    // Set preview
+    const reader = new FileReader();
+    reader.onload = (e) => setPhotoPreview(e.target.result);
+    reader.readAsDataURL(file);
+    
+    trackEvent('photo_selected', { source: 'gallery' });
+    
+    // AUTO-TRIGGER SCAN IMMEDIATELY
+    runPhotoAnalysis(file);
+};
 
-            const clearPhoto = () => { setPhotoPreview(null); setPhotoFile(null); setPhotoError(null); };
+const clearPhoto = () => {
+    setPhotoPreview(null);
+    setPhotoFile(null);
+    setPhotoError(null);
+    setPhotoLoadingStep(0);
+};
 
-            const runPhotoAnalysis = async () => {
-                if (!photoFile) return;
-                if (!canScan()) { setShowUpgrade(true); return; }
-                
-                setPhotoLoading(true);
-                setPhotoError(null);
-                trackEvent('scan_started', { scan_type: 'photo' });
-                
-                try {
-                    const base64 = await new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = () => resolve(reader.result.split(',')[1]);
-                        reader.onerror = reject;
-                        reader.readAsDataURL(photoFile);
-                    });
-                    
-                    const response = await fetch('/.netlify/functions/scan-photo', {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ image: base64, mimeType: photoFile.type }),
-                    });
-                    
-                    if (!response.ok) throw new Error((await response.json()).error || 'Scan failed');
-                    
-                    const photoResult = await response.json();
-                    decrementScan();
-                    refreshScanData();
-                    
-                    // UNIFIED scan_completed event
-                    trackEvent('scan_completed', {
-                        scan_type: 'photo',
-                        item_name: photoResult.itemName,
-                        recommendation: photoResult.estimatedValue >= 10 ? 'sell' : 'donate',
-                        estimated_value: photoResult.estimatedValue,
-                        confidence: photoResult.confidence
-                    });
-                    
-                    const formattedResult = {
-                        recommendation: photoResult.estimatedValue >= 10 ? 'sell' : 'donate',
-                        reason: photoResult.tips,
-                        effortScore: photoResult.confidence === 'high' ? 'easy' : photoResult.confidence === 'medium' ? 'medium' : 'hard',
-                        marketData: `Best platforms: ${photoResult.bestPlatforms.join(', ')}`,
-                        estimatedPrice: photoResult.valueRange.high.toFixed(2),
-                        netProfit: photoResult.estimatedValue.toFixed(2),
-                        analysisType: 'photo'
-                    };
-                    
-                    setResult(formattedResult);
-                    setScreen('result');
-                    
-                    const historyItem = { id: Date.now(), timestamp: new Date().toISOString(), itemName: photoResult.itemName, analysisType: 'photo', ...formattedResult };
-                    const updatedHistory = [historyItem, ...history];
-                    setHistory(updatedHistory);
-                    localStorage.setItem('sellDonateHistory', JSON.stringify(updatedHistory));
-                    clearPhoto();
-                    
-                } catch (error) {
-                    console.error('Photo scan error:', error);
-                    setPhotoError(error.message || 'Failed to analyze image.');
-                    trackEvent('scan_error', { scan_type: 'photo', error: error.message });
-                } finally {
-                    setPhotoLoading(false);
-                }
-            };
+// FRICTION FIX #1: Accept file parameter for immediate scanning
+const runPhotoAnalysis = async (fileOverride = null) => {
+    const file = fileOverride || photoFile;
+    if (!file) return;
+    
+    if (!canScan()) {
+        setShowUpgrade(true);
+        return;
+    }
+    
+    setPhotoLoading(true);
+    setPhotoError(null);
+    setPhotoLoadingStep(1);
+    trackEvent('scan_initiated', { scan_type: 'photo' });
+    
+    // Progress steps for better UX
+    const stepTimer1 = setTimeout(() => setPhotoLoadingStep(2), 2000);
+    const stepTimer2 = setTimeout(() => setPhotoLoadingStep(3), 5000);
+    const stepTimer3 = setTimeout(() => setPhotoLoadingStep(4), 8000);
+    
+    try {
+        const base64 = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+        
+        const response = await fetch('/.netlify/functions/scan-photo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                image: base64,
+                mimeType: file.type
+            }),
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Scan failed');
+        }
+        
+        const photoResult = await response.json();
+        
+        decrementScan();
+        refreshScanData();
+        
+        trackEvent('scan_completed', {
+            scan_type: 'photo',
+            item_category: photoResult.itemName,
+            confidence: photoResult.confidence,
+            estimated_value: photoResult.estimatedValue
+        });
+        
+        const formattedResult = {
+            recommendation: photoResult.estimatedValue >= 10 ? 'sell' : 'donate',
+            reason: photoResult.tips,
+            effortScore: photoResult.confidence === 'high' ? 'easy' : photoResult.confidence === 'medium' ? 'medium' : 'hard',
+            effortReason: `Confidence: ${photoResult.confidence}`,
+            marketData: `Best platforms: ${photoResult.bestPlatforms.join(', ')}`,
+            estimatedPrice: photoResult.valueRange.high.toFixed(2),
+            ebayFees: (photoResult.estimatedValue * 0.13).toFixed(2),
+            shippingCost: '8.00',
+            netProfit: photoResult.estimatedValue.toFixed(2),
+            taxDeduction: (photoResult.estimatedValue * 0.3).toFixed(2),
+            analysisType: 'photo',
+            itemName: photoResult.itemName
+        };
+        
+        setResult(formattedResult);
+        const currentScanCount = parseInt(localStorage.getItem('iv_scan_count') || '0') + 1;
+        localStorage.setItem('iv_scan_count', currentScanCount.toString());
+        if (shouldShowTestimonial(photoResult.estimatedValue, currentScanCount)) {
+            sessionStorage.setItem('iv_testimonial_shown', 'true');
+            setTestimonialValue(photoResult.estimatedValue);
+            setTimeout(() => setShowTestimonial(true), 1500);
+        }
+        setScreen('result');
+        
+        const historyItem = {
+            id: Date.now(),
+            timestamp: new Date().toISOString(),
+            itemName: photoResult.itemName,
+            condition: photoResult.condition,
+            analysisType: 'photo',
+            ...formattedResult
+        };
+        const updatedHistory = [historyItem, ...history];
+        setHistory(updatedHistory);
+        localStorage.setItem('sellDonateHistory', JSON.stringify(updatedHistory));
+        
+        clearPhoto();
+        
+    } catch (error) {
+        console.error('Photo scan error:', error);
+        setPhotoError(error.message || 'Failed to analyze image. Please try again.');
+        trackEvent('scan_error', { scan_type: 'photo', error_type: error.message });
+    } finally {
+        clearTimeout(stepTimer1);
+        clearTimeout(stepTimer2);
+        clearTimeout(stepTimer3);
+        setPhotoLoading(false);
+        setPhotoLoadingStep(0);
+    }
+};
 
             const handleShowEmailCapture = () => {
                 if (localStorage.getItem('itemvalue_user_email')) {
@@ -1150,31 +2337,79 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             };
 
             const startAnalysis = () => {
-                if (!canScan()) { setShowUpgrade(true); return; }
+                if (!canScan()) {
+                    setShowUpgrade(true);
+                    return;
+                }
                 if (!itemDescription.trim()) return;
-                trackEngagement('text');
-                trackEvent('item_entered', { item_length: itemDescription.length, item_preview: itemDescription.substring(0, 30) });
-                setScreen('condition');
+                
+                trackEvent('item_entered', { item_length: itemDescription.length });
+                
+                // Free users go straight to condition selection
+                // Paid users get the analysis type choice
+                if (isPaidUser()) {
+                    setScreen('chooseType');
+                } else {
+                    setAnalysisType('quick');
+                    setScreen('condition');
+                }
+            };
+
+            const selectAnalysisType = (type) => {
+                setAnalysisType(type);
+                trackEvent('analysis_type_selected', { type, is_paid: isPaidUser() });
+                
+                if (type === 'quick') {
+                    setScreen('condition');
+                } else {
+                    setScreen('detailed_category');
+                }
             };
 
             const runAnalysis = async () => {
-                if (!canScan()) { setShowUpgrade(true); return; }
+                if (!canScan()) {
+                    setShowUpgrade(true);
+                    return;
+                }
+
                 setScreen('loading');
-                trackEvent('scan_started', { scan_type: 'text', item_preview: itemDescription.substring(0, 30) });
+                
+                const isDetailed = analysisType === 'detailed';
+                trackEvent('analysis_started', { 
+                    mode: 'single', 
+                    analysis_type: analysisType,
+                    condition 
+                });
 
                 const conditionLabel = CONDITIONS.find(c => c.id === condition)?.label.split(' ').slice(1).join(' ');
+                const categoryLabel = isDetailed && category ? CATEGORIES.find(c => c.id === category)?.label.split(' ').slice(1).join(' ') : 'General';
+                const urgencyLabel = isDetailed && urgency ? URGENCY.find(u => u.id === urgency)?.label.split(' ').slice(1).join(' ') : 'Whenever it Sells';
 
                 try {
                     const response = await fetch('/.netlify/functions/analyze', {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ itemDescription, category: 'General', condition: conditionLabel, originalPrice: '', urgency: 'Whenever it Sells', brand: '', defects: '', additionalInfo: '' })
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            itemDescription,
+                            category: categoryLabel,
+                            condition: conditionLabel,
+                            originalPrice: isDetailed ? originalPrice : '',
+                            urgency: urgencyLabel,
+                            brand: isDetailed ? brand : '',
+                            defects: isDetailed ? defects : '',
+                            additionalInfo: isDetailed ? additionalInfo : ''
+                        })
                     });
 
                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
                     const data = await response.json();
                     let responseText = '';
-                    if (data.content) { for (const block of data.content) { if (block.type === 'text') responseText += block.text; } }
+                    if (data.content) {
+                        for (const block of data.content) {
+                            if (block.type === 'text') responseText += block.text;
+                        }
+                    }
 
                     let cleanedResponse = responseText.trim().replace(/```json\n?/g, '').replace(/```\n?/g, '');
                     const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
@@ -1186,61 +2421,188 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
                         recommendation: aiResult.recommendation.toLowerCase(),
                         reason: aiResult.reason,
                         effortScore: aiResult.effortScore || 'medium',
+                        effortReason: aiResult.effortReason || '',
                         marketData: aiResult.marketData,
                         estimatedPrice: parseFloat(aiResult.estimatedSalePrice).toFixed(2),
+                        ebayFees: parseFloat(aiResult.platformFees || aiResult.ebayFees).toFixed(2),
+                        shippingCost: parseFloat(aiResult.shippingCost).toFixed(2),
                         netProfit: parseFloat(aiResult.netProfit).toFixed(2),
-                        analysisType: 'quick'
+                        taxDeduction: parseFloat(aiResult.taxDeduction).toFixed(2),
+                        analysisType: analysisType
                     };
 
                     setResult(resultData);
+                    const currentScanCount = parseInt(localStorage.getItem('iv_scan_count') || '0') + 1;
+                    localStorage.setItem('iv_scan_count', currentScanCount.toString());
+                    const netProfitValue = parseFloat(resultData.netProfit);
+                    if (shouldShowTestimonial(netProfitValue, currentScanCount)) {
+                        sessionStorage.setItem('iv_testimonial_shown', 'true');
+                        setTestimonialValue(netProfitValue);
+                        setTimeout(() => setShowTestimonial(true), 1500);
+                    }
                     setScreen('result');
 
-                    // UNIFIED scan_completed event
-                    trackEvent('scan_completed', {
-                        scan_type: 'text',
-                        item_name: itemDescription,
+                    trackEvent('analysis_completed', {
+                        mode: 'single',
+                        analysis_type: analysisType,
                         recommendation: resultData.recommendation,
-                        estimated_value: parseFloat(resultData.estimatedPrice),
                         net_profit: parseFloat(resultData.netProfit)
                     });
 
                     decrementScan();
                     refreshScanData();
 
-                    const historyItem = { id: Date.now(), timestamp: new Date().toISOString(), itemName: itemDescription, condition, analysisType: 'quick', ...resultData };
+                    const historyItem = {
+                        id: Date.now(),
+                        timestamp: new Date().toISOString(),
+                        itemName: itemDescription,
+                        condition,
+                        analysisType,
+                        ...resultData
+                    };
                     const updatedHistory = [historyItem, ...history];
                     setHistory(updatedHistory);
                     localStorage.setItem('sellDonateHistory', JSON.stringify(updatedHistory));
 
                 } catch (error) {
                     console.error('Analysis error:', error);
-                    trackEvent('scan_error', { scan_type: 'text', error: 'api_error' });
+                    trackEvent('analysis_error', { mode: 'single', error_type: 'api_error' });
                     alert('Something went wrong. Please try again.');
                     setScreen('home');
                 }
             };
 
+            const runBulkAnalysis = async () => {
+                const items = bulkItems.split('\n').filter(i => i.trim());
+                if (items.length === 0) return;
+
+                if (!canScan()) {
+                    setShowUpgrade(true);
+                    return;
+                }
+
+                const currentScans = getScanData().scansRemaining;
+                if (currentScans < items.length) {
+                    alert(`You only have ${currentScans} scans but are trying to analyze ${items.length} items.`);
+                    return;
+                }
+
+                setScreen('loading');
+                trackEvent('analysis_started', { mode: 'bulk', item_count: items.length });
+
+                const results = [];
+
+                for (const itemName of items) {
+                    try {
+                        const response = await fetch('/.netlify/functions/analyze', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                itemDescription: itemName.trim(),
+                                category: 'General',
+                                condition: 'Good Used',
+                                originalPrice: '',
+                                urgency: 'Whenever it Sells',
+                                brand: '',
+                                defects: '',
+                                additionalInfo: ''
+                            })
+                        });
+
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                        const data = await response.json();
+                        let responseText = '';
+                        if (data.content) {
+                            for (const block of data.content) {
+                                if (block.type === 'text') responseText += block.text;
+                            }
+                        }
+
+                        let cleanedResponse = responseText.trim().replace(/```json\n?/g, '').replace(/```\n?/g, '');
+                        const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
+                        if (jsonMatch) cleanedResponse = jsonMatch[0];
+
+                        const aiResult = JSON.parse(cleanedResponse);
+
+                        results.push({
+                            itemName: itemName.trim(),
+                            recommendation: aiResult.recommendation.toLowerCase(),
+                            reason: aiResult.reason,
+                            netProfit: parseFloat(aiResult.netProfit).toFixed(2),
+                            estimatedPrice: parseFloat(aiResult.estimatedSalePrice).toFixed(2)
+                        });
+
+                        decrementScan();
+                    } catch (error) {
+                        results.push({
+                            itemName: itemName.trim(),
+                            recommendation: 'error',
+                            reason: 'Could not analyze',
+                            netProfit: '0'
+                        });
+                    }
+                }
+
+                setBulkResults(results);
+                setScreen('bulkResults');
+                refreshScanData();
+
+                trackEvent('analysis_completed', {
+                    mode: 'bulk',
+                    item_count: results.length,
+                    sell_count: results.filter(r => r.recommendation === 'sell').length
+                });
+
+                const historyItems = results.map(r => ({
+                    id: Date.now() + Math.random(),
+                    timestamp: new Date().toISOString(),
+                    analysisType: 'quick',
+                    ...r
+                }));
+                const updatedHistory = [...historyItems, ...history];
+                setHistory(updatedHistory);
+                localStorage.setItem('sellDonateHistory', JSON.stringify(updatedHistory));
+            };
+
             const reset = () => {
                 setScreen('home');
+                setAnalysisType('quick');
                 setItemDescription('');
                 setCondition(null);
+                setCategory(null);
+                setOriginalPrice('');
+                setUrgency(null);
+                setBrand('');
+                setDefects('');
+                setAdditionalInfo('');
                 setResult(null);
+                setBulkItems('');
+                setBulkResults([]);
                 refreshScanData();
             };
+
+            const paid = isPaidUser();
 
             // ============================================
             // SCREENS
             // ============================================
+
             if (screen === 'loading') {
+                const isDetailed = analysisType === 'detailed';
                 return (
                     <>
                         <ScanCounter onClick={() => setShowAccount(true)} />
                         <div className="container">
                             <div className="card">
                                 <div className="loading">
-                                    <div className="loading-spinner"></div>
-                                    <div className="loading-text">🔍 Searching marketplace data...</div>
-                                    <div className="loading-subtext">Finding real sold prices for your item</div>
+                                    <div className={`loading-spinner ${isDetailed ? 'pro' : ''}`}></div>
+                                    <div className={`loading-text ${isDetailed ? 'pro' : ''}`}>
+                                        {isDetailed ? '✨ Running Detailed Analysis...' : '🔍 Searching marketplace data...'}
+                                    </div>
+                                    <div className="loading-subtext">
+                                        {isDetailed ? 'Analyzing with all your specifications' : 'Finding real sold prices for your item'}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1249,73 +2611,270 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
                 );
             }
 
+            // Home screen with all friction fixes
             if (screen === 'home') {
                 return (
                     <>
                         <ScanCounter onClick={() => setShowAccount(true)} />
+                        
                         <div className="container">
                             <div className="card">
-                                <div style={{textAlign: 'center'}}><div className="ai-badge">📷 Instant Item Scanner</div></div>
-                                <h1>Snap a Photo.<br/><span className="highlight">Know If It's Worth Selling.</span></h1>
-                                <p className="subtitle">Get real profit estimates after fees and shipping — instantly.</p>
+                                <div style={{textAlign: 'center'}}>
+                                    <div className="ai-badge">📷 Instant Item Scanner</div>
+                                </div>
+                                
+                                <h1>
+                                    Snap a Photo.<br/>
+                                    <span className="highlight">Know If It's Worth Selling.</span>
+                                </h1>
+                                
+                                <p className="subtitle">
+                                    Get real profit estimates after fees and shipping — instantly.
+                                </p>
+
+                                {/* FRICTION FIX #3: Example result preview */}
+                                <div className="example-result">
+                                    <div className="example-label">Example Result</div>
+                                    <div className="example-item-name">KitchenAid Artisan Mixer</div>
+                                    <div className="example-stats">
+                                        <div className="example-stat"><span className="check">✓</span> Sells for $180-220 on eBay</div>
+                                        <div className="example-stat"><span className="check">✓</span> After fees: ~$142 profit</div>
+                                    </div>
+                                    <div className="example-verdict">💰 VERDICT: SELL IT!</div>
+                                </div>
 
                                 <div className="input-section">
-                                    <div className="scan-tabs">
-                                        <button className={`scan-tab ${scanMode === 'photo' ? 'active' : ''}`} onClick={() => setScanMode('photo')}>📷 Photo Scan</button>
-                                        <button className={`scan-tab ${scanMode === 'text' ? 'active' : ''}`} onClick={() => setScanMode('text')}>✏️ Type Item</button>
-                                    </div>
+    <div className="scan-tabs">
+        <button 
+            className={`scan-tab ${scanMode === 'photo' ? 'active' : ''}`}
+            onClick={() => setScanMode('photo')}
+        >
+            📷 Photo Scan
+        </button>
+        <button 
+            className={`scan-tab ${scanMode === 'text' ? 'active' : ''}`}
+            onClick={() => setScanMode('text')}
+        >
+            ✏️ Type Item
+        </button>
+    </div>
 
-                                    {scanMode === 'photo' ? (
-                                        <>
-                                            <input type="file" id="photoInput" accept="image/*" onChange={handlePhotoSelect} style={{ display: 'none' }} />
-                                            <input type="file" id="cameraInput" accept="image/*" capture="environment" onChange={handlePhotoSelect} style={{ display: 'none' }} />
-                                            
-                                            {photoLoading ? (
-                                                <div className="photo-analyzing">
-                                                    <div className="photo-spinner"></div>
-                                                    <p style={{color: 'var(--color-primary)', fontWeight: '600'}}>Analyzing your item...</p>
-                                                    <p style={{color: 'var(--color-text-muted)', fontSize: '14px'}}>This takes about 10 seconds</p>
-                                                </div>
-                                            ) : photoPreview ? (
-                                                <div className="photo-upload-area has-image">
-                                                    <div className="preview-container">
-                                                        <img src={photoPreview} alt="Item preview" className="preview-image" />
-                                                        <button className="clear-preview" onClick={clearPhoto}>✕</button>
-                                                    </div>
-                                                </div>
-                                            ) : (
-                                                <div className="photo-upload-area" onClick={() => document.getElementById('cameraInput').click()}>
-                                                    <div className="upload-icon">📷</div>
-                                                    <p style={{color: 'var(--color-text)', fontWeight: '600', marginBottom: '5px'}}>Take a photo of your item</p>
-                                                    <p style={{color: 'var(--color-text-muted)', fontSize: '14px'}}>Works best with clear, well-lit photos</p>
-                                                    <div className="upload-buttons" onClick={(e) => e.stopPropagation()}>
-                                                        <button className="upload-btn camera" onClick={() => document.getElementById('cameraInput').click()}>📸 Take Photo</button>
-                                                        <button className="upload-btn gallery" onClick={() => document.getElementById('photoInput').click()}>🖼️ Gallery</button>
-                                                    </div>
-                                                </div>
-                                            )}
-                                            
-                                            {photoError && <div className="photo-error">{photoError}</div>}
-                                            {photoPreview && !photoLoading && <button className="action-button" onClick={runPhotoAnalysis}>✨ Scan This Item — Free</button>}
-                                            <div className="time-hint">⏱ Takes about <span>10 seconds</span> • No signup required</div>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <label className="input-label">What do you want to check?</label>
-                                            <input type="text" autoFocus placeholder="e.g., KitchenAid mixer, Levi's jeans, old iPad..." value={itemDescription} onChange={(e) => { setItemDescription(e.target.value); if (e.target.value.length === 1) trackEngagement('text'); }} onKeyPress={(e) => e.key === 'Enter' && startAnalysis()} />
-                                            <button className="action-button" disabled={!itemDescription.trim()} onClick={startAnalysis}>{itemDescription.trim() ? 'Check My Item — Free ✓' : 'Enter an item above'}</button>
-                                            <div className="time-hint">⏱ Takes about <span>30 seconds</span> • No signup required</div>
-                                        </>
-                                    )}
-                                </div>
+    {scanMode === 'photo' ? (
+        <>
+            <input
+                type="file"
+                id="photoInput"
+                accept="image/*"
+                onChange={handlePhotoSelect}
+                style={{ display: 'none' }}
+            />
+            <input
+                type="file"
+                id="cameraInput"
+                accept="image/*"
+                capture="environment"
+                onChange={handlePhotoSelect}
+                style={{ display: 'none' }}
+            />
+            
+            {/* FRICTION FIX #1 & #2: Enhanced loading with progress steps */}
+            {photoLoading ? (
+                <div className="photo-analyzing">
+                    {photoPreview && (
+                        <img src={photoPreview} alt="Scanning" className="photo-analyzing-preview" />
+                    )}
+                    <div className="photo-spinner"></div>
+                    <p style={{color: 'var(--color-primary)', fontWeight: '600', marginBottom: '5px'}}>Analyzing your item...</p>
+                    
+                    <div className="photo-progress-steps">
+                        <div className={`photo-progress-step ${photoLoadingStep >= 1 ? 'done' : ''} ${photoLoadingStep === 1 ? 'active' : ''}`}>
+                            <span className="step-icon">{photoLoadingStep >= 2 ? '✓' : '○'}</span>
+                            <span>Identifying item</span>
+                        </div>
+                        <div className={`photo-progress-step ${photoLoadingStep >= 2 ? 'done' : ''} ${photoLoadingStep === 2 ? 'active' : ''}`}>
+                            <span className="step-icon">{photoLoadingStep >= 3 ? '✓' : '○'}</span>
+                            <span>Checking sold prices</span>
+                        </div>
+                        <div className={`photo-progress-step ${photoLoadingStep >= 3 ? 'done' : ''} ${photoLoadingStep === 3 ? 'active' : ''}`}>
+                            <span className="step-icon">{photoLoadingStep >= 4 ? '✓' : '○'}</span>
+                            <span>Calculating profit</span>
+                        </div>
+                        <div className={`photo-progress-step ${photoLoadingStep >= 4 ? 'active' : ''}`}>
+                            <span className="step-icon">○</span>
+                            <span>Generating recommendation</span>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                /* FRICTION FIX #2: Simplified single-tap upload area */
+                <div 
+                    className="photo-upload-area" 
+                    onClick={() => document.getElementById('cameraInput').click()}
+                >
+                    <div className="upload-icon">📸</div>
+                    <p className="upload-main-text">Tap to scan an item</p>
+                    <p className="upload-sub-text">Take a photo or choose from gallery</p>
+                </div>
+            )}
+            
+            {photoError && (
+                <div className="photo-error">{photoError}</div>
+            )}
+            
+            <div className="time-hint">
+                ⏱ Results in <span>~10 seconds</span> • No signup required
+            </div>
+        </>
+    ) : (
+        <>
+            <label className="input-label">
+                What do you want to check?
+            </label>
+            <input
+                type="text"
+                autoFocus  
+                placeholder="e.g., KitchenAid mixer, Levi's jeans, old iPad..."
+                value={itemDescription}
+                onChange={(e) => setItemDescription(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && startAnalysis()}
+            />
+            <button 
+                className="action-button"
+                disabled={!itemDescription.trim()}
+                onClick={startAnalysis}
+            >
+                {itemDescription.trim() ? 'Check My Item — Free ✓' : 'Enter an item above'}
+            </button>
+            <div className="time-hint">
+                ⏱ Takes about <span>30 seconds</span> • No signup required
+            </div>
+        </>
+    )}
+</div>
+
+                                {paid && (
+                                    <div className="bulk-prompt">
+                                        <div className="bulk-prompt-title">Have multiple items?</div>
+                                        <div className="bulk-prompt-desc">Check them all at once with bulk scan</div>
+                                        <button 
+                                            className="bulk-prompt-button"
+                                            onClick={() => {
+                                                if (!canScan()) {
+                                                    setShowUpgrade(true);
+                                                } else {
+                                                    trackEvent('mode_selected', { mode: 'bulk' });
+                                                    setScreen('bulk');
+                                                }
+                                            }}
+                                        >
+                                            Use Bulk Scan →
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
-                        {history.length > 0 && <button className="history-button" onClick={() => setShowHistory(true)}>📋 History <span className="history-badge">{history.length}</span></button>}
-                        {showHistory && <HistoryModal history={history} onClose={() => setShowHistory(false)} onClear={() => { setHistory([]); localStorage.removeItem('sellDonateHistory'); setShowHistory(false); }} />}
+                        {history.length > 0 && (
+                            <button className="history-button" onClick={() => setShowHistory(true)}>
+                                📋 History <span className="history-badge">{history.length}</span>
+                            </button>
+                        )}
+
+                        {showHistory && (
+                            <HistoryModal 
+                                history={history}
+                                onClose={() => setShowHistory(false)}
+                                onClear={() => {
+                                    setHistory([]);
+                                    localStorage.removeItem('sellDonateHistory');
+                                    setShowHistory(false);
+                                }}
+                            />
+                        )}
+                        {showTestimonial && (
+                            <TestimonialModal
+                                isOpen={showTestimonial}
+                                onClose={() => setShowTestimonial(false)}
+                                scanValue={testimonialValue}
+                                scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')}
+                            />
+                        )}
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                         {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} onShowEmailCapture={handleShowEmailCapture} />}
                         {showEmailCapture && <EmailCaptureModal onClose={() => setShowEmailCapture(false)} lastItem={null} />}
+                    </>
+                );
+            }
+
+            // Choose Analysis Type - Only shown for paid users now
+            if (screen === 'chooseType') {
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        
+                        <div className="container">
+                            <div className="card">
+                                <div style={{textAlign: 'center', marginBottom: '5px'}}>
+                                    <div className="ai-badge">Choose Analysis Type</div>
+                                </div>
+                                
+                                <h1 style={{fontSize: '22px', marginBottom: '8px'}}>
+                                    How detailed do you want?
+                                </h1>
+                                
+                                <p className="subtitle" style={{marginBottom: '20px'}}>
+                                    Checking: <strong>{itemDescription}</strong>
+                                </p>
+
+                                <div className="analysis-choice">
+                                    <div 
+                                        className="analysis-option"
+                                        onClick={() => selectAnalysisType('quick')}
+                                    >
+                                        <div className="analysis-option-header">
+                                            <div className="analysis-option-title">⚡ Quick Check</div>
+                                            <div className="analysis-option-badge">30 sec</div>
+                                        </div>
+                                        <div className="analysis-option-desc">
+                                            Fast answer based on item + condition. Great for most items.
+                                        </div>
+                                        <div className="analysis-option-features">
+                                            <span className="feature-tag">Sell/Donate verdict</span>
+                                            <span className="feature-tag">Price estimate</span>
+                                            <span className="feature-tag">Net profit</span>
+                                        </div>
+                                    </div>
+                       
+                                    <div 
+                                        className="analysis-option pro"
+                                        onClick={() => selectAnalysisType('detailed')}
+                                    >
+                                        <div className="analysis-option-header">
+                                            <div className="analysis-option-title pro">✨ Detailed Analysis</div>
+                                            <div className="analysis-option-badge pro">PRO</div>
+                                        </div>
+                                        <div className="analysis-option-desc">
+                                            More accurate with category, original price, urgency & condition details.
+                                        </div>
+                                        <div className="analysis-option-features">
+                                            <span className="feature-tag pro">Category-specific data</span>
+                                            <span className="feature-tag pro">Effort score</span>
+                                            <span className="feature-tag pro">Urgency factors</span>
+                                            <span className="feature-tag pro">Defect adjustments</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button 
+                                    className="back-button"
+                                    onClick={() => setScreen('home')}
+                                    style={{marginTop: '20px'}}
+                                >
+                                    ← Back
+                                </button>
+                            </div>
+                        </div>
+
+                        {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                     </>
                 );
             }
@@ -1324,18 +2883,338 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
                 return (
                     <>
                         <ScanCounter onClick={() => setShowAccount(true)} />
+                        
                         <div className="container">
                             <div className="card">
-                                <div style={{textAlign: 'center', marginBottom: '5px'}}><div className="ai-badge">⚡ Quick Check</div></div>
-                                <h1 style={{fontSize: '22px', marginBottom: '8px'}}>What condition is it in?</h1>
-                                <p className="subtitle" style={{marginBottom: '20px'}}>Checking: <strong>{itemDescription}</strong></p>
+                                <div style={{textAlign: 'center', marginBottom: '5px'}}>
+                                    <div className="ai-badge">⚡ Quick Check</div>
+                                </div>
+                                
+                                <h1 style={{fontSize: '22px', marginBottom: '8px'}}>
+                                    What condition is it in?
+                                </h1>
+                                
+                                <p className="subtitle" style={{marginBottom: '20px'}}>
+                                    Checking: <strong>{itemDescription}</strong>
+                                </p>
+
+                                <div className="button-grid">
+                                    {CONDITIONS.map(cond => (
+                                        <button
+                                            key={cond.id}
+                                            className={`option-button ${condition === cond.id ? 'selected' : ''}`}
+                                            onClick={() => setCondition(cond.id)}
+                                        >
+                                            {cond.label}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <button 
+                                    className="back-button"
+                                    onClick={() => paid ? setScreen('chooseType') : setScreen('home')}
+                                    style={{marginTop: '20px'}}
+                                >
+                                    ← Back
+                                </button>
+
+                                <button 
+                                    className="action-button"
+                                    disabled={!condition}
+                                    onClick={runAnalysis}
+                                    style={{marginTop: '10px'}}
+                                >
+                                    🔍 Get My Answer
+                                </button>
+                            </div>
+                        </div>
+
+                        {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
+                        {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} onShowEmailCapture={handleShowEmailCapture} />}
+                    </>
+                );
+            }
+
+            // Detailed screens (only for paid users)
+            if (screen === 'detailed_category') {
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        <div className="container">
+                            <div className="card">
+                                <div style={{textAlign: 'center', marginBottom: '5px'}}>
+                                    <div className="pro-badge">✨ Detailed Analysis — Step 1/5</div>
+                                </div>
+                                <div className="progress-dots">
+                                    <div className="progress-dot pro active"></div>
+                                    <div className="progress-dot"></div>
+                                    <div className="progress-dot"></div>
+                                    <div className="progress-dot"></div>
+                                    <div className="progress-dot"></div>
+                                </div>
+                                <h1 style={{fontSize: '22px', marginBottom: '20px'}}>What type of item is it?</h1>
+                                <div className="button-grid">
+                                    {CATEGORIES.map(cat => (
+                                        <button key={cat.id} className={`option-button ${category === cat.id ? 'selected' : ''}`} onClick={() => setCategory(cat.id)}>{cat.label}</button>
+                                    ))}
+                                </div>
+                                <button className="back-button" onClick={() => setScreen('chooseType')} style={{marginTop: '20px'}}>← Back</button>
+                                <button className="action-button pro" disabled={!category} onClick={() => setScreen('detailed_condition')} style={{marginTop: '10px'}}>Next →</button>
+                            </div>
+                        </div>
+                        {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
+                    </>
+                );
+            }
+
+            if (screen === 'detailed_condition') {
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        <div className="container">
+                            <div className="card">
+                                <div style={{textAlign: 'center', marginBottom: '5px'}}>
+                                    <div className="pro-badge">✨ Detailed Analysis — Step 2/5</div>
+                                </div>
+                                <div className="progress-dots">
+                                    <div className="progress-dot pro completed"></div>
+                                    <div className="progress-dot pro active"></div>
+                                    <div className="progress-dot"></div>
+                                    <div className="progress-dot"></div>
+                                    <div className="progress-dot"></div>
+                                </div>
+                                <h1 style={{fontSize: '22px', marginBottom: '20px'}}>What condition is it in?</h1>
                                 <div className="button-grid">
                                     {CONDITIONS.map(cond => (
                                         <button key={cond.id} className={`option-button ${condition === cond.id ? 'selected' : ''}`} onClick={() => setCondition(cond.id)}>{cond.label}</button>
                                     ))}
                                 </div>
+                                <button className="back-button" onClick={() => setScreen('detailed_category')} style={{marginTop: '20px'}}>← Back</button>
+                                <button className="action-button pro" disabled={!condition} onClick={() => setScreen('detailed_price')} style={{marginTop: '10px'}}>Next →</button>
+                            </div>
+                        </div>
+                        {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
+                    </>
+                );
+            }
+
+            if (screen === 'detailed_price') {
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        <div className="container">
+                            <div className="card">
+                                <div style={{textAlign: 'center', marginBottom: '5px'}}>
+                                    <div className="pro-badge">✨ Detailed Analysis — Step 3/5</div>
+                                </div>
+                                <div className="progress-dots">
+                                    <div className="progress-dot pro completed"></div>
+                                    <div className="progress-dot pro completed"></div>
+                                    <div className="progress-dot pro active"></div>
+                                    <div className="progress-dot"></div>
+                                    <div className="progress-dot"></div>
+                                </div>
+                                <h1 style={{fontSize: '22px', marginBottom: '10px'}}>What did you pay for it?</h1>
+                                <p className="subtitle" style={{marginBottom: '20px'}}>Optional — helps calculate if it's worth your time</p>
+                                <input type="number" placeholder="$0 or leave blank" value={originalPrice} onChange={(e) => setOriginalPrice(e.target.value)} min="0" />
+                                <button className="back-button" onClick={() => setScreen('detailed_condition')} style={{marginTop: '20px'}}>← Back</button>
+                                <button className="action-button pro" onClick={() => setScreen('detailed_urgency')} style={{marginTop: '10px'}}>Next →</button>
+                            </div>
+                        </div>
+                        {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
+                    </>
+                );
+            }
+
+            if (screen === 'detailed_urgency') {
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        <div className="container">
+                            <div className="card">
+                                <div style={{textAlign: 'center', marginBottom: '5px'}}>
+                                    <div className="pro-badge">✨ Detailed Analysis — Step 4/5</div>
+                                </div>
+                                <div className="progress-dots">
+                                    <div className="progress-dot pro completed"></div>
+                                    <div className="progress-dot pro completed"></div>
+                                    <div className="progress-dot pro completed"></div>
+                                    <div className="progress-dot pro active"></div>
+                                    <div className="progress-dot"></div>
+                                </div>
+                                <h1 style={{fontSize: '22px', marginBottom: '20px'}}>How fast do you need it gone?</h1>
+                                <div className="button-grid single-col">
+                                    {URGENCY.map(urg => (
+                                        <button key={urg.id} className={`option-button ${urgency === urg.id ? 'selected' : ''}`} onClick={() => setUrgency(urg.id)}>{urg.label}</button>
+                                    ))}
+                                </div>
+                                <button className="back-button" onClick={() => setScreen('detailed_price')} style={{marginTop: '20px'}}>← Back</button>
+                                <button className="action-button pro" disabled={!urgency} onClick={() => setScreen('detailed_extras')} style={{marginTop: '10px'}}>Next →</button>
+                            </div>
+                        </div>
+                        {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
+                    </>
+                );
+            }
+
+            if (screen === 'detailed_extras') {
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        <div className="container">
+                            <div className="card">
+                                <div style={{textAlign: 'center', marginBottom: '5px'}}>
+                                    <div className="pro-badge">✨ Detailed Analysis — Step 5/5</div>
+                                </div>
+                                <div className="progress-dots">
+                                    <div className="progress-dot pro completed"></div>
+                                    <div className="progress-dot pro completed"></div>
+                                    <div className="progress-dot pro completed"></div>
+                                    <div className="progress-dot pro completed"></div>
+                                    <div className="progress-dot pro active"></div>
+                                </div>
+                                <h1 style={{fontSize: '22px', marginBottom: '10px'}}>Any extra details?</h1>
+                                <p className="subtitle" style={{marginBottom: '20px'}}>Optional — improves accuracy</p>
+                                <div style={{marginBottom: '15px'}}>
+                                    <label className="small-label">Brand or maker</label>
+                                    <input type="text" placeholder="e.g., Nike, Apple, IKEA" value={brand} onChange={(e) => setBrand(e.target.value)} />
+                                </div>
+                                <div style={{marginBottom: '15px'}}>
+                                    <label className="small-label">Any damage or defects?</label>
+                                    <textarea placeholder="e.g., Small scratch, missing piece..." value={defects} onChange={(e) => setDefects(e.target.value)} rows="2" />
+                                </div>
+                                <div style={{marginBottom: '15px'}}>
+                                    <label className="small-label">Anything else?</label>
+                                    <textarea placeholder="e.g., Original box, limited edition..." value={additionalInfo} onChange={(e) => setAdditionalInfo(e.target.value)} rows="2" />
+                                </div>
+                                <button className="back-button" onClick={() => setScreen('detailed_urgency')}>← Back</button>
+                                <button className="action-button pro" onClick={runAnalysis} style={{marginTop: '10px'}}>✨ Run Detailed Analysis</button>
+                            </div>
+                        </div>
+                        {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
+                    </>
+                );
+            }
+
+            // Result
+            if (screen === 'result' && result) {
+                const isDetailed = result.analysisType === 'detailed';
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        <div className="container">
+                            <div className="result-card">
+                                {isDetailed && <div className="detailed-badge">✨ Detailed Analysis</div>}
+                                {result.analysisType === 'photo' && <div className="ai-badge">📷 Photo Scan</div>}
+                                {result.analysisType === 'quick' && <div className="ai-badge">⚡ Quick Check</div>}
+                                
+                                <div className="result-icon">{result.recommendation === 'sell' ? '💰' : '❤️'}</div>
+                                <h2 className={`result-title ${result.recommendation}`}>{result.recommendation === 'sell' ? 'SELL IT!' : 'DONATE IT'}</h2>
+                                <p className="result-reason">{result.reason}</p>
+
+                                {result.effortScore && (
+                                    <div>
+                                        <div className={`effort-score ${result.effortScore}`}>
+                                            {result.effortScore === 'easy' ? '🟢 Easy to Sell' : result.effortScore === 'medium' ? '🟡 Moderate Effort' : '🔴 High Effort'}
+                                        </div>
+                                        {result.effortReason && <div className="effort-reason">{result.effortReason}</div>}
+                                    </div>
+                                )}
+
+                                {result.marketData && (
+                                    <div className="market-data">
+                                        <div className="market-data-title">📊 Market Intelligence</div>
+                                        <div className="market-data-content">{result.marketData}</div>
+                                    </div>
+                                )}
+
+                                <div className="result-details">
+                                    {result.recommendation === 'sell' ? (
+                                        <>
+                                            <div className="detail-row">
+                                                <span className="detail-label">Est. Sale Price</span>
+                                                <span className="detail-value">${result.estimatedPrice}</span>
+                                            </div>
+                                            <div className="detail-row">
+                                                <span className="detail-label">Platform Fees</span>
+                                                <span className="detail-value">-${result.ebayFees}</span>
+                                            </div>
+                                            <div className="detail-row">
+                                                <span className="detail-label">Shipping</span>
+                                                <span className="detail-value">-${result.shippingCost}</span>
+                                            </div>
+                                            <div className="detail-row">
+                                                <span className="detail-label">Your Profit</span>
+                                                <span className="detail-value highlight">${result.netProfit}</span>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="detail-row">
+                                                <span className="detail-label">Est. Sale Price</span>
+                                                <span className="detail-value">${result.estimatedPrice}</span>
+                                            </div>
+                                            <div className="detail-row">
+                                                <span className="detail-label">Tax Deduction Value</span>
+                                                <span className="detail-value highlight">${result.taxDeduction}</span>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+
+                                <div className="result-actions">
+                                    <button className="primary-action" onClick={reset}>
+                                        Scan Another Item
+                                    </button>
+                                    {!paid && (
+                                        <button 
+                                            className="secondary-action"
+                                            onClick={() => window.location.href = SCAN_CONFIG.SALES_PAGE_URL}
+                                        >
+                                            Get More Scans
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {showTestimonial && (
+                            <TestimonialModal
+                                isOpen={showTestimonial}
+                                onClose={() => setShowTestimonial(false)}
+                                scanValue={testimonialValue}
+                                scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')}
+                            />
+                        )}
+                        {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
+                    </>
+                );
+            }
+
+            // Bulk input
+            if (screen === 'bulk') {
+                const itemCount = bulkItems.split('\n').filter(i => i.trim()).length;
+                return (
+                    <>
+                        <ScanCounter onClick={() => setShowAccount(true)} />
+                        <div className="container">
+                            <div className="card">
+                                <div style={{textAlign: 'center', marginBottom: '5px'}}>
+                                    <div className="pro-badge">✨ Bulk Scan</div>
+                                </div>
+                                <h1 style={{fontSize: '22px', marginBottom: '10px'}}>Check Multiple Items</h1>
+                                <p className="subtitle" style={{marginBottom: '20px'}}>Enter one item per line</p>
+                                <div className="bulk-input-section">
+                                    <textarea
+                                        placeholder="KitchenAid mixer&#10;Nintendo Switch&#10;Vintage leather jacket&#10;Weber grill"
+                                        value={bulkItems}
+                                        onChange={(e) => setBulkItems(e.target.value)}
+                                        rows={6}
+                                    />
+                                    <div className="bulk-item-count">{itemCount} item{itemCount !== 1 ? 's' : ''} • {scanData.scansRemaining} scans available</div>
+                                </div>
                                 <button className="back-button" onClick={() => setScreen('home')} style={{marginTop: '20px'}}>← Back</button>
-                                <button className="action-button" disabled={!condition} onClick={runAnalysis} style={{marginTop: '10px'}}>🔍 Get My Answer</button>
+                                <button className="action-button pro" disabled={itemCount === 0} onClick={runBulkAnalysis} style={{marginTop: '10px'}}>Analyze {itemCount} Item{itemCount !== 1 ? 's' : ''}</button>
                             </div>
                         </div>
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
@@ -1344,38 +3223,46 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
                 );
             }
 
-            if (screen === 'result' && result) {
+            // Bulk results
+            if (screen === 'bulkResults') {
+                const sellCount = bulkResults.filter(r => r.recommendation === 'sell').length;
+                const donateCount = bulkResults.filter(r => r.recommendation === 'donate').length;
+                const totalProfit = bulkResults.filter(r => r.recommendation === 'sell').reduce((sum, r) => sum + parseFloat(r.netProfit || 0), 0);
                 return (
                     <>
                         <ScanCounter onClick={() => setShowAccount(true)} />
                         <div className="container">
-                            <div className="result-card">
-                                <div className="ai-badge">{result.analysisType === 'photo' ? '📷 Photo Scan' : '⚡ Quick Check'}</div>
-                                <div className="result-icon">{result.recommendation === 'sell' ? '💰' : '❤️'}</div>
-                                <h2 className={`result-title ${result.recommendation}`}>{result.recommendation === 'sell' ? 'SELL IT!' : 'DONATE IT'}</h2>
-                                <p className="result-reason">{result.reason}</p>
-
-                                {result.effortScore && (
-                                    <div className={`effort-score ${result.effortScore}`}>
-                                        {result.effortScore === 'easy' ? '✅ Easy to Sell' : result.effortScore === 'medium' ? '⚡ Moderate Effort' : '⚠️ High Effort'}
+                            <div className="card">
+                                <div style={{textAlign: 'center', marginBottom: '5px'}}>
+                                    <div className="pro-badge">✨ Bulk Results</div>
+                                </div>
+                                <h1 style={{fontSize: '22px', marginBottom: '20px'}}>Your Items Analyzed</h1>
+                                <div className="history-stats" style={{marginBottom: '20px'}}>
+                                    <div className="stat-box">
+                                        <div className="stat-number" style={{color: 'var(--color-primary)'}}>{sellCount}</div>
+                                        <div className="stat-label">Sell</div>
                                     </div>
-                                )}
-
-                                {result.recommendation === 'sell' && (
-                                    <div className="result-details">
-                                        <div className="detail-row"><span className="detail-label">Estimated Price</span><span className="detail-value">${result.estimatedPrice}</span></div>
-                                        <div className="detail-row"><span className="detail-label">Your Profit</span><span className="detail-value highlight">${result.netProfit}</span></div>
+                                    <div className="stat-box">
+                                        <div className="stat-number" style={{color: '#92700C'}}>{donateCount}</div>
+                                        <div className="stat-label">Donate</div>
                                     </div>
-                                )}
-
-                                {result.marketData && (
-                                    <div className="market-data">
-                                        <div className="market-data-title">💡 Market Insight</div>
-                                        <div className="market-data-content">{result.marketData}</div>
+                                    <div className="stat-box">
+                                        <div className="stat-number" style={{color: 'var(--color-primary)'}}>${totalProfit.toFixed(0)}</div>
+                                        <div className="stat-label">Potential</div>
                                     </div>
-                                )}
-
-                                <button className="action-button" onClick={reset}>Scan Another Item</button>
+                                </div>
+                                <div className="bulk-results">
+                                    {bulkResults.map((item, index) => (
+                                        <div key={index} className={`bulk-result-item ${item.recommendation}`}>
+                                            <div className="bulk-item-name">{item.itemName}</div>
+                                            <div className={`bulk-item-recommendation ${item.recommendation}`}>
+                                                {item.recommendation === 'sell' ? `💰 SELL — $${item.netProfit} profit` : item.recommendation === 'donate' ? '❤️ DONATE' : '⚠️ Error'}
+                                            </div>
+                                            {item.reason && <div className="bulk-item-details">{item.reason}</div>}
+                                        </div>
+                                    ))}
+                                </div>
+                                <button className="action-button" onClick={reset} style={{marginTop: '20px'}}>Scan More Items</button>
                             </div>
                         </div>
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
@@ -1386,308 +3273,7 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             return null;
         }
 
-        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+        ReactDOM.render(<App />, document.getElementById('root'));
     </script>
-<!-- EXIT INTENT SURVEY - Paste this just before </body> in your index.html -->
-
-<style>
-  .exit-survey-backdrop {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 9998;
-    opacity: 0;
-    animation: exitFadeIn 0.2s ease-out forwards;
-  }
-  
-  @keyframes exitFadeIn {
-    to { opacity: 1; }
-  }
-  
-  .exit-survey-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.95);
-    background-color: #fff;
-    border-radius: 12px;
-    padding: 32px;
-    max-width: 400px;
-    width: 90%;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    z-index: 9999;
-    opacity: 0;
-    animation: exitSlideUp 0.3s ease-out forwards;
-  }
-  
-  @keyframes exitSlideUp {
-    to { 
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-  }
-  
-  .exit-survey-close {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    background: none;
-    border: none;
-    font-size: 28px;
-    color: #999;
-    cursor: pointer;
-    line-height: 1;
-    padding: 4px;
-  }
-  
-  .exit-survey-close:hover {
-    color: #666;
-  }
-  
-  .exit-survey-heading {
-    margin: 0 0 8px 0;
-    font-size: 20px;
-    font-weight: 600;
-    color: #1a1a1a;
-  }
-  
-  .exit-survey-subheading {
-    margin: 0 0 24px 0;
-    font-size: 15px;
-    color: #666;
-  }
-  
-  .exit-survey-options {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-  
-  .exit-survey-option {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    padding: 12px 14px;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    transition: all 0.15s ease;
-    background-color: #fafafa;
-  }
-  
-  .exit-survey-option:hover {
-    border-color: #2563eb;
-    background-color: #f0f7ff;
-  }
-  
-  .exit-survey-option input {
-    margin-right: 12px;
-    width: 18px;
-    height: 18px;
-    accent-color: #2563eb;
-  }
-  
-  .exit-survey-option span {
-    font-size: 14px;
-    color: #333;
-  }
-  
-  .exit-survey-text-input {
-    width: 100%;
-    padding: 12px 14px;
-    font-size: 14px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    margin-top: 4px;
-    box-sizing: border-box;
-    outline: none;
-  }
-  
-  .exit-survey-text-input:focus {
-    border-color: #2563eb;
-  }
-  
-  .exit-survey-submit {
-    width: 100%;
-    padding: 14px;
-    font-size: 15px;
-    font-weight: 600;
-    color: #fff;
-    background-color: #2563eb;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-  }
-  
-  .exit-survey-submit:hover {
-    background-color: #1d4ed8;
-  }
-  
-  .exit-survey-submit:disabled {
-    background-color: #94a3b8;
-    cursor: not-allowed;
-  }
-  
-  .exit-survey-thankyou {
-    text-align: center;
-    padding: 20px 0;
-  }
-  
-  .exit-survey-checkmark {
-    display: inline-block;
-    width: 48px;
-    height: 48px;
-    line-height: 48px;
-    border-radius: 50%;
-    background-color: #22c55e;
-    color: #fff;
-    font-size: 24px;
-    margin-bottom: 12px;
-  }
-  
-  .exit-survey-thankyou p {
-    font-size: 16px;
-    color: #333;
-    margin: 0;
-  }
-  
-  .exit-survey-hidden {
-    display: none !important;
-  }
-</style>
-
-<div id="exitSurveyBackdrop" class="exit-survey-backdrop exit-survey-hidden"></div>
-<div id="exitSurveyModal" class="exit-survey-modal exit-survey-hidden">
-  <button class="exit-survey-close" onclick="closeExitSurvey()">&times;</button>
-  
-  <div id="exitSurveyForm">
-    <h2 class="exit-survey-heading">Quick question before you go</h2>
-    <p class="exit-survey-subheading">What stopped you from trying a scan today?</p>
-    
-    <div class="exit-survey-options">
-      <label class="exit-survey-option">
-        <input type="radio" name="exitSurvey" value="I wasn't sure how it works">
-        <span>I wasn't sure how it works</span>
-      </label>
-      
-      <label class="exit-survey-option">
-        <input type="radio" name="exitSurvey" value="I don't have an item nearby to try">
-        <span>I don't have an item nearby to try</span>
-      </label>
-      
-      <label class="exit-survey-option">
-        <input type="radio" name="exitSurvey" value="I'm not sure I'd trust the value it gives">
-        <span>I'm not sure I'd trust the value it gives</span>
-      </label>
-      
-      <label class="exit-survey-option">
-        <input type="radio" name="exitSurvey" value="I was just curious, not ready to use it yet">
-        <span>I was just curious, not ready to use it yet</span>
-      </label>
-      
-      <label class="exit-survey-option">
-        <input type="radio" name="exitSurvey" value="other">
-        <span>Something else</span>
-      </label>
-      
-      <input type="text" id="exitSurveyOther" class="exit-survey-text-input exit-survey-hidden" placeholder="Tell us what's on your mind...">
-    </div>
-    
-    <button class="exit-survey-submit" onclick="submitExitSurvey()" disabled>Submit</button>
-  </div>
-  
-  <div id="exitSurveyThanks" class="exit-survey-thankyou exit-survey-hidden">
-    <span class="exit-survey-checkmark">✓</span>
-    <p>Thanks for your feedback!</p>
-  </div>
-</div>
-
-<script>
-(function() {
-  var hasShown = sessionStorage.getItem('exitSurveyShown');
-  
-  if (!hasShown) {
-    document.addEventListener('mouseleave', function(e) {
-      if (e.clientY <= 0 && !sessionStorage.getItem('exitSurveyShown')) {
-        showExitSurvey();
-        sessionStorage.setItem('exitSurveyShown', 'true');
-      }
-    });
-  }
-  
-  // Handle radio button changes
-  document.querySelectorAll('input[name="exitSurvey"]').forEach(function(radio) {
-    radio.addEventListener('change', function() {
-      var otherInput = document.getElementById('exitSurveyOther');
-      var submitBtn = document.querySelector('.exit-survey-submit');
-      
-      if (this.value === 'other') {
-        otherInput.classList.remove('exit-survey-hidden');
-        otherInput.focus();
-        submitBtn.disabled = otherInput.value.trim() === '';
-      } else {
-        otherInput.classList.add('exit-survey-hidden');
-        submitBtn.disabled = false;
-      }
-    });
-  });
-  
-  // Handle other text input
-  document.getElementById('exitSurveyOther').addEventListener('input', function() {
-    var selectedRadio = document.querySelector('input[name="exitSurvey"]:checked');
-    if (selectedRadio && selectedRadio.value === 'other') {
-      document.querySelector('.exit-survey-submit').disabled = this.value.trim() === '';
-    }
-  });
-})();
-
-function showExitSurvey() {
-  document.getElementById('exitSurveyBackdrop').classList.remove('exit-survey-hidden');
-  document.getElementById('exitSurveyModal').classList.remove('exit-survey-hidden');
-}
-
-function closeExitSurvey() {
-  var selectedRadio = document.querySelector('input[name="exitSurvey"]:checked');
-  if (!selectedRadio && typeof gtag !== 'undefined') {
-    gtag('event', 'exit_survey_dismissed');
-  }
-  document.getElementById('exitSurveyBackdrop').classList.add('exit-survey-hidden');
-  document.getElementById('exitSurveyModal').classList.add('exit-survey-hidden');
-}
-
-function submitExitSurvey() {
-  var selectedRadio = document.querySelector('input[name="exitSurvey"]:checked');
-  if (!selectedRadio) return;
-  
-  var response = selectedRadio.value;
-  var otherText = '';
-  
-  if (response === 'other') {
-    otherText = document.getElementById('exitSurveyOther').value.trim();
-  }
-  
-  // Send to GA4
-  if (typeof gtag !== 'undefined') {
-    gtag('event', 'exit_survey_response', {
-      response: response,
-      other_text: otherText
-    });
-  }
-  
-  // Show thank you
-  document.getElementById('exitSurveyForm').classList.add('exit-survey-hidden');
-  document.getElementById('exitSurveyThanks').classList.remove('exit-survey-hidden');
-  
-  // Auto close after 2 seconds
-  setTimeout(closeExitSurvey, 2000);
-}
-
-// Close on backdrop click
-document.getElementById('exitSurveyBackdrop').addEventListener('click', closeExitSurvey);
-</script>
-
-<!-- END EXIT INTENT SURVEY -->
-
 </body>
 </html>
