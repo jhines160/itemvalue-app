@@ -1077,20 +1077,9 @@ input[type="text"].pulse-hint {
 .photo-upload-area {
     border: 2px dashed var(--color-primary);
     border-radius: var(--radius);
-    padding: 40px 20px;
+    padding: 30px 20px;
     text-align: center;
     background: rgba(13, 124, 102, 0.03);
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.photo-upload-area:hover {
-    border-color: var(--color-primary-dark);
-    background: rgba(13, 124, 102, 0.08);
-}
-
-.photo-upload-area:active {
-    transform: scale(0.99);
 }
 
 .photo-upload-area.has-image {
@@ -1214,9 +1203,114 @@ input[type="text"].pulse-hint {
     color: #dc2626;
     padding: 12px 16px;
     border-radius: 8px;
-    margin-top: 15px;
     font-size: 14px;
 }
+
+/* Photo action buttons */
+.photo-button-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.photo-action-btn {
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: all 0.2s;
+    border: none;
+}
+
+.photo-action-btn.primary {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    color: white;
+}
+
+.photo-action-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(13, 124, 102, 0.4);
+}
+
+.photo-action-btn.secondary {
+    background: white;
+    color: var(--color-text);
+    border: 2px solid #e2e8f0;
+}
+
+.photo-action-btn.secondary:hover {
+    border-color: var(--color-primary);
+    background: rgba(13, 124, 102, 0.05);
+}
+
+/* Error container with failover */
+.photo-error-container {
+    margin-top: 15px;
+}
+
+.photo-failover {
+    background: var(--color-bg-alt);
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.photo-failover p {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.failover-btn {
+    background: white;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: all 0.2s;
+}
+
+.failover-btn:hover {
+    background: var(--color-primary);
+    color: white;
+}
+
+/* Scan suggestions */
+.scan-suggestions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.suggestions-label {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin-bottom: 10px;
+}
+
+.suggestions-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.suggestion-chip {
+    background: var(--color-bg-alt);
+    color: var(--color-text-muted);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
         @keyframes emailSpinner {
             to { transform: rotate(360deg); }
         }
@@ -2160,6 +2254,7 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             const [photoLoading, setPhotoLoading] = useState(false);
             const [photoError, setPhotoError] = useState(null);
             const [photoLoadingStep, setPhotoLoadingStep] = useState(0);
+            const [showPhotoFailover, setShowPhotoFailover] = useState(false);
             const [condition, setCondition] = useState(null);
             const [category, setCategory] = useState(null);
             const [originalPrice, setOriginalPrice] = useState('');
@@ -2187,7 +2282,7 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             const refreshScanData = () => setScanData(getScanData());
 
 // FRICTION FIX #1: Auto-trigger scan on photo select
-const handlePhotoSelect = (e) => {
+const handlePhotoSelect = (e, source = 'unknown') => {
     const file = e.target.files[0];
     if (!file) return;
     
@@ -2209,10 +2304,10 @@ const handlePhotoSelect = (e) => {
     reader.onload = (e) => setPhotoPreview(e.target.result);
     reader.readAsDataURL(file);
     
-    trackEvent('photo_selected', { source: 'gallery' });
+    trackEvent('photo_selected', { source: source });
     
     // AUTO-TRIGGER SCAN IMMEDIATELY
-    runPhotoAnalysis(file);
+    runPhotoAnalysis(file, source);
 };
 
 const clearPhoto = () => {
@@ -2220,10 +2315,18 @@ const clearPhoto = () => {
     setPhotoFile(null);
     setPhotoError(null);
     setPhotoLoadingStep(0);
+    setShowPhotoFailover(false);
+};
+
+// Switch to text mode after photo error
+const switchToTextMode = () => {
+    clearPhoto();
+    setScanMode('text');
+    trackEvent('failover_to_text', { from: 'photo_error' });
 };
 
 // FRICTION FIX #1: Accept file parameter for immediate scanning
-const runPhotoAnalysis = async (fileOverride = null) => {
+const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
     const file = fileOverride || photoFile;
     if (!file) return;
     
@@ -2234,8 +2337,9 @@ const runPhotoAnalysis = async (fileOverride = null) => {
     
     setPhotoLoading(true);
     setPhotoError(null);
+    setShowPhotoFailover(false);
     setPhotoLoadingStep(1);
-    trackEvent('scan_initiated', { scan_type: 'photo' });
+    trackEvent('scan_initiated', { scan_type: 'photo', source: source });
     
     // Progress steps for better UX
     const stepTimer1 = setTimeout(() => setPhotoLoadingStep(2), 2000);
@@ -2271,6 +2375,7 @@ const runPhotoAnalysis = async (fileOverride = null) => {
         
         trackEvent('scan_completed', {
             scan_type: 'photo',
+            source: source,
             item_category: photoResult.itemName,
             confidence: photoResult.confidence,
             estimated_value: photoResult.estimatedValue
@@ -2317,8 +2422,9 @@ const runPhotoAnalysis = async (fileOverride = null) => {
         
     } catch (error) {
         console.error('Photo scan error:', error);
-        setPhotoError(error.message || 'Failed to analyze image. Please try again.');
-        trackEvent('scan_error', { scan_type: 'photo', error_type: error.message });
+        setPhotoError(error.message || 'Failed to analyze image.');
+        setShowPhotoFailover(true);
+        trackEvent('scan_error', { scan_type: 'photo', source: source, error_type: error.message });
     } finally {
         clearTimeout(stepTimer1);
         clearTimeout(stepTimer2);
@@ -2345,13 +2451,119 @@ const runPhotoAnalysis = async (fileOverride = null) => {
                 
                 trackEvent('item_entered', { item_length: itemDescription.length });
                 
-                // Free users go straight to condition selection
+                // Free users skip condition and run immediately with "Good Used"
                 // Paid users get the analysis type choice
                 if (isPaidUser()) {
                     setScreen('chooseType');
                 } else {
                     setAnalysisType('quick');
-                    setScreen('condition');
+                    setCondition('good'); // Default to "Good" condition
+                    runAnalysisDirectly('good'); // Run immediately
+                }
+            };
+            
+            // Run analysis directly without going through condition screen
+            const runAnalysisDirectly = async (defaultCondition) => {
+                if (!canScan()) {
+                    setShowUpgrade(true);
+                    return;
+                }
+
+                setScreen('loading');
+                
+                trackEvent('analysis_started', { 
+                    mode: 'single', 
+                    analysis_type: 'quick',
+                    condition: defaultCondition,
+                    skipped_condition_screen: true
+                });
+
+                const conditionLabel = 'Good';
+
+                try {
+                    const response = await fetch('/.netlify/functions/analyze', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            itemDescription,
+                            category: 'General',
+                            condition: conditionLabel,
+                            originalPrice: '',
+                            urgency: 'Whenever it Sells',
+                            brand: '',
+                            defects: '',
+                            additionalInfo: ''
+                        })
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                    const data = await response.json();
+                    let responseText = '';
+                    if (data.content) {
+                        for (const block of data.content) {
+                            if (block.type === 'text') responseText += block.text;
+                        }
+                    }
+
+                    let cleanedResponse = responseText.trim().replace(/```json\n?/g, '').replace(/```\n?/g, '');
+                    const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) cleanedResponse = jsonMatch[0];
+
+                    const aiResult = JSON.parse(cleanedResponse);
+
+                    const resultData = {
+                        recommendation: aiResult.recommendation.toLowerCase(),
+                        reason: aiResult.reason,
+                        effortScore: aiResult.effortScore || 'medium',
+                        effortReason: aiResult.effortReason || '',
+                        marketData: aiResult.marketData,
+                        estimatedPrice: parseFloat(aiResult.estimatedSalePrice).toFixed(2),
+                        ebayFees: parseFloat(aiResult.platformFees || aiResult.ebayFees).toFixed(2),
+                        shippingCost: parseFloat(aiResult.shippingCost).toFixed(2),
+                        netProfit: parseFloat(aiResult.netProfit).toFixed(2),
+                        taxDeduction: parseFloat(aiResult.taxDeduction).toFixed(2),
+                        analysisType: 'quick'
+                    };
+
+                    setResult(resultData);
+                    const currentScanCount = parseInt(localStorage.getItem('iv_scan_count') || '0') + 1;
+                    localStorage.setItem('iv_scan_count', currentScanCount.toString());
+                    const netProfitValue = parseFloat(resultData.netProfit);
+                    if (shouldShowTestimonial(netProfitValue, currentScanCount)) {
+                        sessionStorage.setItem('iv_testimonial_shown', 'true');
+                        setTestimonialValue(netProfitValue);
+                        setTimeout(() => setShowTestimonial(true), 1500);
+                    }
+                    setScreen('result');
+
+                    trackEvent('analysis_completed', {
+                        mode: 'single',
+                        analysis_type: 'quick',
+                        recommendation: resultData.recommendation,
+                        net_profit: parseFloat(resultData.netProfit)
+                    });
+
+                    decrementScan();
+                    refreshScanData();
+
+                    const historyItem = {
+                        id: Date.now(),
+                        timestamp: new Date().toISOString(),
+                        itemName: itemDescription,
+                        condition: defaultCondition,
+                        analysisType: 'quick',
+                        ...resultData
+                    };
+                    const updatedHistory = [historyItem, ...history];
+                    setHistory(updatedHistory);
+                    localStorage.setItem('sellDonateHistory', JSON.stringify(updatedHistory));
+
+                } catch (error) {
+                    console.error('Analysis error:', error);
+                    trackEvent('analysis_error', { mode: 'single', error_type: 'api_error' });
+                    alert('Something went wrong. Please try again.');
+                    setScreen('home');
                 }
             };
 
@@ -2665,7 +2877,7 @@ const runPhotoAnalysis = async (fileOverride = null) => {
                 type="file"
                 id="photoInput"
                 accept="image/*"
-                onChange={handlePhotoSelect}
+                onChange={(e) => handlePhotoSelect(e, 'gallery')}
                 style={{ display: 'none' }}
             />
             <input
@@ -2673,11 +2885,11 @@ const runPhotoAnalysis = async (fileOverride = null) => {
                 id="cameraInput"
                 accept="image/*"
                 capture="environment"
-                onChange={handlePhotoSelect}
+                onChange={(e) => handlePhotoSelect(e, 'camera')}
                 style={{ display: 'none' }}
             />
             
-            {/* FRICTION FIX #1 & #2: Enhanced loading with progress steps */}
+            {/* Loading state with progress steps */}
             {photoLoading ? (
                 <div className="photo-analyzing">
                     {photoPreview && (
@@ -2706,19 +2918,58 @@ const runPhotoAnalysis = async (fileOverride = null) => {
                     </div>
                 </div>
             ) : (
-                /* FRICTION FIX #2: Simplified single-tap upload area */
-                <div 
-                    className="photo-upload-area" 
-                    onClick={() => document.getElementById('cameraInput').click()}
-                >
+                /* Explicit Take Photo / Upload Photo buttons */
+                <div className="photo-upload-area">
                     <div className="upload-icon">📸</div>
-                    <p className="upload-main-text">Tap to scan an item</p>
-                    <p className="upload-sub-text">Take a photo or choose from gallery</p>
+                    <p className="upload-main-text">Scan any item instantly</p>
+                    <p className="upload-sub-text">Get real profit estimates in ~10 seconds</p>
+                    
+                    <div className="photo-button-row">
+                        <button 
+                            className="photo-action-btn primary"
+                            onClick={() => document.getElementById('cameraInput').click()}
+                        >
+                            📷 Take Photo
+                        </button>
+                        <button 
+                            className="photo-action-btn secondary"
+                            onClick={() => document.getElementById('photoInput').click()}
+                        >
+                            🖼️ Upload Photo
+                        </button>
+                    </div>
                 </div>
             )}
             
+            {/* Error with failover option */}
             {photoError && (
-                <div className="photo-error">{photoError}</div>
+                <div className="photo-error-container">
+                    <div className="photo-error">{photoError}</div>
+                    {showPhotoFailover && (
+                        <div className="photo-failover">
+                            <p>Photo not working? Try typing instead:</p>
+                            <button 
+                                className="failover-btn"
+                                onClick={switchToTextMode}
+                            >
+                                ✏️ Switch to Text Input
+                            </button>
+                        </div>
+                    )}
+                </div>
+            )}
+            
+            {/* Suggestion micro-list */}
+            {!photoLoading && !photoError && (
+                <div className="scan-suggestions">
+                    <p className="suggestions-label">Try scanning:</p>
+                    <div className="suggestions-list">
+                        <span className="suggestion-chip">👟 Shoes</span>
+                        <span className="suggestion-chip">📱 Electronics</span>
+                        <span className="suggestion-chip">🍳 Kitchen items</span>
+                        <span className="suggestion-chip">🔧 Tools</span>
+                    </div>
+                </div>
             )}
             
             <div className="time-hint">
@@ -2912,7 +3163,7 @@ const runPhotoAnalysis = async (fileOverride = null) => {
 
                                 <button 
                                     className="back-button"
-                                    onClick={() => paid ? setScreen('chooseType') : setScreen('home')}
+                                    onClick={() => setScreen('chooseType')}
                                     style={{marginTop: '20px'}}
                                 >
                                     ← Back
