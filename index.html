@@ -3526,5 +3526,507 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
 
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
+<!-- EXIT INTENT EMAIL CAPTURE - Paste this just before </body> in your index.html -->
+
+<style>
+/* Exit Intent Modal Styles */
+.exit-intent-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.exit-intent-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.exit-intent-modal {
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: translateY(20px) scale(0.95);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+.exit-intent-overlay.visible .exit-intent-modal {
+    transform: translateY(0) scale(1);
+}
+
+.exit-intent-header {
+    background: linear-gradient(135deg, #0D7C66 0%, #095C4B 100%);
+    padding: 28px 28px 24px;
+    color: white;
+    text-align: center;
+    position: relative;
+}
+
+.exit-intent-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.exit-intent-close:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.exit-intent-emoji {
+    font-size: 48px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.exit-intent-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    font-family: 'Fraunces', Georgia, serif;
+}
+
+.exit-intent-subtitle {
+    font-size: 15px;
+    opacity: 0.9;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.exit-intent-body {
+    padding: 24px 28px 28px;
+}
+
+.exit-intent-benefits {
+    background: #f0fdf4;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.exit-intent-benefits-title {
+    font-weight: 600;
+    color: #0D7C66;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.exit-intent-benefit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #1E3A34;
+    margin-bottom: 6px;
+}
+
+.exit-intent-benefit:last-child {
+    margin-bottom: 0;
+}
+
+.exit-intent-benefit-check {
+    color: #0D7C66;
+    font-weight: bold;
+}
+
+.exit-intent-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #fff;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+}
+
+.exit-intent-input:focus {
+    outline: none;
+    border-color: #0D7C66;
+    box-shadow: 0 0 0 3px rgba(13, 124, 102, 0.15);
+}
+
+.exit-intent-submit {
+    width: 100%;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #0D7C66 0%, #095C4B 100%);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 14px rgba(13, 124, 102, 0.35);
+}
+
+.exit-intent-submit:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(13, 124, 102, 0.4);
+}
+
+.exit-intent-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.exit-intent-skip {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 12px;
+    color: #94a3b8;
+    font-size: 13px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', -apple-system, sans-serif;
+}
+
+.exit-intent-skip:hover {
+    color: #64748b;
+}
+
+.exit-intent-success {
+    text-align: center;
+    padding: 40px 28px;
+}
+
+.exit-intent-success-emoji {
+    font-size: 56px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.exit-intent-success-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1E3A34;
+    margin: 0 0 8px 0;
+    font-family: 'Fraunces', Georgia, serif;
+}
+
+.exit-intent-success-text {
+    font-size: 15px;
+    color: #64748b;
+    margin: 0;
+}
+
+.exit-intent-spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: exit-intent-spin 0.8s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+@keyframes exit-intent-spin {
+    to { transform: rotate(360deg); }
+}
+</style>
+
+<div id="exitIntentOverlay" class="exit-intent-overlay">
+    <div class="exit-intent-modal">
+        <div id="exitIntentForm">
+            <div class="exit-intent-header">
+                <button class="exit-intent-close" onclick="closeExitIntent()">×</button>
+                <span class="exit-intent-emoji">💎</span>
+                <h2 class="exit-intent-title">Wait! Free Guide Inside</h2>
+                <p class="exit-intent-subtitle">Discover 10 common household items that sell for $100+ online</p>
+            </div>
+            <div class="exit-intent-body">
+                <div class="exit-intent-benefits">
+                    <div class="exit-intent-benefits-title">Inside the free guide:</div>
+                    <div class="exit-intent-benefit">
+                        <span class="exit-intent-benefit-check">✓</span>
+                        <span>10 surprising items worth real money</span>
+                    </div>
+                    <div class="exit-intent-benefit">
+                        <span class="exit-intent-benefit-check">✓</span>
+                        <span>Where to sell each one for top dollar</span>
+                    </div>
+                    <div class="exit-intent-benefit">
+                        <span class="exit-intent-benefit-check">✓</span>
+                        <span>How to spot valuable items at a glance</span>
+                    </div>
+                </div>
+                
+                <input 
+                    type="text" 
+                    id="exitIntentName"
+                    class="exit-intent-input" 
+                    placeholder="First name (optional)"
+                />
+                <input 
+                    type="email" 
+                    id="exitIntentEmail"
+                    class="exit-intent-input" 
+                    placeholder="Your email address"
+                    required
+                />
+                <button class="exit-intent-submit" onclick="submitExitIntent()" id="exitIntentSubmitBtn">
+                    Send Me the Free Guide →
+                </button>
+                <button class="exit-intent-skip" onclick="closeExitIntent()">
+                    No thanks, I'll figure it out myself
+                </button>
+            </div>
+        </div>
+        
+        <div id="exitIntentSuccess" style="display: none;">
+            <div class="exit-intent-success">
+                <span class="exit-intent-success-emoji">🎉</span>
+                <h3 class="exit-intent-success-title">Check your inbox!</h3>
+                <p class="exit-intent-success-text">Your free guide is on its way.<br/>Ready to scan your first item?</p>
+                <button class="exit-intent-submit" onclick="closeExitIntent()" style="margin-top: 20px;">
+                    Try a Free Scan →
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    // Configuration
+    const EXIT_INTENT_CONFIG = {
+        showOncePerSession: true,
+        mobileDelaySeconds: 45,        // Show after 45 seconds on mobile if no interaction
+        desktopSensitivity: 20,        // Pixels from top to trigger on desktop
+        kitFormId: '8985054',          // Your Kit form ID
+        cookieDays: 7                  // Don't show again for 7 days after dismissal
+    };
+    
+    let exitIntentShown = false;
+    let hasScanned = false;
+    let mobileTimer = null;
+    
+    // Check if user has already seen/dismissed the popup
+    function hasSeenExitIntent() {
+        return localStorage.getItem('iv_exit_intent_shown') !== null ||
+               sessionStorage.getItem('iv_exit_intent_session') !== null;
+    }
+    
+    // Check if user has already provided email
+    function hasProvidedEmail() {
+        return localStorage.getItem('itemvalue_user_email') !== null;
+    }
+    
+    // Check if user has completed a scan
+    function hasCompletedScan() {
+        try {
+            const scanData = localStorage.getItem('itemvalue_scans');
+            if (scanData) {
+                const parsed = JSON.parse(scanData);
+                return (parsed.used || 0) > 0;
+            }
+        } catch (e) {}
+        return false;
+    }
+    
+    // Show the exit intent modal
+    function showExitIntent() {
+        if (exitIntentShown || hasSeenExitIntent() || hasProvidedEmail() || hasCompletedScan()) {
+            return;
+        }
+        
+        exitIntentShown = true;
+        sessionStorage.setItem('iv_exit_intent_session', 'true');
+        
+        const overlay = document.getElementById('exitIntentOverlay');
+        if (overlay) {
+            overlay.classList.add('visible');
+            
+            // Track event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'exit_intent_shown', { trigger: detectMobile() ? 'mobile_timer' : 'desktop_mouse' });
+            }
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'ViewContent', { content_name: 'exit_intent_popup' });
+            }
+        }
+    }
+    
+    // Close the modal
+    window.closeExitIntent = function() {
+        const overlay = document.getElementById('exitIntentOverlay');
+        if (overlay) {
+            overlay.classList.remove('visible');
+        }
+        
+        // Track dismissal
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'exit_intent_dismissed');
+        }
+    };
+    
+    // Submit the form
+    window.submitExitIntent = async function() {
+        const email = document.getElementById('exitIntentEmail').value;
+        const firstName = document.getElementById('exitIntentName').value;
+        const submitBtn = document.getElementById('exitIntentSubmitBtn');
+        
+        if (!email || !email.includes('@')) {
+            alert('Please enter a valid email address');
+            return;
+        }
+        
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="exit-intent-spinner"></span>';
+        
+        try {
+            // Submit to Kit
+            const formData = new FormData();
+            formData.append('email_address', email);
+            if (firstName) {
+                formData.append('fields[first_name]', firstName);
+            }
+            formData.append('fields[source]', 'exit_intent');
+            
+            await fetch(`https://app.kit.com/forms/${EXIT_INTENT_CONFIG.kitFormId}/subscriptions`, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            });
+            
+            // Store email locally
+            localStorage.setItem('itemvalue_user_email', email);
+            localStorage.setItem('iv_exit_intent_shown', Date.now().toString());
+            
+            // Track success
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'exit_intent_converted', { has_first_name: !!firstName });
+            }
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead', { content_name: 'exit_intent_capture' });
+            }
+            
+            // Show success state
+            document.getElementById('exitIntentForm').style.display = 'none';
+            document.getElementById('exitIntentSuccess').style.display = 'block';
+            
+        } catch (error) {
+            console.error('Exit intent submission error:', error);
+            // Still store locally and show success
+            localStorage.setItem('itemvalue_user_email', email);
+            localStorage.setItem('iv_exit_intent_shown', Date.now().toString());
+            document.getElementById('exitIntentForm').style.display = 'none';
+            document.getElementById('exitIntentSuccess').style.display = 'block';
+        }
+    };
+    
+    // Detect mobile devices
+    function detectMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+               window.innerWidth <= 768;
+    }
+    
+    // Desktop: mouse leave detection
+    function handleMouseLeave(e) {
+        if (e.clientY <= EXIT_INTENT_CONFIG.desktopSensitivity) {
+            showExitIntent();
+        }
+    }
+    
+    // Mobile: timer-based detection
+    function startMobileTimer() {
+        if (mobileTimer) clearTimeout(mobileTimer);
+        
+        mobileTimer = setTimeout(() => {
+            // Only show if user hasn't interacted meaningfully
+            if (!hasCompletedScan()) {
+                showExitIntent();
+            }
+        }, EXIT_INTENT_CONFIG.mobileDelaySeconds * 1000);
+    }
+    
+    // Reset mobile timer on meaningful interaction
+    function resetMobileTimer() {
+        if (mobileTimer) {
+            clearTimeout(mobileTimer);
+            startMobileTimer();
+        }
+    }
+    
+    // Initialize
+    function init() {
+        // Don't initialize if already shown or email captured
+        if (hasSeenExitIntent() || hasProvidedEmail()) {
+            return;
+        }
+        
+        if (detectMobile()) {
+            // Mobile: use timer
+            startMobileTimer();
+            
+            // Reset timer on scroll or tap
+            document.addEventListener('scroll', resetMobileTimer, { passive: true });
+            document.addEventListener('touchstart', resetMobileTimer, { passive: true });
+        } else {
+            // Desktop: use mouse leave
+            document.addEventListener('mouseleave', handleMouseLeave);
+        }
+        
+        // Close on overlay click
+        document.getElementById('exitIntentOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeExitIntent();
+            }
+        });
+        
+        // Close on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeExitIntent();
+            }
+        });
+        
+        // Handle enter key in email field
+        document.getElementById('exitIntentEmail').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitExitIntent();
+            }
+        });
+    }
+    
+    // Wait for DOM
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
+
+<!-- END EXIT INTENT EMAIL CAPTURE -->
 </body>
 </html>
