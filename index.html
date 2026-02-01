@@ -145,13 +145,13 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
             margin-bottom: 15px;
         }
 
-        /* Example Result Card - FRICTION FIX #3 */
+        /* Example Result Card */
         .example-result {
             background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
             border: 2px solid var(--color-primary);
             border-radius: var(--radius);
-            padding: 16px;
-            margin-bottom: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
             position: relative;
         }
 
@@ -171,24 +171,24 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
 
         .example-item-name {
             font-family: var(--font-display);
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             color: var(--color-contrast);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             margin-top: 5px;
         }
 
         .example-stats {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 8px;
         }
 
         .example-stat {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 13px;
+            font-size: 14px;
             color: var(--color-text-muted);
         }
 
@@ -198,10 +198,10 @@ src="https://www.facebook.com/tr?id=897308342823736&ev=PageView&noscript=1"
         }
 
         .example-verdict {
-            margin-top: 10px;
-            padding-top: 10px;
+            margin-top: 12px;
+            padding-top: 12px;
             border-top: 1px dashed var(--color-primary);
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--color-primary);
         }
@@ -728,7 +728,7 @@ input[type="text"].pulse-hint {
             margin-top: 8px;
         }
 
-        /* Scan Counter - FRICTION FIX #4 */
+        /* Scan Counter */
         .scan-counter {
             position: fixed;
             top: 20px;
@@ -761,28 +761,6 @@ input[type="text"].pulse-hint {
         .scan-counter.paid {
             background: linear-gradient(135deg, var(--color-accent), #D4A528);
             color: var(--color-contrast);
-        }
-        
-        .scan-counter-tooltip {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 8px;
-            background: white;
-            color: var(--color-text);
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 400;
-            width: 200px;
-            box-shadow: var(--shadow-medium);
-            display: none;
-            text-align: left;
-            line-height: 1.4;
-        }
-        
-        .scan-counter:hover .scan-counter-tooltip {
-            display: block;
         }
 
         /* Bulk scan prompt */
@@ -1038,7 +1016,7 @@ input[type="text"].pulse-hint {
             font-weight: 500;
         }
 /* ============================================
-   PHOTO SCAN STYLES - FRICTION FIX #2
+   PHOTO SCAN STYLES
    ============================================ */
 .scan-tabs {
     display: flex;
@@ -1073,13 +1051,19 @@ input[type="text"].pulse-hint {
     color: var(--color-text);
 }
 
-/* Simplified photo upload - single tap area */
 .photo-upload-area {
-    border: 2px dashed var(--color-primary);
+    border: 2px dashed #d1d5db;
     border-radius: var(--radius);
     padding: 30px 20px;
     text-align: center;
-    background: rgba(13, 124, 102, 0.03);
+    background: var(--color-bg-alt);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.photo-upload-area:hover {
+    border-color: var(--color-primary);
+    background: rgba(13, 124, 102, 0.05);
 }
 
 .photo-upload-area.has-image {
@@ -1089,21 +1073,44 @@ input[type="text"].pulse-hint {
 }
 
 .upload-icon {
-    font-size: 56px;
-    margin-bottom: 12px;
+    font-size: 48px;
+    margin-bottom: 10px;
 }
 
-.upload-main-text {
-    font-family: var(--font-display);
-    font-size: 18px;
+.upload-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.upload-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
     font-weight: 600;
-    color: var(--color-contrast);
-    margin-bottom: 6px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 14px;
+    transition: transform 0.1s ease;
 }
 
-.upload-sub-text {
-    color: var(--color-text-muted);
-    font-size: 14px;
+.upload-btn:hover {
+    transform: scale(1.02);
+}
+
+.upload-btn:active {
+    transform: scale(0.98);
+}
+
+.upload-btn.camera {
+    background: var(--color-primary);
+    color: white;
+}
+
+.upload-btn.gallery {
+    background: #e5e7eb;
+    color: #374151;
 }
 
 .preview-container {
@@ -1136,22 +1143,11 @@ input[type="text"].pulse-hint {
     justify-content: center;
 }
 
-/* Enhanced loading state with photo preview */
 .photo-analyzing {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
-}
-
-.photo-analyzing-preview {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    opacity: 0.8;
-    box-shadow: var(--shadow-soft);
+    padding: 30px;
 }
 
 .photo-spinner {
@@ -1168,149 +1164,14 @@ input[type="text"].pulse-hint {
     to { transform: rotate(360deg); }
 }
 
-.photo-progress-steps {
-    margin-top: 15px;
-    text-align: left;
-    width: 100%;
-    max-width: 250px;
-}
-
-.photo-progress-step {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 0;
-    font-size: 14px;
-    color: var(--color-text-muted);
-}
-
-.photo-progress-step.active {
-    color: var(--color-primary);
-    font-weight: 600;
-}
-
-.photo-progress-step.done {
-    color: var(--color-primary);
-}
-
-.photo-progress-step .step-icon {
-    width: 20px;
-    text-align: center;
-}
-
 .photo-error {
     background: #fef2f2;
     color: #dc2626;
     padding: 12px 16px;
     border-radius: 8px;
-    font-size: 14px;
-}
-
-/* Photo action buttons */
-.photo-button-row {
-    display: flex;
-    gap: 12px;
-    margin-top: 20px;
-    justify-content: center;
-}
-
-.photo-action-btn {
-    padding: 14px 24px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: var(--font-body);
-    transition: all 0.2s;
-    border: none;
-}
-
-.photo-action-btn.primary {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
-    color: white;
-}
-
-.photo-action-btn.primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(13, 124, 102, 0.4);
-}
-
-.photo-action-btn.secondary {
-    background: white;
-    color: var(--color-text);
-    border: 2px solid #e2e8f0;
-}
-
-.photo-action-btn.secondary:hover {
-    border-color: var(--color-primary);
-    background: rgba(13, 124, 102, 0.05);
-}
-
-/* Error container with failover */
-.photo-error-container {
     margin-top: 15px;
-}
-
-.photo-failover {
-    background: var(--color-bg-alt);
-    border-radius: 10px;
-    padding: 16px;
-    margin-top: 12px;
-    text-align: center;
-}
-
-.photo-failover p {
-    color: var(--color-text-muted);
     font-size: 14px;
-    margin-bottom: 12px;
 }
-
-.failover-btn {
-    background: white;
-    border: 2px solid var(--color-primary);
-    color: var(--color-primary);
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: var(--font-body);
-    transition: all 0.2s;
-}
-
-.failover-btn:hover {
-    background: var(--color-primary);
-    color: white;
-}
-
-/* Scan suggestions */
-.scan-suggestions {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.suggestions-label {
-    font-size: 13px;
-    color: var(--color-text-muted);
-    margin-bottom: 10px;
-}
-
-.suggestions-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-}
-
-.suggestion-chip {
-    background: var(--color-bg-alt);
-    color: var(--color-text-muted);
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 500;
-}
-
         @keyframes emailSpinner {
             to { transform: rotate(360deg); }
         }
@@ -1545,7 +1406,7 @@ input[type="text"].pulse-hint {
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+        const { useState, useEffect } = React;
 
         // ============================================
         // CONFIGURATION
@@ -1915,7 +1776,6 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             );
         }
         
-        // FRICTION FIX #4: Clearer scan counter with tooltip
         function ScanCounter({ onClick }) {
             const data = getScanData();
             const remaining = data.scansRemaining;
@@ -1926,16 +1786,9 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             else if (remaining <= 0) className += ' empty';
             else if (remaining <= 1) className += ' warning';
             
-            const tooltipText = isPaid 
-                ? `You have ${remaining} scans in your ${data.bundle} plan. Tap for details.`
-                : remaining > 0 
-                    ? `You have ${remaining} free scans to try Item Value. Each scan checks one item's resale value.`
-                    : `You've used all free scans. Tap to see pricing options.`;
-            
             return (
                 <div className={className} onClick={onClick}>
-                    {isPaid ? '✨' : '🎁'} {remaining} {isPaid ? 'scans' : (remaining === 1 ? 'free scan' : 'free scans')}
-                    <div className="scan-counter-tooltip">{tooltipText}</div>
+                    {isPaid ? '✨' : '🆓'} {remaining} {isPaid ? 'scans' : 'free'} left
                 </div>
             );
         }
@@ -2018,7 +1871,7 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
                             <div style={{marginBottom: '15px'}}>
                                 <div style={{color: 'var(--color-text-muted)', fontSize: '13px'}}>Plan</div>
                                 <div style={{color: 'var(--color-contrast)', fontSize: '18px', fontWeight: '700', fontFamily: 'var(--font-display)'}}>
-                                    {isPaid ? data.bundle : 'Free Trial'}
+                                    {isPaid ? data.bundle : 'Free Tier'}
                                 </div>
                             </div>
                             
@@ -2253,8 +2106,6 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             const [photoFile, setPhotoFile] = useState(null);
             const [photoLoading, setPhotoLoading] = useState(false);
             const [photoError, setPhotoError] = useState(null);
-            const [photoLoadingStep, setPhotoLoadingStep] = useState(0);
-            const [showPhotoFailover, setShowPhotoFailover] = useState(false);
             const [condition, setCondition] = useState(null);
             const [category, setCategory] = useState(null);
             const [originalPrice, setOriginalPrice] = useState('');
@@ -2275,14 +2126,15 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
             const [showHistory, setShowHistory] = useState(false);
             const [showTestimonial, setShowTestimonial] = useState(false);
             const [testimonialValue, setTestimonialValue] = useState(0);
+            const [showExample, setShowExample] = useState(false);
 
             const [bulkItems, setBulkItems] = useState('');
             const [bulkResults, setBulkResults] = useState([]);
 
             const refreshScanData = () => setScanData(getScanData());
 
-// FRICTION FIX #1: Auto-trigger scan on photo select
-const handlePhotoSelect = (e, source = 'unknown') => {
+// PHOTO SCAN FUNCTIONS
+const handlePhotoSelect = (e) => {
     const file = e.target.files[0];
     if (!file) return;
     
@@ -2299,36 +2151,21 @@ const handlePhotoSelect = (e, source = 'unknown') => {
     setPhotoError(null);
     setPhotoFile(file);
     
-    // Set preview
     const reader = new FileReader();
     reader.onload = (e) => setPhotoPreview(e.target.result);
     reader.readAsDataURL(file);
     
-    trackEvent('photo_selected', { source: source });
-    
-    // AUTO-TRIGGER SCAN IMMEDIATELY
-    runPhotoAnalysis(file, source);
+    trackEvent('photo_selected', { source: 'gallery' });
 };
 
 const clearPhoto = () => {
     setPhotoPreview(null);
     setPhotoFile(null);
     setPhotoError(null);
-    setPhotoLoadingStep(0);
-    setShowPhotoFailover(false);
 };
 
-// Switch to text mode after photo error
-const switchToTextMode = () => {
-    clearPhoto();
-    setScanMode('text');
-    trackEvent('failover_to_text', { from: 'photo_error' });
-};
-
-// FRICTION FIX #1: Accept file parameter for immediate scanning
-const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
-    const file = fileOverride || photoFile;
-    if (!file) return;
+const runPhotoAnalysis = async () => {
+    if (!photoFile) return;
     
     if (!canScan()) {
         setShowUpgrade(true);
@@ -2337,21 +2174,14 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
     
     setPhotoLoading(true);
     setPhotoError(null);
-    setShowPhotoFailover(false);
-    setPhotoLoadingStep(1);
-    trackEvent('scan_initiated', { scan_type: 'photo', source: source });
-    
-    // Progress steps for better UX
-    const stepTimer1 = setTimeout(() => setPhotoLoadingStep(2), 2000);
-    const stepTimer2 = setTimeout(() => setPhotoLoadingStep(3), 5000);
-    const stepTimer3 = setTimeout(() => setPhotoLoadingStep(4), 8000);
+    trackEvent('scan_initiated', { scan_type: 'photo' });
     
     try {
         const base64 = await new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onload = () => resolve(reader.result.split(',')[1]);
             reader.onerror = reject;
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(photoFile);
         });
         
         const response = await fetch('/.netlify/functions/scan-photo', {
@@ -2359,7 +2189,7 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 image: base64,
-                mimeType: file.type
+                mimeType: photoFile.type
             }),
         });
         
@@ -2375,7 +2205,6 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
         
         trackEvent('scan_completed', {
             scan_type: 'photo',
-            source: source,
             item_category: photoResult.itemName,
             confidence: photoResult.confidence,
             estimated_value: photoResult.estimatedValue
@@ -2392,8 +2221,7 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
             shippingCost: '8.00',
             netProfit: photoResult.estimatedValue.toFixed(2),
             taxDeduction: (photoResult.estimatedValue * 0.3).toFixed(2),
-            analysisType: 'photo',
-            itemName: photoResult.itemName
+            analysisType: 'photo'
         };
         
         setResult(formattedResult);
@@ -2422,15 +2250,10 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
         
     } catch (error) {
         console.error('Photo scan error:', error);
-        setPhotoError(error.message || 'Failed to analyze image.');
-        setShowPhotoFailover(true);
-        trackEvent('scan_error', { scan_type: 'photo', source: source, error_type: error.message });
+        setPhotoError(error.message || 'Failed to analyze image. Please try again.');
+        trackEvent('scan_error', { scan_type: 'photo', error_type: error.message });
     } finally {
-        clearTimeout(stepTimer1);
-        clearTimeout(stepTimer2);
-        clearTimeout(stepTimer3);
         setPhotoLoading(false);
-        setPhotoLoadingStep(0);
     }
 };
 
@@ -2451,119 +2274,11 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
                 
                 trackEvent('item_entered', { item_length: itemDescription.length });
                 
-                // Free users skip condition and run immediately with "Good Used"
-                // Paid users get the analysis type choice
                 if (isPaidUser()) {
                     setScreen('chooseType');
                 } else {
                     setAnalysisType('quick');
-                    setCondition('good'); // Default to "Good" condition
-                    runAnalysisDirectly('good'); // Run immediately
-                }
-            };
-            
-            // Run analysis directly without going through condition screen
-            const runAnalysisDirectly = async (defaultCondition) => {
-                if (!canScan()) {
-                    setShowUpgrade(true);
-                    return;
-                }
-
-                setScreen('loading');
-                
-                trackEvent('analysis_started', { 
-                    mode: 'single', 
-                    analysis_type: 'quick',
-                    condition: defaultCondition,
-                    skipped_condition_screen: true
-                });
-
-                const conditionLabel = 'Good';
-
-                try {
-                    const response = await fetch('/.netlify/functions/analyze', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            itemDescription,
-                            category: 'General',
-                            condition: conditionLabel,
-                            originalPrice: '',
-                            urgency: 'Whenever it Sells',
-                            brand: '',
-                            defects: '',
-                            additionalInfo: ''
-                        })
-                    });
-
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-                    const data = await response.json();
-                    let responseText = '';
-                    if (data.content) {
-                        for (const block of data.content) {
-                            if (block.type === 'text') responseText += block.text;
-                        }
-                    }
-
-                    let cleanedResponse = responseText.trim().replace(/```json\n?/g, '').replace(/```\n?/g, '');
-                    const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
-                    if (jsonMatch) cleanedResponse = jsonMatch[0];
-
-                    const aiResult = JSON.parse(cleanedResponse);
-
-                    const resultData = {
-                        recommendation: aiResult.recommendation.toLowerCase(),
-                        reason: aiResult.reason,
-                        effortScore: aiResult.effortScore || 'medium',
-                        effortReason: aiResult.effortReason || '',
-                        marketData: aiResult.marketData,
-                        estimatedPrice: parseFloat(aiResult.estimatedSalePrice).toFixed(2),
-                        ebayFees: parseFloat(aiResult.platformFees || aiResult.ebayFees).toFixed(2),
-                        shippingCost: parseFloat(aiResult.shippingCost).toFixed(2),
-                        netProfit: parseFloat(aiResult.netProfit).toFixed(2),
-                        taxDeduction: parseFloat(aiResult.taxDeduction).toFixed(2),
-                        analysisType: 'quick'
-                    };
-
-                    setResult(resultData);
-                    const currentScanCount = parseInt(localStorage.getItem('iv_scan_count') || '0') + 1;
-                    localStorage.setItem('iv_scan_count', currentScanCount.toString());
-                    const netProfitValue = parseFloat(resultData.netProfit);
-                    if (shouldShowTestimonial(netProfitValue, currentScanCount)) {
-                        sessionStorage.setItem('iv_testimonial_shown', 'true');
-                        setTestimonialValue(netProfitValue);
-                        setTimeout(() => setShowTestimonial(true), 1500);
-                    }
-                    setScreen('result');
-
-                    trackEvent('analysis_completed', {
-                        mode: 'single',
-                        analysis_type: 'quick',
-                        recommendation: resultData.recommendation,
-                        net_profit: parseFloat(resultData.netProfit)
-                    });
-
-                    decrementScan();
-                    refreshScanData();
-
-                    const historyItem = {
-                        id: Date.now(),
-                        timestamp: new Date().toISOString(),
-                        itemName: itemDescription,
-                        condition: defaultCondition,
-                        analysisType: 'quick',
-                        ...resultData
-                    };
-                    const updatedHistory = [historyItem, ...history];
-                    setHistory(updatedHistory);
-                    localStorage.setItem('sellDonateHistory', JSON.stringify(updatedHistory));
-
-                } catch (error) {
-                    console.error('Analysis error:', error);
-                    trackEvent('analysis_error', { mode: 'single', error_type: 'api_error' });
-                    alert('Something went wrong. Please try again.');
-                    setScreen('home');
+                    setScreen('condition');
                 }
             };
 
@@ -2823,7 +2538,7 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
                 );
             }
 
-            // Home screen with all friction fixes
+            // Home screen
             if (screen === 'home') {
                 return (
                     <>
@@ -2843,17 +2558,6 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
                                 <p className="subtitle">
                                     Get real profit estimates after fees and shipping — instantly.
                                 </p>
-
-                                {/* FRICTION FIX #3: Example result preview */}
-                                <div className="example-result">
-                                    <div className="example-label">Example Result</div>
-                                    <div className="example-item-name">KitchenAid Artisan Mixer</div>
-                                    <div className="example-stats">
-                                        <div className="example-stat"><span className="check">✓</span> Sells for $180-220 on eBay</div>
-                                        <div className="example-stat"><span className="check">✓</span> After fees: ~$142 profit</div>
-                                    </div>
-                                    <div className="example-verdict">💰 VERDICT: SELL IT!</div>
-                                </div>
 
                                 <div className="input-section">
     <div className="scan-tabs">
@@ -2877,7 +2581,7 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
                 type="file"
                 id="photoInput"
                 accept="image/*"
-                onChange={(e) => handlePhotoSelect(e, 'gallery')}
+                onChange={handlePhotoSelect}
                 style={{ display: 'none' }}
             />
             <input
@@ -2885,95 +2589,81 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
                 id="cameraInput"
                 accept="image/*"
                 capture="environment"
-                onChange={(e) => handlePhotoSelect(e, 'camera')}
+                onChange={handlePhotoSelect}
                 style={{ display: 'none' }}
             />
             
-            {/* Loading state with progress steps */}
             {photoLoading ? (
                 <div className="photo-analyzing">
-                    {photoPreview && (
-                        <img src={photoPreview} alt="Scanning" className="photo-analyzing-preview" />
-                    )}
                     <div className="photo-spinner"></div>
-                    <p style={{color: 'var(--color-primary)', fontWeight: '600', marginBottom: '5px'}}>Analyzing your item...</p>
-                    
-                    <div className="photo-progress-steps">
-                        <div className={`photo-progress-step ${photoLoadingStep >= 1 ? 'done' : ''} ${photoLoadingStep === 1 ? 'active' : ''}`}>
-                            <span className="step-icon">{photoLoadingStep >= 2 ? '✓' : '○'}</span>
-                            <span>Identifying item</span>
-                        </div>
-                        <div className={`photo-progress-step ${photoLoadingStep >= 2 ? 'done' : ''} ${photoLoadingStep === 2 ? 'active' : ''}`}>
-                            <span className="step-icon">{photoLoadingStep >= 3 ? '✓' : '○'}</span>
-                            <span>Checking sold prices</span>
-                        </div>
-                        <div className={`photo-progress-step ${photoLoadingStep >= 3 ? 'done' : ''} ${photoLoadingStep === 3 ? 'active' : ''}`}>
-                            <span className="step-icon">{photoLoadingStep >= 4 ? '✓' : '○'}</span>
-                            <span>Calculating profit</span>
-                        </div>
-                        <div className={`photo-progress-step ${photoLoadingStep >= 4 ? 'active' : ''}`}>
-                            <span className="step-icon">○</span>
-                            <span>Generating recommendation</span>
-                        </div>
+                    <p style={{color: 'var(--color-primary)', fontWeight: '600'}}>Analyzing your item...</p>
+                    <p style={{color: 'var(--color-text-muted)', fontSize: '14px'}}>This takes about 10 seconds</p>
+                </div>
+            ) : photoPreview ? (
+                <div className="photo-upload-area has-image">
+                    <div className="preview-container">
+                        <img src={photoPreview} alt="Item preview" className="preview-image" />
+                        <button className="clear-preview" onClick={clearPhoto}>✕</button>
                     </div>
                 </div>
             ) : (
-                /* Explicit Take Photo / Upload Photo buttons */
-                <div className="photo-upload-area">
-                    <div className="upload-icon">📸</div>
-                    <p className="upload-main-text">Scan any item instantly</p>
-                    <p className="upload-sub-text">Get real profit estimates in ~10 seconds</p>
-                    
-                    <div className="photo-button-row">
+                <div className="photo-upload-area" onClick={() => document.getElementById('cameraInput').click()}>
+                    <div className="upload-icon">📷</div>
+                    <p style={{color: 'var(--color-text)', fontWeight: '600', marginBottom: '5px'}}>
+                        Take a photo of your item
+                    </p>
+                    <p style={{color: 'var(--color-text-muted)', fontSize: '14px'}}>
+                        Works best with clear, well-lit photos
+                    </p>
+                    <div className="upload-buttons" onClick={(e) => e.stopPropagation()}>
                         <button 
-                            className="photo-action-btn primary"
+                            className="upload-btn camera"
                             onClick={() => document.getElementById('cameraInput').click()}
                         >
-                            📷 Take Photo
+                            📸 Take Photo
                         </button>
                         <button 
-                            className="photo-action-btn secondary"
+                            className="upload-btn gallery"
                             onClick={() => document.getElementById('photoInput').click()}
                         >
-                            🖼️ Upload Photo
+                            🖼️ Gallery
                         </button>
                     </div>
                 </div>
             )}
             
-            {/* Error with failover option */}
             {photoError && (
-                <div className="photo-error-container">
-                    <div className="photo-error">{photoError}</div>
-                    {showPhotoFailover && (
-                        <div className="photo-failover">
-                            <p>Photo not working? Try typing instead:</p>
-                            <button 
-                                className="failover-btn"
-                                onClick={switchToTextMode}
-                            >
-                                ✏️ Switch to Text Input
-                            </button>
-                        </div>
-                    )}
-                </div>
+                <div className="photo-error">{photoError}</div>
             )}
             
-            {/* Suggestion micro-list */}
-            {!photoLoading && !photoError && (
-                <div className="scan-suggestions">
-                    <p className="suggestions-label">Try scanning:</p>
-                    <div className="suggestions-list">
-                        <span className="suggestion-chip">👟 Shoes</span>
-                        <span className="suggestion-chip">📱 Electronics</span>
-                        <span className="suggestion-chip">🍳 Kitchen items</span>
-                        <span className="suggestion-chip">🔧 Tools</span>
-                    </div>
-                </div>
+            {photoPreview && !photoLoading && (
+                <button
+                    className="action-button"
+                    onClick={runPhotoAnalysis}
+                >
+                    ✨ Scan This Item — Free
+                </button>
             )}
             
             <div className="time-hint">
-                ⏱ Results in <span>~10 seconds</span> • No signup required
+                ⏱ Takes about <span>10 seconds</span> • No signup required
+            </div>
+            <div style={{textAlign: 'center', marginTop: '12px'}}>
+                <button 
+                    onClick={() => { trackEvent('example_viewed'); setShowExample(true); }}
+                    style={{
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--color-primary)',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        textDecoration: 'underline',
+                        fontFamily: 'var(--font-body)'
+                    }}
+                >
+                    See example result →
+                </button>
             </div>
         </>
     ) : (
@@ -2998,6 +2688,23 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
             </button>
             <div className="time-hint">
                 ⏱ Takes about <span>30 seconds</span> • No signup required
+            </div>
+            <div style={{textAlign: 'center', marginTop: '12px'}}>
+                <button 
+                    onClick={() => { trackEvent('example_viewed'); setShowExample(true); }}
+                    style={{
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--color-primary)',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        textDecoration: 'underline',
+                        fontFamily: 'var(--font-body)'
+                    }}
+                >
+                    See example result →
+                </button>
             </div>
         </>
     )}
@@ -3053,11 +2760,73 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                         {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} onShowEmailCapture={handleShowEmailCapture} />}
                         {showEmailCapture && <EmailCaptureModal onClose={() => setShowEmailCapture(false)} lastItem={null} />}
+                        {showExample && (
+                            <div className="modal-overlay" onClick={() => setShowExample(false)}>
+                                <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{maxWidth: '420px', padding: '0', overflow: 'hidden'}}>
+                                    <div style={{background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))', padding: '20px', textAlign: 'center'}}>
+                                        <div style={{fontSize: '12px', background: 'rgba(255,255,255,0.2)', display: 'inline-block', padding: '4px 12px', borderRadius: '20px', color: 'white', marginBottom: '10px'}}>📷 EXAMPLE RESULT</div>
+                                        <div style={{fontSize: '40px', marginBottom: '5px'}}>💰</div>
+                                        <h2 style={{color: 'white', margin: '0', fontSize: '24px', fontFamily: 'var(--font-display)'}}>SELL IT!</h2>
+                                    </div>
+                                    
+                                    <div style={{padding: '25px'}}>
+                                        <div style={{fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: '600', color: 'var(--color-contrast)', marginBottom: '8px'}}>
+                                            KitchenAid Artisan Stand Mixer
+                                        </div>
+                                        <div style={{color: 'var(--color-text-muted)', fontSize: '14px', marginBottom: '20px', lineHeight: '1.5'}}>
+                                            High demand item! These sell quickly on Facebook Marketplace and eBay. Condition "Good" still commands strong prices.
+                                        </div>
+                                        
+                                        <div style={{background: 'rgba(13, 124, 102, 0.08)', borderLeft: '4px solid var(--color-primary)', padding: '12px 15px', borderRadius: '8px', marginBottom: '20px'}}>
+                                            <div style={{fontSize: '12px', color: 'var(--color-primary-dark)', fontWeight: '600', marginBottom: '5px'}}>📊 Real Marketplace Data</div>
+                                            <div style={{fontSize: '14px', color: 'var(--color-contrast)'}}>Similar mixers sold for $75-120 in the last 30 days on eBay and Facebook Marketplace.</div>
+                                        </div>
+                                        
+                                        <div style={{background: 'var(--color-bg-alt)', borderRadius: 'var(--radius)', padding: '15px', marginBottom: '20px'}}>
+                                            <div style={{display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid rgba(0,0,0,0.06)'}}>
+                                                <span style={{color: 'var(--color-text-muted)'}}>Est. Sale Price</span>
+                                                <span style={{fontWeight: '700'}}>$95.00</span>
+                                            </div>
+                                            <div style={{display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid rgba(0,0,0,0.06)'}}>
+                                                <span style={{color: 'var(--color-text-muted)'}}>Fees & Shipping</span>
+                                                <span style={{fontWeight: '700'}}>-$18.35</span>
+                                            </div>
+                                            <div style={{display: 'flex', justifyContent: 'space-between', padding: '8px 0'}}>
+                                                <span style={{color: 'var(--color-text-muted)'}}>Your Profit</span>
+                                                <span style={{fontWeight: '700', fontSize: '20px', color: 'var(--color-primary)'}}>$76.65</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <button 
+                                            onClick={() => { setShowExample(false); trackEvent('example_cta_clicked'); }}
+                                            style={{
+                                                width: '100%',
+                                                padding: '16px',
+                                                background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))',
+                                                color: 'white',
+                                                border: 'none',
+                                                borderRadius: 'var(--radius)',
+                                                fontSize: '16px',
+                                                fontWeight: '600',
+                                                cursor: 'pointer',
+                                                fontFamily: 'var(--font-body)'
+                                            }}
+                                        >
+                                            📷 Try It With Your Item — Free
+                                        </button>
+                                        
+                                        <p style={{textAlign: 'center', marginTop: '12px', marginBottom: '0', color: 'var(--color-text-muted)', fontSize: '13px'}}>
+                                            3 free scans • No signup required
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </>
                 );
             }
 
-            // Choose Analysis Type - Only shown for paid users now
+            // Choose Analysis Type
             if (screen === 'chooseType') {
                 return (
                     <>
@@ -3130,6 +2899,7 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
                 );
             }
 
+            // Condition screen
             if (screen === 'condition') {
                 return (
                     <>
@@ -3163,7 +2933,7 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
 
                                 <button 
                                     className="back-button"
-                                    onClick={() => setScreen('chooseType')}
+                                    onClick={() => paid ? setScreen('chooseType') : setScreen('home')}
                                     style={{marginTop: '20px'}}
                                 >
                                     ← Back
@@ -3186,7 +2956,7 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
                 );
             }
 
-            // Detailed screens (only for paid users)
+            // Detailed screens
             if (screen === 'detailed_category') {
                 return (
                     <>
@@ -3366,7 +3136,9 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
                                 {result.effortScore && (
                                     <div>
                                         <div className={`effort-score ${result.effortScore}`}>
-                                            {result.effortScore === 'easy' ? '🟢 Easy to Sell' : result.effortScore === 'medium' ? '🟡 Moderate Effort' : '🔴 High Effort'}
+                                            {result.effortScore === 'easy' && '🟢 Easy to Sell'}
+                                            {result.effortScore === 'medium' && '🟡 Medium Effort'}
+                                            {result.effortScore === 'hard' && '🔴 Hard to Sell'}
                                         </div>
                                         {result.effortReason && <div className="effort-reason">{result.effortReason}</div>}
                                     </div>
@@ -3374,7 +3146,7 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
 
                                 {result.marketData && (
                                     <div className="market-data">
-                                        <div className="market-data-title">📊 Market Intelligence</div>
+                                        <div className="market-data-title">📊 Real Marketplace Data</div>
                                         <div className="market-data-content">{result.marketData}</div>
                                     </div>
                                 )}
@@ -3387,12 +3159,8 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
                                                 <span className="detail-value">${result.estimatedPrice}</span>
                                             </div>
                                             <div className="detail-row">
-                                                <span className="detail-label">Platform Fees</span>
-                                                <span className="detail-value">-${result.ebayFees}</span>
-                                            </div>
-                                            <div className="detail-row">
-                                                <span className="detail-label">Shipping</span>
-                                                <span className="detail-value">-${result.shippingCost}</span>
+                                                <span className="detail-label">Fees & Shipping</span>
+                                                <span className="detail-value">-${(parseFloat(result.ebayFees) + parseFloat(result.shippingCost)).toFixed(2)}</span>
                                             </div>
                                             <div className="detail-row">
                                                 <span className="detail-label">Your Profit</span>
@@ -3402,47 +3170,41 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
                                     ) : (
                                         <>
                                             <div className="detail-row">
-                                                <span className="detail-label">Est. Sale Price</span>
-                                                <span className="detail-value">${result.estimatedPrice}</span>
+                                                <span className="detail-label">Tax Deduction</span>
+                                                <span className="detail-value highlight">${result.taxDeduction}</span>
                                             </div>
                                             <div className="detail-row">
-                                                <span className="detail-label">Tax Deduction Value</span>
-                                                <span className="detail-value highlight">${result.taxDeduction}</span>
+                                                <span className="detail-label">Time Saved</span>
+                                                <span className="detail-value">15-30 min</span>
                                             </div>
                                         </>
                                     )}
                                 </div>
 
                                 <div className="result-actions">
-                                    <button className="primary-action" onClick={reset}>
-                                        Scan Another Item
-                                    </button>
-                                    {!paid && (
-                                        <button 
-                                            className="secondary-action"
-                                            onClick={() => window.location.href = SCAN_CONFIG.SALES_PAGE_URL}
-                                        >
-                                            Get More Scans
+                                    <button className="primary-action" onClick={reset}>Check Another Item</button>
+                                    {paid && (
+                                        <button className="secondary-action" onClick={() => { trackEvent('mode_selected', { mode: 'bulk', from: 'result' }); setScreen('bulk'); }}>
+                                            📋 Use Bulk Scan
                                         </button>
                                     )}
                                 </div>
                             </div>
                         </div>
 
-                        {showTestimonial && (
-                            <TestimonialModal
-                                isOpen={showTestimonial}
-                                onClose={() => setShowTestimonial(false)}
-                                scanValue={testimonialValue}
-                                scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')}
-                            />
+                        {history.length > 0 && (
+                            <button className="history-button" onClick={() => setShowHistory(true)}>
+                                📋 History <span className="history-badge">{history.length}</span>
+                            </button>
                         )}
+                        {showHistory && <HistoryModal history={history} onClose={() => setShowHistory(false)} onClear={() => { setHistory([]); localStorage.removeItem('sellDonateHistory'); setShowHistory(false); }} />}
+                        {showTestimonial && <TestimonialModal isOpen={showTestimonial} onClose={() => setShowTestimonial(false)} scanValue={testimonialValue} scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')} />}
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                     </>
                 );
             }
 
-            // Bulk input
+            // Bulk screens
             if (screen === 'bulk') {
                 const itemCount = bulkItems.split('\n').filter(i => i.trim()).length;
                 return (
@@ -3450,72 +3212,58 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
                         <ScanCounter onClick={() => setShowAccount(true)} />
                         <div className="container">
                             <div className="card">
-                                <div style={{textAlign: 'center', marginBottom: '5px'}}>
-                                    <div className="pro-badge">✨ Bulk Scan</div>
-                                </div>
-                                <h1 style={{fontSize: '22px', marginBottom: '10px'}}>Check Multiple Items</h1>
-                                <p className="subtitle" style={{marginBottom: '20px'}}>Enter one item per line</p>
+                                <div style={{textAlign: 'center'}}><div className="ai-badge">📋 Bulk Scan</div></div>
+                                <h1 style={{fontSize: '24px'}}>Check Multiple Items</h1>
+                                <p className="subtitle">One item per line. Be specific for best results.</p>
                                 <div className="bulk-input-section">
-                                    <textarea
-                                        placeholder="KitchenAid mixer&#10;Nintendo Switch&#10;Vintage leather jacket&#10;Weber grill"
-                                        value={bulkItems}
-                                        onChange={(e) => setBulkItems(e.target.value)}
-                                        rows={6}
-                                    />
-                                    <div className="bulk-item-count">{itemCount} item{itemCount !== 1 ? 's' : ''} • {scanData.scansRemaining} scans available</div>
+                                    <textarea placeholder={"iPhone 12 Pro 128GB\nNike Air Max size 10\nKitchenAid Stand Mixer\nLevi's 501 jeans 32x30"} value={bulkItems} onChange={(e) => setBulkItems(e.target.value)} />
+                                    {itemCount > 0 && <div className="bulk-item-count">{itemCount} item{itemCount !== 1 ? 's' : ''} • Uses {itemCount} of {scanData.scansRemaining} scans</div>}
                                 </div>
-                                <button className="back-button" onClick={() => setScreen('home')} style={{marginTop: '20px'}}>← Back</button>
-                                <button className="action-button pro" disabled={itemCount === 0} onClick={runBulkAnalysis} style={{marginTop: '10px'}}>Analyze {itemCount} Item{itemCount !== 1 ? 's' : ''}</button>
+                                <button className="back-button" onClick={reset} style={{marginTop: '15px'}}>← Back</button>
+                                <button className="action-button" disabled={itemCount === 0} onClick={runBulkAnalysis} style={{marginTop: '10px'}}>🔍 Analyze {itemCount} Item{itemCount !== 1 ? 's' : ''}</button>
                             </div>
                         </div>
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                         {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} onShowEmailCapture={handleShowEmailCapture} />}
+                        {showEmailCapture && <EmailCaptureModal onClose={() => setShowEmailCapture(false)} lastItem={null} />}
                     </>
                 );
             }
 
-            // Bulk results
             if (screen === 'bulkResults') {
-                const sellCount = bulkResults.filter(r => r.recommendation === 'sell').length;
-                const donateCount = bulkResults.filter(r => r.recommendation === 'donate').length;
-                const totalProfit = bulkResults.filter(r => r.recommendation === 'sell').reduce((sum, r) => sum + parseFloat(r.netProfit || 0), 0);
+                const sellItems = bulkResults.filter(r => r.recommendation === 'sell');
+                const totalProfit = sellItems.reduce((sum, r) => sum + parseFloat(r.netProfit || 0), 0);
                 return (
                     <>
                         <ScanCounter onClick={() => setShowAccount(true)} />
                         <div className="container">
                             <div className="card">
-                                <div style={{textAlign: 'center', marginBottom: '5px'}}>
-                                    <div className="pro-badge">✨ Bulk Results</div>
-                                </div>
-                                <h1 style={{fontSize: '22px', marginBottom: '20px'}}>Your Items Analyzed</h1>
-                                <div className="history-stats" style={{marginBottom: '20px'}}>
-                                    <div className="stat-box">
-                                        <div className="stat-number" style={{color: 'var(--color-primary)'}}>{sellCount}</div>
-                                        <div className="stat-label">Sell</div>
+                                <div style={{textAlign: 'center'}}><div className="ai-badge">✨ Results Ready</div></div>
+                                <h1 style={{fontSize: '24px'}}>{bulkResults.length} Items Analyzed</h1>
+                                {sellItems.length > 0 && (
+                                    <div style={{background: 'rgba(13, 124, 102, 0.08)', padding: '15px', borderRadius: 'var(--radius)', marginBottom: '20px', textAlign: 'center'}}>
+                                        <div style={{fontSize: '14px', color: 'var(--color-primary-dark)'}}>Potential profit from selling</div>
+                                        <div style={{fontSize: '28px', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-display)'}}>${totalProfit.toFixed(2)}</div>
                                     </div>
-                                    <div className="stat-box">
-                                        <div className="stat-number" style={{color: '#92700C'}}>{donateCount}</div>
-                                        <div className="stat-label">Donate</div>
-                                    </div>
-                                    <div className="stat-box">
-                                        <div className="stat-number" style={{color: 'var(--color-primary)'}}>${totalProfit.toFixed(0)}</div>
-                                        <div className="stat-label">Potential</div>
-                                    </div>
-                                </div>
+                                )}
                                 <div className="bulk-results">
                                     {bulkResults.map((item, index) => (
                                         <div key={index} className={`bulk-result-item ${item.recommendation}`}>
                                             <div className="bulk-item-name">{item.itemName}</div>
                                             <div className={`bulk-item-recommendation ${item.recommendation}`}>
-                                                {item.recommendation === 'sell' ? `💰 SELL — $${item.netProfit} profit` : item.recommendation === 'donate' ? '❤️ DONATE' : '⚠️ Error'}
+                                                {item.recommendation === 'sell' ? '💰 SELL' : item.recommendation === 'donate' ? '❤️ DONATE' : '⚠️ ERROR'}
                                             </div>
-                                            {item.reason && <div className="bulk-item-details">{item.reason}</div>}
+                                            {item.recommendation === 'sell' && <div className="bulk-item-details">Est. profit: ${item.netProfit}</div>}
+                                            <div className="bulk-item-details">{item.reason}</div>
                                         </div>
                                     ))}
                                 </div>
-                                <button className="action-button" onClick={reset} style={{marginTop: '20px'}}>Scan More Items</button>
+                                <button className="primary-action" onClick={reset} style={{marginTop: '20px'}}>Analyze More Items</button>
                             </div>
                         </div>
+                        {history.length > 0 && <button className="history-button" onClick={() => setShowHistory(true)}>📋 History <span className="history-badge">{history.length}</span></button>}
+                        {showHistory && <HistoryModal history={history} onClose={() => setShowHistory(false)} onClear={() => { setHistory([]); localStorage.removeItem('sellDonateHistory'); setShowHistory(false); }} />}
+                        {showTestimonial && <TestimonialModal isOpen={showTestimonial} onClose={() => setShowTestimonial(false)} scanValue={testimonialValue} scanCount={parseInt(localStorage.getItem('iv_scan_count') || '0')} />}
                         {showAccount && <AccountModal onClose={() => setShowAccount(false)} />}
                     </>
                 );
@@ -3526,507 +3274,18 @@ const runPhotoAnalysis = async (fileOverride = null, source = 'unknown') => {
 
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
-<!-- EXIT INTENT EMAIL CAPTURE - Paste this just before </body> in your index.html -->
-
-<style>
-/* Exit Intent Modal Styles */
-.exit-intent-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99999;
-    padding: 20px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.exit-intent-overlay.visible {
-    opacity: 1;
-    visibility: visible;
-}
-
-.exit-intent-modal {
-    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-    border-radius: 20px;
-    width: 100%;
-    max-width: 420px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    transform: translateY(20px) scale(0.95);
-    transition: transform 0.3s ease;
-    overflow: hidden;
-}
-
-.exit-intent-overlay.visible .exit-intent-modal {
-    transform: translateY(0) scale(1);
-}
-
-.exit-intent-header {
-    background: linear-gradient(135deg, #0D7C66 0%, #095C4B 100%);
-    padding: 28px 28px 24px;
-    color: white;
-    text-align: center;
-    position: relative;
-}
-
-.exit-intent-close {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(255,255,255,0.2);
-    border: none;
-    color: white;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-}
-
-.exit-intent-close:hover {
-    background: rgba(255,255,255,0.3);
-}
-
-.exit-intent-emoji {
-    font-size: 48px;
-    margin-bottom: 12px;
-    display: block;
-}
-
-.exit-intent-title {
-    font-size: 22px;
-    font-weight: 700;
-    margin: 0 0 8px 0;
-    font-family: 'Fraunces', Georgia, serif;
-}
-
-.exit-intent-subtitle {
-    font-size: 15px;
-    opacity: 0.9;
-    margin: 0;
-    line-height: 1.4;
-}
-
-.exit-intent-body {
-    padding: 24px 28px 28px;
-}
-
-.exit-intent-benefits {
-    background: #f0fdf4;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 20px;
-}
-
-.exit-intent-benefits-title {
-    font-weight: 600;
-    color: #0D7C66;
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.exit-intent-benefit {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: #1E3A34;
-    margin-bottom: 6px;
-}
-
-.exit-intent-benefit:last-child {
-    margin-bottom: 0;
-}
-
-.exit-intent-benefit-check {
-    color: #0D7C66;
-    font-weight: bold;
-}
-
-.exit-intent-input {
-    width: 100%;
-    padding: 14px 16px;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 16px;
-    font-family: 'DM Sans', -apple-system, sans-serif;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    background: #fff;
-    box-sizing: border-box;
-    margin-bottom: 12px;
-}
-
-.exit-intent-input:focus {
-    outline: none;
-    border-color: #0D7C66;
-    box-shadow: 0 0 0 3px rgba(13, 124, 102, 0.15);
-}
-
-.exit-intent-submit {
-    width: 100%;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, #0D7C66 0%, #095C4B 100%);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: 'DM Sans', -apple-system, sans-serif;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 14px rgba(13, 124, 102, 0.35);
-}
-
-.exit-intent-submit:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(13, 124, 102, 0.4);
-}
-
-.exit-intent-submit:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.exit-intent-skip {
-    display: block;
-    width: 100%;
-    text-align: center;
-    margin-top: 12px;
-    color: #94a3b8;
-    font-size: 13px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    font-family: 'DM Sans', -apple-system, sans-serif;
-}
-
-.exit-intent-skip:hover {
-    color: #64748b;
-}
-
-.exit-intent-success {
-    text-align: center;
-    padding: 40px 28px;
-}
-
-.exit-intent-success-emoji {
-    font-size: 56px;
-    margin-bottom: 16px;
-    display: block;
-}
-
-.exit-intent-success-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #1E3A34;
-    margin: 0 0 8px 0;
-    font-family: 'Fraunces', Georgia, serif;
-}
-
-.exit-intent-success-text {
-    font-size: 15px;
-    color: #64748b;
-    margin: 0;
-}
-
-.exit-intent-spinner {
-    width: 24px;
-    height: 24px;
-    border: 3px solid rgba(255,255,255,0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: exit-intent-spin 0.8s linear infinite;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-@keyframes exit-intent-spin {
-    to { transform: rotate(360deg); }
-}
-</style>
-
-<div id="exitIntentOverlay" class="exit-intent-overlay">
-    <div class="exit-intent-modal">
-        <div id="exitIntentForm">
-            <div class="exit-intent-header">
-                <button class="exit-intent-close" onclick="closeExitIntent()">×</button>
-                <span class="exit-intent-emoji">💎</span>
-                <h2 class="exit-intent-title">Wait! Free Guide Inside</h2>
-                <p class="exit-intent-subtitle">Discover 10 common household items that sell for $100+ online</p>
-            </div>
-            <div class="exit-intent-body">
-                <div class="exit-intent-benefits">
-                    <div class="exit-intent-benefits-title">Inside the free guide:</div>
-                    <div class="exit-intent-benefit">
-                        <span class="exit-intent-benefit-check">✓</span>
-                        <span>10 surprising items worth real money</span>
-                    </div>
-                    <div class="exit-intent-benefit">
-                        <span class="exit-intent-benefit-check">✓</span>
-                        <span>Where to sell each one for top dollar</span>
-                    </div>
-                    <div class="exit-intent-benefit">
-                        <span class="exit-intent-benefit-check">✓</span>
-                        <span>How to spot valuable items at a glance</span>
-                    </div>
-                </div>
-                
-                <input 
-                    type="text" 
-                    id="exitIntentName"
-                    class="exit-intent-input" 
-                    placeholder="First name (optional)"
-                />
-                <input 
-                    type="email" 
-                    id="exitIntentEmail"
-                    class="exit-intent-input" 
-                    placeholder="Your email address"
-                    required
-                />
-                <button class="exit-intent-submit" onclick="submitExitIntent()" id="exitIntentSubmitBtn">
-                    Send Me the Free Guide →
-                </button>
-                <button class="exit-intent-skip" onclick="closeExitIntent()">
-                    No thanks, I'll figure it out myself
-                </button>
-            </div>
-        </div>
-        
-        <div id="exitIntentSuccess" style="display: none;">
-            <div class="exit-intent-success">
-                <span class="exit-intent-success-emoji">🎉</span>
-                <h3 class="exit-intent-success-title">Check your inbox!</h3>
-                <p class="exit-intent-success-text">Your free guide is on its way.<br/>Ready to scan your first item?</p>
-                <button class="exit-intent-submit" onclick="closeExitIntent()" style="margin-top: 20px;">
-                    Try a Free Scan →
-                </button>
-            </div>
-        </div>
+    
+    <div class="footer-disclaimer">
+        Independent tool. Not affiliated with any marketplace. Data for informational purposes only.
+        | <a href="/terms.html">Terms</a> | <a href="/privacy.html">Privacy</a> | <a href="/faq.html">FAQ</a>
     </div>
-</div>
-
-<script>
-(function() {
-    // Configuration
-    const EXIT_INTENT_CONFIG = {
-        showOncePerSession: true,
-        mobileDelaySeconds: 45,        // Show after 45 seconds on mobile if no interaction
-        desktopSensitivity: 20,        // Pixels from top to trigger on desktop
-        kitFormId: '8985054',          // Your Kit form ID
-        cookieDays: 7                  // Don't show again for 7 days after dismissal
-    };
     
-    let exitIntentShown = false;
-    let hasScanned = false;
-    let mobileTimer = null;
-    
-    // Check if user has already seen/dismissed the popup
-    function hasSeenExitIntent() {
-        return localStorage.getItem('iv_exit_intent_shown') !== null ||
-               sessionStorage.getItem('iv_exit_intent_session') !== null;
-    }
-    
-    // Check if user has already provided email
-    function hasProvidedEmail() {
-        return localStorage.getItem('itemvalue_user_email') !== null;
-    }
-    
-    // Check if user has completed a scan
-    function hasCompletedScan() {
-        try {
-            const scanData = localStorage.getItem('itemvalue_scans');
-            if (scanData) {
-                const parsed = JSON.parse(scanData);
-                return (parsed.used || 0) > 0;
-            }
-        } catch (e) {}
-        return false;
-    }
-    
-    // Show the exit intent modal
-    function showExitIntent() {
-        if (exitIntentShown || hasSeenExitIntent() || hasProvidedEmail() || hasCompletedScan()) {
-            return;
-        }
-        
-        exitIntentShown = true;
-        sessionStorage.setItem('iv_exit_intent_session', 'true');
-        
-        const overlay = document.getElementById('exitIntentOverlay');
-        if (overlay) {
-            overlay.classList.add('visible');
-            
-            // Track event
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'exit_intent_shown', { trigger: detectMobile() ? 'mobile_timer' : 'desktop_mouse' });
-            }
-            if (typeof fbq !== 'undefined') {
-                fbq('track', 'ViewContent', { content_name: 'exit_intent_popup' });
-            }
-        }
-    }
-    
-    // Close the modal
-    window.closeExitIntent = function() {
-        const overlay = document.getElementById('exitIntentOverlay');
-        if (overlay) {
-            overlay.classList.remove('visible');
-        }
-        
-        // Track dismissal
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'exit_intent_dismissed');
-        }
-    };
-    
-    // Submit the form
-    window.submitExitIntent = async function() {
-        const email = document.getElementById('exitIntentEmail').value;
-        const firstName = document.getElementById('exitIntentName').value;
-        const submitBtn = document.getElementById('exitIntentSubmitBtn');
-        
-        if (!email || !email.includes('@')) {
-            alert('Please enter a valid email address');
-            return;
-        }
-        
-        // Show loading state
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="exit-intent-spinner"></span>';
-        
-        try {
-            // Submit to Kit
-            const formData = new FormData();
-            formData.append('email_address', email);
-            if (firstName) {
-                formData.append('fields[first_name]', firstName);
-            }
-            formData.append('fields[source]', 'exit_intent');
-            
-            await fetch(`https://app.kit.com/forms/${EXIT_INTENT_CONFIG.kitFormId}/subscriptions`, {
-                method: 'POST',
-                body: formData,
-                mode: 'no-cors'
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').catch(() => {});
             });
-            
-            // Store email locally
-            localStorage.setItem('itemvalue_user_email', email);
-            localStorage.setItem('iv_exit_intent_shown', Date.now().toString());
-            
-            // Track success
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'exit_intent_converted', { has_first_name: !!firstName });
-            }
-            if (typeof fbq !== 'undefined') {
-                fbq('track', 'Lead', { content_name: 'exit_intent_capture' });
-            }
-            
-            // Show success state
-            document.getElementById('exitIntentForm').style.display = 'none';
-            document.getElementById('exitIntentSuccess').style.display = 'block';
-            
-        } catch (error) {
-            console.error('Exit intent submission error:', error);
-            // Still store locally and show success
-            localStorage.setItem('itemvalue_user_email', email);
-            localStorage.setItem('iv_exit_intent_shown', Date.now().toString());
-            document.getElementById('exitIntentForm').style.display = 'none';
-            document.getElementById('exitIntentSuccess').style.display = 'block';
         }
-    };
-    
-    // Detect mobile devices
-    function detectMobile() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-               window.innerWidth <= 768;
-    }
-    
-    // Desktop: mouse leave detection
-    function handleMouseLeave(e) {
-        if (e.clientY <= EXIT_INTENT_CONFIG.desktopSensitivity) {
-            showExitIntent();
-        }
-    }
-    
-    // Mobile: timer-based detection
-    function startMobileTimer() {
-        if (mobileTimer) clearTimeout(mobileTimer);
-        
-        mobileTimer = setTimeout(() => {
-            // Only show if user hasn't interacted meaningfully
-            if (!hasCompletedScan()) {
-                showExitIntent();
-            }
-        }, EXIT_INTENT_CONFIG.mobileDelaySeconds * 1000);
-    }
-    
-    // Reset mobile timer on meaningful interaction
-    function resetMobileTimer() {
-        if (mobileTimer) {
-            clearTimeout(mobileTimer);
-            startMobileTimer();
-        }
-    }
-    
-    // Initialize
-    function init() {
-        // Don't initialize if already shown or email captured
-        if (hasSeenExitIntent() || hasProvidedEmail()) {
-            return;
-        }
-        
-        if (detectMobile()) {
-            // Mobile: use timer
-            startMobileTimer();
-            
-            // Reset timer on scroll or tap
-            document.addEventListener('scroll', resetMobileTimer, { passive: true });
-            document.addEventListener('touchstart', resetMobileTimer, { passive: true });
-        } else {
-            // Desktop: use mouse leave
-            document.addEventListener('mouseleave', handleMouseLeave);
-        }
-        
-        // Close on overlay click
-        document.getElementById('exitIntentOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeExitIntent();
-            }
-        });
-        
-        // Close on escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeExitIntent();
-            }
-        });
-        
-        // Handle enter key in email field
-        document.getElementById('exitIntentEmail').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                submitExitIntent();
-            }
-        });
-    }
-    
-    // Wait for DOM
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
-})();
-</script>
-
-<!-- END EXIT INTENT EMAIL CAPTURE -->
+    </script>
 </body>
 </html>
