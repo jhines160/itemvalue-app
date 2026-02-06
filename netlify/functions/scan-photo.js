@@ -80,7 +80,7 @@ exports.handler = async (event, context) => {
                 type: 'image_url',
                 image_url: {
                   url: `data:${mimeType || 'image/jpeg'};base64,${image}`,
-                  detail: 'high',
+                  detail: 'low',
                 },
               },
             ],
