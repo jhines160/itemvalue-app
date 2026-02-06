@@ -1,6 +1,7 @@
 [build]
   functions = "netlify/functions"
-  publish = "."
 
 [functions]
-  node_bundler = "esbuild"
+  # Extend timeout from default 10s to 26s
+  # Prevents intermittent failures with GPT-4 Vision and Claude API
+  timeout = 26
