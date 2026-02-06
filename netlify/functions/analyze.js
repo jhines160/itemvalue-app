@@ -168,7 +168,7 @@ RULES:
     const anthropicData = await anthropicResponse.json();
     console.log('Analysis complete');
     
-// Log scan to Google Sheet (skip if test mode)
+    // Log scan to Google Sheet (skip if test mode)
     const referer = event.headers.referer || event.headers.Referer || '';
     const isTestMode = referer.includes('test=true');
     
@@ -183,6 +183,7 @@ RULES:
             item: itemDescription,
             category: category || 'Not specified',
             condition: condition || 'Not specified',
+            scanType: 'text',
             userType: 'unknown'
           })
         });
