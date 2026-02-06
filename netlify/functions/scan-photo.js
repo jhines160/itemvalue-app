@@ -1,4 +1,6 @@
 // Netlify Function: Photo Scanning with GPT-4 Vision
+const SCAN_LOG_URL = 'https://script.google.com/macros/s/AKfycbz4h94F0683Ks3FqBDBSfnEvhygozMJzlpI-edzJpI6Wmx7oGd-8IImtvH4l3kX5jF0Ug/exec';
+
 const VALUATION_PROMPT = `You are an expert resale value estimator. Analyze this image of an item and provide:
 
 1. **Item Identification**: What is this item? Be specific (brand, model, type if visible)
@@ -110,6 +112,35 @@ exports.handler = async (event, context) => {
         statusCode: 422,
         body: JSON.stringify(result),
       };
+    }
+
+    // Log scan to Google Sheet (skip if test mode)
+    const referer = event.headers.referer || event.headers.Referer || '';
+    const isTestMode = referer.includes('test=true');
+
+    if (!isTestMode) {
+      try {
+        console.log('Attempting to log photo scan...');
+        const logResponse = await fetch(SCAN_LOG_URL, {
+          method: 'POST',
+          redirect: 'follow',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            item: result.itemName || 'Photo scan - unidentified',
+            category: 'Photo Scan',
+            condition: result.condition || 'Not specified',
+            scanType: 'photo',
+            estimatedValue: result.estimatedValue || 0,
+            confidence: result.confidence || 'unknown',
+            userType: 'unknown'
+          })
+        });
+        console.log('Photo scan logged, status:', logResponse.status);
+      } catch (err) {
+        console.log('Photo scan logging error:', err.message);
+      }
+    } else {
+      console.log('Test mode - skipping photo scan log');
     }
 
     return {
