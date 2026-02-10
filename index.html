@@ -1540,10 +1540,14 @@ function trackEvent(eventName, eventParams = {}) {
         bundle = 'Starter Pack';
         scans = 25;
         days = 365;
-    } else if (upperCode === 'CHALLENGE100') {
+   } else if (upperCode === 'CHALLENGE100') {
         bundle = 'Challenge Bundle';
         scans = 100;
         days = 365;
+    } else if (upperCode.startsWith('SMM')) {
+        bundle = 'SMM Partner';
+        scans = 100;
+        days = 30;
     } else if (upperCode.includes('WEEKEND')) {
         bundle = 'Weekend Warrior';
         scans = 50;
@@ -1586,6 +1590,7 @@ if (typeof fbq !== 'undefined') {
     else if (bundle === 'Weekend Warrior') purchaseValue = 17;
     else if (bundle === 'Moving Master') purchaseValue = 37;
     else if (bundle === 'Estate Pro') purchaseValue = 97;
+   else if (bundle === 'SMM Partner') purchaseValue = 0;
     
     fbq('track', 'Purchase', {
         value: purchaseValue,
