@@ -1400,6 +1400,64 @@ input[type="text"].pulse-hint {
     color: #64748b;
     margin: 0;
 }
+
+/* --- As Seen On Badge --- */
+.as-seen-on {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 0 8px;
+    width: 100%;
+}
+
+.as-seen-on__label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+.as-seen-on__divider {
+    width: 36px;
+    height: 2px;
+    background-color: #e2e8f0;
+    border: none;
+    margin: 0;
+}
+
+.as-seen-on__image {
+    max-width: 340px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.as-seen-on__image:hover {
+    opacity: 1;
+}
+
+.as-seen-on--compact {
+    padding: 10px 0 4px;
+}
+
+.as-seen-on--compact .as-seen-on__image {
+    max-width: 280px;
+}
+
+@media (max-width: 768px) {
+    .as-seen-on__image {
+        max-width: 260px;
+    }
+    .as-seen-on--compact .as-seen-on__image {
+        max-width: 220px;
+    }
+}
+
 /* ========== END TESTIMONIAL MODAL ========== */ </style>
 </head>
 <body>
@@ -1811,6 +1869,10 @@ alert(`✅ ${bundle} activated! You have ${scans} scans.`);
                         <p style={{color: 'var(--color-text-muted)', marginBottom: '20px', fontSize: '15px', lineHeight: '1.5'}}>
                             Upgrade to keep discovering hidden value. Most users find $500+ worth of sellable items!
                         </p>
+                        
+                        <div className="as-seen-on" style={{padding: '8px 0 16px'}}>
+                            <img src="/as-seen-on-badge.png" alt="As Seen On CBS, NBC, ABC and over 250 news outlets" className="as-seen-on__image" style={{maxWidth: '280px'}} loading="lazy" />
+                        </div>
                         
                         <button 
                             onClick={() => {
@@ -2563,6 +2625,10 @@ const runPhotoAnalysis = async () => {
                                 <p className="subtitle">
                                     Get real profit estimates after fees and shipping — instantly.
                                 </p>
+
+                                <div className="as-seen-on as-seen-on--compact">
+                                    <img src="/as-seen-on-badge.png" alt="As Seen On CBS, NBC, ABC and over 250 news outlets" className="as-seen-on__image" loading="lazy" />
+                                </div>
 
                                 <div className="input-section">
     <div className="scan-tabs">
